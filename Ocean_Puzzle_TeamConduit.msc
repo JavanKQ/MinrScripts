@@ -14,6 +14,9 @@
 #   members. Every time someone joins, the whole team gets a
 #   new shared song and is set back to unsolved, so joining
 #   can't be used to skip the puzzle.
+#   When the 2 minutes are up, every member is told the word
+#   has expired and who is on the team. If nobody joined, the
+#   team is deleted and the creator is told.
 #
 # Requires: puzzle1 namespace (see Submit script header)
 # Related scripts: Submit (1), Entrance (2), Exit (3), Reset (4),
@@ -22,7 +25,7 @@
 @using puzzle1
 @define String word = ""
 @player &3Oracle: &bSpeak the word that shall bind your song to your companions'...
-@prompt 30s word &3Oracle: &bThe conduit's glow fades. Return when you are ready.
+@prompt 30s word §3Oracle: §bThe conduit's glow fades. Return when you are ready.
 @var word = word.trim().toLowerCase()
 @if !word.matches("[a-z0-9_]{1,16}")
 @player &7&o[Note] Team words must be 1-16 letters, numbers or underscores, with no spaces.
@@ -47,11 +50,52 @@
 @fi
 @done
 @if found == ""
+@define String myId = word + "@" + now
 @var team_registry = kept + word + ":" + now + ":" + me + ";"
-@var team = word + "@" + now
+@var team = myId
 @var team_members = me
 @player &3Oracle: &bThe conduit awakens to the word "{{word}}"...
 @player &7&o[Note] Your teammates have 2 minutes to right-click the conduit and speak the same word.
+@delay 121s
+@define String left = ""
+@for String e in team_registry.split(";")
+@if e != ""
+@if !e.startsWith(word + ":" + now + ":")
+@var left = left + e + ";"
+@fi
+@fi
+@done
+@var team_registry = left
+@if team != myId
+@return
+@fi
+@if team_members == me
+@var team = ""
+@var team_members = ""
+@if player.isOnline()
+@player &3Oracle: &bNo companion answered the word "{{word}}"... the bond dissolves, and your song remains your own.
+@fi
+@return
+@fi
+@define String names = ""
+@define Player m = player
+@for String id in team_members.split(",")
+@var m = Player(id)
+@if m != null
+@if names != ""
+@var names = names + ", "
+@fi
+@var names = names + m.getName()
+@fi
+@done
+@for String id in team_members.split(",")
+@var m = Player(id)
+@if m != null
+@if m.isOnline()
+@var m.sendMessage("&3Oracle: &bThe word '{{word}}' fades into the deep. Your song is bound among: {{names}}")
+@fi
+@fi
+@done
 @return
 @fi
 @var parts = found.split(":")
