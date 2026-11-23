@@ -1,5 +1,5 @@
 # ==============================================================
-# OCEAN PUZZLE - PROGRESS RESET (4 of 5)
+# OCEAN PUZZLE - PROGRESS RESET (4 of 6)
 # ==============================================================
 # Script type : walk (interact is fine for testing)
 # Bind to     : [FILL IN: x y z]
@@ -7,8 +7,8 @@
 # Import      : /script import walk <paste URL>, then click the block
 #
 # What it does:
-#   Clears the player's Ocean Puzzle progress (answer and
-#   solved status). Players who leave and re-join the map must
+#   Clears the player's Ocean Puzzle progress (answer, solved
+#   status and team). Players who leave and re-join the map must
 #   come through here again, so their puzzle restarts.
 #
 # Placement note:
@@ -19,8 +19,10 @@
 #   drop space the same way as the Entrance script.
 #
 # Requires: puzzle1 namespace (see Submit script header)
-# Related scripts: Submit (1), Entrance (2), Exit (3), Note Tune (5)
+# Related scripts: Submit (1), Entrance (2), Exit (3), Note Tune (5), Team Conduit (6)
 # ==============================================================
 @using puzzle1
 @var solved = false
 @var answer = ""
+@var team = ""
+@var team_members = ""

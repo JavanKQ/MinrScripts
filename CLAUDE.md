@@ -28,9 +28,12 @@ Flow:
 - **Wrong submit:** costs 1 heart (10 lives). Dying respawns the player at the checkpoint, they drop back through, and they get a new answer. This stops brute-forcing, because what a player learned by guessing is lost on death.
 - **Solve:** the stairway ceiling and wall are filled with air. The Exit walk trigger fills them back with prismarine bricks.
 - **Reset:** clears `answer`/`solved` partway down the one-way drop out of the maze. Leaving and rejoining the map restarts the puzzle; dying at the checkpoint does not.
-- **Multiplayer:** handled by Minr rules. Co-op players are told by in-world signs that their answers differ.
+- **Teams (any size):** each player right-clicks the Team Conduit and types the same team word. The first player creates the word; it accepts new members for 2 minutes, then locks. Every join gives the whole team a new shared song and sets them unsolved, so a finished player can't carry someone through. A wrong submit costs every online teammate 1 heart, so teams don't get extra guesses. A teammate's death re-rolls the whole team's song. A correct submit marks the whole team solved. Joining another team, or the Reset script, removes a player from their team. Each player stores a team ID (`word@createdSeconds`); updates only go to members whose current team ID matches, so stale rosters are harmless.
+- **Out-of-character notes** use grey `&7&o[Note]`, never the Oracle's format. The co-op note is at the end of the Room 1 instructions.
 
-Relative variables in `puzzle1`: `answer` (String), `solved` (Boolean), `submit_ready_at` (Long, 10s submit cooldown), `oracle_ready_at` (Long, 45s instruction cooldown shared by all instruction scripts).
+Variables in `puzzle1`:
+- **Relative (per player):** `answer` (String), `solved` (Boolean), `submit_ready_at` (Long, 10s submit cooldown), `oracle_ready_at` (Long, 45s instruction cooldown shared by all instruction scripts), `team` (String team ID), `team_members` (String, comma-joined UUIDs).
+- **Global:** `team_registry` (String, `word:createdSeconds:uuid,uuid;...`, only used during the 2-minute join window).
 
 | File | Type | Purpose |
 |---|---|---|
@@ -38,13 +41,15 @@ Relative variables in `puzzle1`: `answer` (String), `solved` (Boolean), `submit_
 | Ocean_Puzzle_Entrance.msc | walk | New answer on entry (2 of 5) |
 | Ocean_Puzzle_Exit.msc | walk | Close stairway (3 of 5) |
 | Ocean_Puzzle_Reset.msc | walk | Clear progress (4 of 5) |
-| Ocean_Puzzle_NoteTune.msc | interact | "The note shifts to its Nth position." on every puzzle note block (5 of 5) |
+| Ocean_Puzzle_NoteTune.msc | interact | "The note shifts to its Nth position." on every puzzle note block (5 of 6) |
+| Ocean_Puzzle_TeamConduit.msc | interact | Team word linking on the conduit (6 of 6) |
 | Ocean_Puzzle_Instructions_Room1/3/4.msc | interact | Oracle instructions |
 
 ## Status (as of 2026-11-23)
 
 - **Tested and working** under the old `oceanpuzzle` namespace: submit check, hearts, entrance re-roll, stairway open/close.
-- **NOT yet imported or tested:** the most recent changes, which are the rename to `puzzle1`, the 10s submit cooldown, NoteTune, Reset (being tested as interact for now), and the updated instruction scripts. The `puzzle1` namespace and variables have not been created on the test server yet. Run the setup commands from the Submit script header, then re-import everything.
+- **Working under `puzzle1`:** Submit and Entrance, after re-importing the Entrance (an old `oceanpuzzle` copy was still bound). NoteTune works; `@delay 1t` was rejected, so it uses `@delay 1`. Interact scripts also fire on left-click (hit), so NoteTune compares the note before and after the delay and stays silent if it didn't change.
+- **NOT yet tested:** the team system (Team Conduit plus the team parts of Entrance, Submit and Reset), the new Room 1 instruction lines, and Reset. Untested MSC features it relies on: `@prompt`, `Player(uuid)`, writing another player's relative variable (`answer[p] = ...`), `p.isOnline()`, `p.sendMessage(...)` (unknown whether `&` color codes work there), `String.matches`, and the "{{...}}" interpolation trick to turn a Long into an Int. The three team variables must be defined on the test server (see the Submit header).
 - **Debug:** the Submit script has `debug = true`, which prints the answer in chat. Turn it off before handing off to admins.
 
 ## Next up

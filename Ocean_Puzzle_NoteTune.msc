@@ -1,5 +1,5 @@
 # ==============================================================
-# OCEAN PUZZLE - NOTE TUNE MESSAGE (5 of 5)
+# OCEAN PUZZLE - NOTE TUNE MESSAGE (5 of 6)
 # ==============================================================
 # Script type : interact
 # Bind to     : EVERY puzzle note block, one bind each.
@@ -12,12 +12,18 @@
 # What it does:
 #   When a player right-clicks a note block to tune it, shows
 #   the new pitch (1st to 25th) in white italics. Vanilla
-#   tuning still happens as normal.
+#   tuning still happens as normal. Hitting (left-clicking)
+#   the block also runs this script, but the pitch doesn't
+#   change, so no message is shown.
 #
 # Requires: nothing
-# Related scripts: Submit (1), Entrance (2), Exit (3), Reset (4)
+# Related scripts: Submit (1), Entrance (2), Exit (3), Reset (4), Team Conduit (6)
 # ==============================================================
-@delay 1t
+@define String before = block.getBlockDataValue("note")
+@delay 1
+@if block.getBlockDataValue("note") == before
+@return
+@fi
 @define String[] ordinals = String["1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th", "10th", "11th", "12th", "13th", "14th", "15th", "16th", "17th", "18th", "19th", "20th", "21st", "22nd", "23rd", "24th", "25th"]
 @define Int pos = Int(block.getBlockDataValue("note"))
 @player &f&oThe note shifts to its {{ordinals[pos]}} position.

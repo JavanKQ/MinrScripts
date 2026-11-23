@@ -1,5 +1,5 @@
 # ==============================================================
-# OCEAN PUZZLE - SUBMIT (1 of 5)
+# OCEAN PUZZLE - SUBMIT (1 of 6)
 # ==============================================================
 # Script type : interact
 # Bind to     : [FILL IN: x y z of the submit block]
@@ -10,7 +10,10 @@
 #   Checks the 10 note blocks in Room 1 against this player's
 #   answer. Wrong = player loses 1 heart and is told how many
 #   notes are wrong. Correct = player is marked solved and the
-#   stairway is opened. 10 second cooldown between submissions.
+#   stairway is opened. On a team, a wrong answer costs every
+#   online teammate 1 heart (and tells them how many are wrong),
+#   and a correct answer marks every teammate solved.
+#   10 second cooldown between submissions.
 #
 # Requires (run once, before importing any Ocean Puzzle script):
 #   /namespace define puzzle1
@@ -18,6 +21,10 @@
 #   /variable define puzzle1 relative Boolean solved = false
 #   /variable define puzzle1 relative Long submit_ready_at = 0L
 #   /variable define puzzle1 relative Long oracle_ready_at = 0L
+#   /variable define puzzle1 relative String team = ""
+#   /variable define puzzle1 relative String team_members = ""
+#   /variable define puzzle1 String team_registry = ""
+#   (team_registry is NOT relative: it is shared by all players)
 #
 # Map coordinates used inside this script:
 #   Note blocks   : -1852 68 1573 through -1852 68 1564
@@ -25,7 +32,7 @@
 #   Stair wall    : -1846 69 1565 to -1841 67 1565
 #   (both /fill lines appear in 2 places below)
 #
-# Related scripts: Entrance (2), Exit (3), Reset (4), Note Tune (5)
+# Related scripts: Entrance (2), Exit (3), Reset (4), Note Tune (5), Team Conduit (6)
 # ==============================================================
 @using puzzle1
 @define Boolean debug = true
@@ -63,6 +70,22 @@
 @define Int wrong = blocks.length() - correct
 @if wrong == 0
 @var solved = true
+@if team != ""
+@define Player p = player
+@for String id in team_members.split(",")
+@var p = Player(id)
+@if p != null
+@if team[p] == team
+@if p.getUniqueId() != player.getUniqueId()
+@var solved[p] = true
+@if p.isOnline()
+@var p.sendMessage("&3Oracle: &b{{player.getName()}} has sung the elders' song true... the way above is revealed to you all.")
+@fi
+@fi
+@fi
+@fi
+@done
+@fi
 @player &3Oracle: &bThe temple stirs... every note rings true, as the elders composed it.
 @player &3Oracle: &bThe way above is revealed to you.
 @bypass /fill -1846 70 1562 -1841 70 1565 air
@@ -77,3 +100,20 @@
 @player &3Oracle: &b{{wrong}} of these notes are not of the pitch the elders composed... Try again.
 @fi
 @var player.setHealth(math::maxDouble(player.getHealth() - 2.0D, 0.0D))
+@if team == ""
+@return
+@fi
+@define Player q = player
+@for String id in team_members.split(",")
+@var q = Player(id)
+@if q != null
+@if team[q] == team
+@if q.getUniqueId() != player.getUniqueId()
+@if q.isOnline()
+@var q.sendMessage("&3Oracle: &b{{player.getName()}}'s offering was false... {{wrong}} of the notes stray, and the elders' displeasure falls upon you all.")
+@var q.setHealth(math::maxDouble(q.getHealth() - 2.0D, 0.0D))
+@fi
+@fi
+@fi
+@fi
+@done

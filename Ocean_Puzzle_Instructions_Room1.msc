@@ -7,7 +7,10 @@
 # Import      : /s i i <paste URL>, then click the head block
 #
 # What it does:
-#   The Oracle explains the note block / symbol matching puzzle.
+#   The Oracle explains the note block / symbol matching puzzle,
+#   the heart cost of wrong answers, and that dying resets the
+#   song. Ends with a grey out-of-character note for co-op
+#   players that each player's answer is different.
 #   Can be replayed once every 45 seconds per player.
 #
 # Requires: puzzle1 namespace (see Submit script header)
@@ -37,4 +40,10 @@
 @delay 3s
 @player &3Oracle: &bThe monument will reveal how many are true, but never which ones.
 @delay 3s
+@player &3Oracle: &bBut take heed: each false offering will cost you a measure of your life.
+@delay 3s
+@player &3Oracle: &bShould the deep claim you, the elders will compose a new song, and all you have learned will be lost to the tide.
+@delay 3s
 @player &3Oracle: &bListen closely, seeker. The deep keeps its counsel.
+@delay 3s
+@player &7&o[Note] Playing co-op? Each player is given their own song. To share one, every teammate must right-click the conduit and type the same team word within 2 minutes. Joining a team starts the puzzle over for the whole team.

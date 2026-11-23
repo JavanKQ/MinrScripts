@@ -1,5 +1,5 @@
 # ==============================================================
-# OCEAN PUZZLE - ENTRANCE (2 of 5)
+# OCEAN PUZZLE - ENTRANCE (2 of 6)
 # ==============================================================
 # Script type : walk
 # Bind to     : 6 blocks, one bind each (test server coords):
@@ -13,7 +13,9 @@
 # What it does:
 #   Gives the player a new random answer (10 different notes)
 #   each time they enter the puzzle area. Skipped if the
-#   player has already solved the puzzle.
+#   player has already solved the puzzle. If the player is on
+#   a team (see Team Conduit), every teammate gets the same new
+#   song and a message.
 #
 # Placement note:
 #   Must be on the checkpoint side of the one-way drop, where
@@ -21,7 +23,7 @@
 #   on it again would reset their answer.
 #
 # Requires: puzzle1 namespace (see Submit script header)
-# Related scripts: Submit (1), Exit (3), Reset (4), Note Tune (5)
+# Related scripts: Submit (1), Exit (3), Reset (4), Note Tune (5), Team Conduit (6)
 # ==============================================================
 @using puzzle1
 @if solved
@@ -33,5 +35,23 @@
 @for Int i in list::range(0, 10)
 @var notes.append(String(pool[i]))
 @done
-@var answer = notes.join(",")
+@define String song = notes.join(",")
+@var answer = song
 @player &3Oracle: &bThe tides shift... the elders' song is sung anew.
+@if team == ""
+@return
+@fi
+@define Player p = player
+@for String id in team_members.split(",")
+@var p = Player(id)
+@if p != null
+@if team[p] == team
+@if p.getUniqueId() != player.getUniqueId()
+@var answer[p] = song
+@if p.isOnline()
+@var p.sendMessage("&3Oracle: &b{{player.getName()}} was claimed by the deep... the elders have composed a new song for you all.")
+@fi
+@fi
+@fi
+@fi
+@done
