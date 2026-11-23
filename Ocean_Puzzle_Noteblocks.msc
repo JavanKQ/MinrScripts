@@ -1,0 +1,66 @@
+# ==============================================================
+# OCEAN PUZZLE - SUBMIT (1 of 4)
+# ==============================================================
+# Script type : interact
+# Bind to     : [FILL IN: x y z of the submit block]
+# Map/area    : [FILL IN: map name / room]
+#
+# What it does:
+#   Checks the 10 note blocks in Room 1 against this player's
+#   answer. Wrong = player loses 1 heart and is told how many
+#   notes are wrong. Correct = player is marked solved and the
+#   stairway wall is removed.
+#
+# Requires (run once, before importing any Ocean Puzzle script):
+#   /namespace define oceanpuzzle
+#   /variable define oceanpuzzle relative String answer = ""
+#   /variable define oceanpuzzle relative Boolean solved = false
+#
+# Map coordinates used inside this script:
+#   Note blocks : -1852 68 1573 through -1852 68 1564
+#   Stair wall  : [FILL IN: X1 Y1 Z1 X2 Y2 Z2] (2 places below)
+#
+# Related scripts: Entrance (2), Exit (3), Map Start (4)
+# ==============================================================
+@cooldown 2s
+@using oceanpuzzle
+@define Boolean debug = true
+@if solved
+@player &3Oracle: &bThe elders' song has already been sung... The way above lies open to you.
+@bypass /fill X1 Y1 Z1 X2 Y2 Z2 air
+@return
+@fi
+@if answer == ""
+@player &3Oracle: &bThe elders are silent... Return to the temple's threshold.
+@return
+@fi
+@define String[] expected = answer.split(",")
+@define String w = block.getWorld()
+@define Block[] blocks = Block[Block(-1852, 68, 1573, w), Block(-1852, 68, 1572, w), Block(-1852, 68, 1571, w), Block(-1852, 68, 1570, w), Block(-1852, 68, 1569, w), Block(-1852, 68, 1568, w), Block(-1852, 68, 1567, w), Block(-1852, 68, 1566, w), Block(-1852, 68, 1565, w), Block(-1852, 68, 1564, w)]
+@define Int correct = 0
+@define String n = ""
+@for Int i in list::range(0, blocks.length())
+@var n = blocks[i].getBlockDataValue("note")
+@if debug
+@player &7[Debug] Block {{i + 1}}: note={{n}}, expected={{expected[i]}}
+@fi
+@if n == expected[i]
+@var correct = correct + 1
+@fi
+@done
+@define Int wrong = blocks.length() - correct
+@if wrong == 0
+@var solved = true
+@player &3Oracle: &bThe temple stirs... every note rings true, as the elders composed it.
+@player &3Oracle: &bThe way above is revealed to you.
+@bypass /fill X1 Y1 Z1 X2 Y2 Z2 air
+@return
+@fi
+@if player.getHealth() <= 2.0D
+@player &3Oracle: &bThe elders' patience is spent... The sea reclaims you.
+@elseif wrong == 1
+@player &3Oracle: &bOne note still strays from the song of the elders... Listen closely, and try again.
+@else
+@player &3Oracle: &b{{wrong}} of these notes are not of the pitch the elders composed... Try again.
+@fi
+@var player.setHealth(math::maxDouble(player.getHealth() - 2.0D, 0.0D))

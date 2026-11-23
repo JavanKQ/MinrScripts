@@ -1,3 +1,4 @@
+This project serves the purpose of creating scripts for maps that are hosted on zero.minr.org, the minecraft server.
 Use these links for information on how MSC 2.0 code works:
 https://msc-documentation.readthedocs.io/en/latest/index.html #Primary
 https://wiki.minr.org/Mapmaking_FAQ

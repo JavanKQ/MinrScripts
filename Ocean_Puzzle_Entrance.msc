@@ -1,0 +1,32 @@
+# ==============================================================
+# OCEAN PUZZLE - ENTRANCE (2 of 4)
+# ==============================================================
+# Script type : walk
+# Bind to     : [FILL IN: x y z]
+# Map/area    : [FILL IN: map name / room]
+#
+# What it does:
+#   Gives the player a new random answer (10 different notes)
+#   each time they enter the puzzle area. Skipped if the
+#   player has already solved the puzzle.
+#
+# Placement note:
+#   Must be on the checkpoint side of the one-way drop, where
+#   players CANNOT step from inside the puzzle area. Stepping
+#   on it again would reset their answer.
+#
+# Requires: oceanpuzzle namespace (see Submit script header)
+# Related scripts: Submit (1), Exit (3), Map Start (4)
+# ==============================================================
+@using oceanpuzzle
+@if solved
+@return
+@fi
+@define Int[] pool = list::range(0, 25)
+@var pool.shuffle()
+@define String[] notes = String[]
+@for Int i in list::range(0, 10)
+@var notes.append(String(pool[i]))
+@done
+@var answer = notes.join(",")
+@player &3Oracle: &bThe tides shift... the elders' song is sung anew.

@@ -1,0 +1,23 @@
+# ==============================================================
+# OCEAN PUZZLE - EXIT (3 of 4)
+# ==============================================================
+# Script type : walk
+# Bind to     : [FILL IN: x y z]
+# Map/area    : [FILL IN: map name / room]
+#
+# What it does:
+#   Rebuilds the wall over the stairway after a player leaves
+#   the puzzle area, returning the entrance to normal.
+#
+# Placement note:
+#   Just past the top of the stairway, once the player is back
+#   through the entrance.
+#
+# Map coordinates used inside this script:
+#   Stair wall  : [FILL IN: X1 Y1 Z1 X2 Y2 Z2]
+#                 (must match the Submit script)
+#
+# Requires: nothing
+# Related scripts: Submit (1), Entrance (2), Map Start (4)
+# ==============================================================
+@bypass /fill X1 Y1 Z1 X2 Y2 Z2 prismarine_bricks
