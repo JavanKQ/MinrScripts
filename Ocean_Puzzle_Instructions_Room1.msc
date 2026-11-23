@@ -1,0 +1,40 @@
+# ==============================================================
+# OCEAN PUZZLE - INSTRUCTIONS: ROOMS 1 & 2
+# ==============================================================
+# Script type : interact
+# Bind to     : [FILL IN: x y z of the clickable head block]
+# Map/area    : [FILL IN: map name / room]
+# Import      : /s i i <paste URL>, then click the head block
+#
+# What it does:
+#   The Oracle explains the note block / symbol matching puzzle.
+#   Can be replayed once every 45 seconds per player.
+#
+# Requires: puzzle1 namespace (see Submit script header)
+#
+# Related scripts: Instructions Rooms 3 and 4 (share the same cooldown)
+# ==============================================================
+@using puzzle1
+@define Long now = system::currentTimeMillis()
+
+@if oracle_ready_at > now
+    @define Long seconds = (oracle_ready_at - now + 999L) / 1000L
+    @player &cOracle: You must wait {{seconds}} seconds to hear the instructions again.
+    @return
+@fi
+
+@var oracle_ready_at = now + 45000L
+
+@player &3Oracle: &bTen tones sleep in the first chamber, each bound to a different pitch.
+@delay 3s
+@player &3Oracle: &bAmong the drowned stones, ten ancient symbols await your touch.
+@delay 3s
+@player &3Oracle: &bEach symbol will sound the note to which it is bound.
+@delay 3s
+@player &3Oracle: &bCarry each sound between the chambers. Find the note block that answers it.
+@delay 3s
+@player &3Oracle: &bWhen all ten pairings are set, offer your answer.
+@delay 3s
+@player &3Oracle: &bThe monument will reveal how many are true, but never which ones.
+@delay 3s
+@player &3Oracle: &bListen closely, seeker. The deep keeps its counsel.

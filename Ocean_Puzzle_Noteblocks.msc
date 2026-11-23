@@ -1,39 +1,51 @@
 # ==============================================================
-# OCEAN PUZZLE - SUBMIT (1 of 4)
+# OCEAN PUZZLE - SUBMIT (1 of 5)
 # ==============================================================
 # Script type : interact
 # Bind to     : [FILL IN: x y z of the submit block]
 # Map/area    : [FILL IN: map name / room]
+# Import      : /s i i <paste URL>, then click the submit block
 #
 # What it does:
 #   Checks the 10 note blocks in Room 1 against this player's
 #   answer. Wrong = player loses 1 heart and is told how many
 #   notes are wrong. Correct = player is marked solved and the
-#   stairway wall is removed.
+#   stairway is opened. 10 second cooldown between submissions.
 #
 # Requires (run once, before importing any Ocean Puzzle script):
-#   /namespace define oceanpuzzle
-#   /variable define oceanpuzzle relative String answer = ""
-#   /variable define oceanpuzzle relative Boolean solved = false
+#   /namespace define puzzle1
+#   /variable define puzzle1 relative String answer = ""
+#   /variable define puzzle1 relative Boolean solved = false
+#   /variable define puzzle1 relative Long submit_ready_at = 0L
+#   /variable define puzzle1 relative Long oracle_ready_at = 0L
 #
 # Map coordinates used inside this script:
-#   Note blocks : -1852 68 1573 through -1852 68 1564
-#   Stair wall  : [FILL IN: X1 Y1 Z1 X2 Y2 Z2] (2 places below)
+#   Note blocks   : -1852 68 1573 through -1852 68 1564
+#   Stair ceiling : -1846 70 1562 to -1841 70 1565
+#   Stair wall    : -1846 69 1565 to -1841 67 1565
+#   (both /fill lines appear in 2 places below)
 #
-# Related scripts: Entrance (2), Exit (3), Map Start (4)
+# Related scripts: Entrance (2), Exit (3), Reset (4), Note Tune (5)
 # ==============================================================
-@cooldown 2s
-@using oceanpuzzle
+@using puzzle1
 @define Boolean debug = true
 @if solved
 @player &3Oracle: &bThe elders' song has already been sung... The way above lies open to you.
-@bypass /fill X1 Y1 Z1 X2 Y2 Z2 air
+@bypass /fill -1846 70 1562 -1841 70 1565 air
+@bypass /fill -1846 69 1565 -1841 67 1565 air
 @return
 @fi
 @if answer == ""
 @player &3Oracle: &bThe elders are silent... Return to the temple's threshold.
 @return
 @fi
+@define Long now = system::currentTimeMillis()
+@if submit_ready_at > now
+@define Long seconds = (submit_ready_at - now + 999L) / 1000L
+@player &3Oracle: &bThe monument still echoes with your last offering... Wait {{seconds}} seconds.
+@return
+@fi
+@var submit_ready_at = now + 10000L
 @define String[] expected = answer.split(",")
 @define String w = block.getWorld()
 @define Block[] blocks = Block[Block(-1852, 68, 1573, w), Block(-1852, 68, 1572, w), Block(-1852, 68, 1571, w), Block(-1852, 68, 1570, w), Block(-1852, 68, 1569, w), Block(-1852, 68, 1568, w), Block(-1852, 68, 1567, w), Block(-1852, 68, 1566, w), Block(-1852, 68, 1565, w), Block(-1852, 68, 1564, w)]
@@ -53,7 +65,8 @@
 @var solved = true
 @player &3Oracle: &bThe temple stirs... every note rings true, as the elders composed it.
 @player &3Oracle: &bThe way above is revealed to you.
-@bypass /fill X1 Y1 Z1 X2 Y2 Z2 air
+@bypass /fill -1846 70 1562 -1841 70 1565 air
+@bypass /fill -1846 69 1565 -1841 67 1565 air
 @return
 @fi
 @if player.getHealth() <= 2.0D

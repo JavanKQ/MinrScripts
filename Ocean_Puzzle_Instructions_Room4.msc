@@ -1,0 +1,39 @@
+# ==============================================================
+# OCEAN PUZZLE - INSTRUCTIONS: ROOM 4 (The Ancient Instrument)
+# ==============================================================
+# Script type : interact
+# Bind to     : [FILL IN: x y z of the clickable head block]
+# Map/area    : [FILL IN: map name / room]
+# Import      : /s i i <paste URL>, then click the head block
+#
+# What it does:
+#   The Oracle explains the final instrument puzzle.
+#   Can be replayed once every 45 seconds per player.
+#
+# Requires: puzzle1 namespace (see Submit script header)
+# Related scripts: Instructions Rooms 1-2 and 3 (share the same cooldown)
+# ==============================================================
+@using puzzle1
+@define Long now = system::currentTimeMillis()
+
+@if oracle_ready_at > now
+    @define Long seconds = (oracle_ready_at - now + 999L) / 1000L
+    @player &cOracle: You must wait {{seconds}} seconds to hear the instructions again.
+    @return
+@fi
+
+@var oracle_ready_at = now + 45000L
+
+@player &3Oracle: &bTen signs return to you, each bearing a voice heard in a chamber before.
+@delay 3s
+@player &3Oracle: &bSet each note to the voice its sign first revealed.
+@delay 3s
+@player &3Oracle: &bYet pitch alone will not shape the song. Each sign carries a hidden worth.
+@delay 3s
+@player &3Oracle: &bLet that worth guide their procession: the lightest claim speaks first, the heaviest last.
+@delay 3s
+@player &3Oracle: &bCarry the song you uncover to the waiting instrument in this chamber.
+@delay 3s
+@player &3Oracle: &bTune its ten voices, then sound the melody swiftly, before the moment slips beneath the tide.
+@delay 3s
+@player &3Oracle: &bRemember what you heard. Remember what each sign is worth. The sea remembers both.

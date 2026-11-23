@@ -1,0 +1,23 @@
+# ==============================================================
+# OCEAN PUZZLE - NOTE TUNE MESSAGE (5 of 5)
+# ==============================================================
+# Script type : interact
+# Bind to     : EVERY puzzle note block, one bind each.
+#               Room 1 (test server coords):
+#               -1852 68 1573 through -1852 68 1564 (10 blocks)
+#               Room 4: [FILL IN: 10 note block coords]
+# Map/area    : [FILL IN: map name / room]
+# Import      : /s i i <paste URL>, then click each note block
+#
+# What it does:
+#   When a player right-clicks a note block to tune it, shows
+#   the new pitch (1st to 25th) in white italics. Vanilla
+#   tuning still happens as normal.
+#
+# Requires: nothing
+# Related scripts: Submit (1), Entrance (2), Exit (3), Reset (4)
+# ==============================================================
+@delay 1t
+@define String[] ordinals = String["1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th", "10th", "11th", "12th", "13th", "14th", "15th", "16th", "17th", "18th", "19th", "20th", "21st", "22nd", "23rd", "24th", "25th"]
+@define Int pos = Int(block.getBlockDataValue("note"))
+@player &f&oThe note shifts to its {{ordinals[pos]}} position.

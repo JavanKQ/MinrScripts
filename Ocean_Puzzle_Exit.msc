@@ -1,9 +1,13 @@
 # ==============================================================
-# OCEAN PUZZLE - EXIT (3 of 4)
+# OCEAN PUZZLE - EXIT (3 of 5)
 # ==============================================================
 # Script type : walk
-# Bind to     : [FILL IN: x y z]
+# Bind to     : 8 floor blocks, one bind each (test server coords):
+#               -1847 72 1556, -1846 72 1556, -1845 72 1556,
+#               -1844 72 1556, -1843 72 1556, -1842 72 1556,
+#               -1841 72 1556, -1840 72 1556
 # Map/area    : [FILL IN: map name / room]
+# Import      : /script import walk <paste URL>, then click the block
 #
 # What it does:
 #   Rebuilds the wall over the stairway after a player leaves
@@ -14,10 +18,12 @@
 #   through the entrance.
 #
 # Map coordinates used inside this script:
-#   Stair wall  : [FILL IN: X1 Y1 Z1 X2 Y2 Z2]
-#                 (must match the Submit script)
+#   Stair ceiling : -1846 70 1562 to -1841 70 1565
+#   Stair wall    : -1846 69 1565 to -1841 67 1565
+#   (must match the Submit script)
 #
 # Requires: nothing
-# Related scripts: Submit (1), Entrance (2), Map Start (4)
+# Related scripts: Submit (1), Entrance (2), Reset (4), Note Tune (5)
 # ==============================================================
-@bypass /fill X1 Y1 Z1 X2 Y2 Z2 prismarine_bricks
+@bypass /fill -1846 70 1562 -1841 70 1565 prismarine_bricks
+@bypass /fill -1846 69 1565 -1841 67 1565 prismarine_bricks

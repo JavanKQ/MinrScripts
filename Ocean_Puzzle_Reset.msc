@@ -1,0 +1,26 @@
+# ==============================================================
+# OCEAN PUZZLE - PROGRESS RESET (4 of 5)
+# ==============================================================
+# Script type : walk (interact is fine for testing)
+# Bind to     : [FILL IN: x y z]
+# Map/area    : [FILL IN: map name / room]
+# Import      : /script import walk <paste URL>, then click the block
+#
+# What it does:
+#   Clears the player's Ocean Puzzle progress (answer and
+#   solved status). Players who leave and re-join the map must
+#   come through here again, so their puzzle restarts.
+#
+# Placement note:
+#   Partway down the one-way drop at the end of the maze, into
+#   the puzzle area. It must be somewhere players pass only
+#   once, NOT at the checkpoint, since dying and returning
+#   there should keep progress. Bind to the air block below the
+#   drop space the same way as the Entrance script.
+#
+# Requires: puzzle1 namespace (see Submit script header)
+# Related scripts: Submit (1), Entrance (2), Exit (3), Note Tune (5)
+# ==============================================================
+@using puzzle1
+@var solved = false
+@var answer = ""

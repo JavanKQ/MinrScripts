@@ -1,9 +1,14 @@
 # ==============================================================
-# OCEAN PUZZLE - ENTRANCE (2 of 4)
+# OCEAN PUZZLE - ENTRANCE (2 of 5)
 # ==============================================================
 # Script type : walk
-# Bind to     : [FILL IN: x y z]
+# Bind to     : 6 blocks, one bind each (test server coords):
+#               -1846 68 1566, -1845 68 1566, -1844 68 1566,
+#               -1843 68 1566, -1842 68 1566, -1841 68 1566
+#               (triggers as the player drops through the air
+#               space above, y69)
 # Map/area    : [FILL IN: map name / room]
+# Import      : /script import walk <paste URL>, then click the block
 #
 # What it does:
 #   Gives the player a new random answer (10 different notes)
@@ -15,10 +20,10 @@
 #   players CANNOT step from inside the puzzle area. Stepping
 #   on it again would reset their answer.
 #
-# Requires: oceanpuzzle namespace (see Submit script header)
-# Related scripts: Submit (1), Exit (3), Map Start (4)
+# Requires: puzzle1 namespace (see Submit script header)
+# Related scripts: Submit (1), Exit (3), Reset (4), Note Tune (5)
 # ==============================================================
-@using oceanpuzzle
+@using puzzle1
 @if solved
 @return
 @fi
