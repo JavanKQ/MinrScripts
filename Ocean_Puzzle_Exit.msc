@@ -1,5 +1,5 @@
 # ==============================================================
-# OCEAN PUZZLE - EXIT (3 of 6)
+# OCEAN PUZZLE - EXIT (3 of 7)
 # ==============================================================
 # Script type : walk
 # Bind to     : 8 floor blocks, one bind each (test server coords):
@@ -23,7 +23,7 @@
 #   (must match the Submit script)
 #
 # Requires: nothing
-# Related scripts: Submit (1), Entrance (2), Reset (4), Note Tune (5), Team Conduit (6)
+# Related scripts: Submit (1), Entrance (2), Reset (4), Note Tune (5), Team Conduit (6), Symbols (7)
 # ==============================================================
 @bypass /fill -1846 70 1562 -1841 70 1565 prismarine_bricks
 @bypass /fill -1846 69 1565 -1841 67 1565 prismarine_bricks

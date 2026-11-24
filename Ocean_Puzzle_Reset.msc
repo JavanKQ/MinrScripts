@@ -1,5 +1,5 @@
 # ==============================================================
-# OCEAN PUZZLE - PROGRESS RESET (4 of 6)
+# OCEAN PUZZLE - PROGRESS RESET (4 of 7)
 # ==============================================================
 # Script type : walk (interact is fine for testing)
 # Bind to     : [FILL IN: x y z]
@@ -19,7 +19,7 @@
 #   drop space the same way as the Entrance script.
 #
 # Requires: puzzle1 namespace (see Submit script header)
-# Related scripts: Submit (1), Entrance (2), Exit (3), Note Tune (5), Team Conduit (6)
+# Related scripts: Submit (1), Entrance (2), Exit (3), Note Tune (5), Team Conduit (6), Symbols (7)
 # ==============================================================
 @using puzzle1
 @var solved = false

@@ -1,5 +1,5 @@
 # ==============================================================
-# OCEAN PUZZLE - SUBMIT (1 of 6)
+# OCEAN PUZZLE - SUBMIT (1 of 7)
 # ==============================================================
 # Script type : interact
 # Bind to     : [FILL IN: x y z of the submit block]
@@ -32,7 +32,7 @@
 #   Stair wall    : -1846 69 1565 to -1841 67 1565
 #   (both /fill lines appear in 2 places below)
 #
-# Related scripts: Entrance (2), Exit (3), Reset (4), Note Tune (5), Team Conduit (6)
+# Related scripts: Entrance (2), Exit (3), Reset (4), Note Tune (5), Team Conduit (6), Symbols (7)
 # ==============================================================
 @using puzzle1
 @define Boolean debug = true

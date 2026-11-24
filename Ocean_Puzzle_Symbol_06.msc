@@ -1,0 +1,39 @@
+# ==============================================================
+# OCEAN PUZZLE - ROOM 2 SYMBOL 6 of 10 (script 7 of 7)
+# ==============================================================
+# Script type : interact
+# Bind to     : [FILL IN: x y z of symbol 6 in Room 2]
+#               Symbol 6 must be the symbol paired with Room 1
+#               note block 6 (test server: -1852 68 1568), because
+#               Submit checks that block against this same note.
+# Map/area    : [FILL IN: map name / room]
+# Import      : /s i i <paste URL>, then click symbol 6
+#
+# What it does:
+#   Plays this player's note number 6 (slot 5 of their answer)
+#   as a note block chime, heard only by the clicking player.
+#   It's the same note that Room 1 note block 6 must be tuned to,
+#   so it matches what a Room 1 note block on packed ice sounds
+#   like at that pitch. Teammates share an answer, so they hear
+#   the same note. Hitting (left-clicking) also plays it.
+#
+# Setup: Room 1 and Room 4 note blocks must sit on PACKED ICE
+#   (chime) so the symbols and note blocks sound alike.
+#
+# Requires: puzzle1 namespace (see Submit script header)
+#
+# Map coordinates used inside this script: none
+#
+# Related scripts: Symbols 1-10 (identical except for the slot
+#   number on the line below), Submit (1), Entrance (2)
+# ==============================================================
+@using puzzle1
+@define Int slot = 5
+@if answer == ""
+@player &3Oracle: &bThe symbol is silent... Return to the temple's threshold.
+@return
+@fi
+@define String[] pitches = String["0.5", "0.529732", "0.561231", "0.594604", "0.629961", "0.667420", "0.707107", "0.749154", "0.793701", "0.840896", "0.890899", "0.943874", "1.0", "1.059463", "1.122462", "1.189207", "1.259921", "1.334840", "1.414214", "1.498307", "1.587401", "1.681793", "1.781797", "1.887749", "2.0"]
+@define String[] notes = answer.split(",")
+@define String pitch = pitches[Int(notes[slot])]
+@bypass /playsound minecraft:block.note_block.chime record {{player.getName()}} ~ ~ ~ 1 {{pitch}}

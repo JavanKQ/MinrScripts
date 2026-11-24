@@ -1,5 +1,5 @@
 # ==============================================================
-# OCEAN PUZZLE - NOTE TUNE MESSAGE (5 of 6)
+# OCEAN PUZZLE - NOTE TUNE MESSAGE (5 of 7)
 # ==============================================================
 # Script type : interact
 # Bind to     : EVERY puzzle note block, one bind each.
@@ -17,7 +17,7 @@
 #   change, so no message is shown.
 #
 # Requires: nothing
-# Related scripts: Submit (1), Entrance (2), Exit (3), Reset (4), Team Conduit (6)
+# Related scripts: Submit (1), Entrance (2), Exit (3), Reset (4), Team Conduit (6), Symbols (7)
 # ==============================================================
 @define String before = block.getBlockDataValue("note")
 @delay 1

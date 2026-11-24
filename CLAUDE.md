@@ -37,12 +37,13 @@ Variables in `puzzle1`:
 
 | File | Type | Purpose |
 |---|---|---|
-| Ocean_Puzzle_Noteblocks.msc | interact | Submit (1 of 5) |
-| Ocean_Puzzle_Entrance.msc | walk | New answer on entry (2 of 5) |
-| Ocean_Puzzle_Exit.msc | walk | Close stairway (3 of 5) |
-| Ocean_Puzzle_Reset.msc | walk | Clear progress (4 of 5) |
-| Ocean_Puzzle_NoteTune.msc | interact | "The note shifts to its Nth position." on every puzzle note block (5 of 6) |
-| Ocean_Puzzle_TeamConduit.msc | interact | Team word linking on the conduit (6 of 6) |
+| Ocean_Puzzle_Noteblocks.msc | interact | Submit (1 of 7) |
+| Ocean_Puzzle_Entrance.msc | walk | New answer on entry (2 of 7) |
+| Ocean_Puzzle_Exit.msc | walk | Close stairway (3 of 7) |
+| Ocean_Puzzle_Reset.msc | walk | Clear progress (4 of 7) |
+| Ocean_Puzzle_NoteTune.msc | interact | "The note shifts to its Nth position." on every puzzle note block (5 of 7) |
+| Ocean_Puzzle_TeamConduit.msc | interact | Team word linking on the conduit (6 of 7) |
+| Ocean_Puzzle_Symbol_01..10.msc | interact | Room 2 symbols (7 of 7). Each plays its slot of `answer` as a chime, heard only by the clicking player. The 10 files are identical except `slot` (0-9). Symbol N pairs with Room 1 note block N. |
 | Ocean_Puzzle_Instructions_Room1/3/4.msc | interact | Oracle instructions |
 
 ## Status (as of 2026-11-23)
@@ -52,15 +53,19 @@ Variables in `puzzle1`:
 - **Tested solo and working:** all of Rooms 1-2's flow (instructions, NoteTune, entrance, submit, cooldown, hearts, death and new song, solve, stairway, exit, reset) and the Team Conduit with a team of one: word validation, prompt timeout, creating a word, "already bound", team-of-one submits and deaths, and the "bond dissolves" expiry. So `@prompt`, `String.matches`, `Player(uuid)` and the "{{...}}" Long-to-Int trick work.
 - **`@prompt` timeout message:** it showed in yellow, ignoring `&` codes. It now uses `§` codes instead; whether that works is untested. If it doesn't, drop the colors from that one line.
 - **NOT yet tested (needs a second player):** co-op behavior. That means joining a team (shared new song for everyone), messages to teammates via `p.sendMessage(...)` (unknown whether `&` colors work there), changing another player's variables (`answer[p] = ...`), teammates losing a heart on a wrong answer (`q.setHealth`), team-wide solve, team-wide new song on death, and the roster message when the word expires.
+- **Room 2 symbols: written, NOT yet tested.** Unconfirmed: `@bypass /playsound` targeting `{{player.getName()}}` at `~ ~ ~` (the player's position), and `Int(String)` used as a list index.
 - **Debug:** the Submit script has `debug = true`, which prints the answer in chat. Turn it off before handing off to admins.
 
 ## Next up
 
-1. Room 2 symbol scripts: one interact script per symbol, each playing its note from `answer` via `@bypass /playsound` with the matching pitch.
+1. Test the Room 2 symbols. Each should sound the same as its Room 1 note block once that block is tuned to the answer (the Submit debug output shows the answer).
 2. Room 4 instrument check.
+
+## Decisions
+
+- **Instrument (2026-11-23):** packed ice under the Room 1 and Room 4 note blocks, which gives the chime sound (`minecraft:block.note_block.chime`, F#5-F#7), chosen for its watery, magical feel. The symbols play the same sound at pitch 2^((note-12)/12).
 
 ## Open questions
 
-- Which instrument (block under the note blocks) Rooms 1 and 4 use. The symbol sounds must match it.
 - Whether natural regeneration is off in the puzzle area. If it's on, hearts regenerate during the cooldown and "10 lives" becomes weaker.
 - The stairway is shared blocks, so while it's open, other players could slip through. This is currently accepted.
