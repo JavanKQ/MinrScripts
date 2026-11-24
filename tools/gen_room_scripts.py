@@ -1,5 +1,5 @@
-"""Generates the repetitive Ocean Puzzle scripts: Room3_Altar/ (10), Room4_Instrument/ (10)
-and Doors/ (5). Edit the templates here, then run: py tools/gen_room_scripts.py
+"""Generates the repetitive Ocean Puzzle scripts: Room3_Altar/ (10), Room4_Instrument/ (10 + Start)
+and Doors/ (4). Edit the templates here, then run: py tools/gen_room_scripts.py
 WARNING: overwrites those files. Any hand edits (e.g. door corners) must be copied into
 the templates/settings here first, or redone after regenerating."""
 import os
@@ -55,7 +55,7 @@ TEAM_CHECK = """# --- Team check: drop teammates who are offline or on another t
 """
 
 ALTAR = """# ==============================================================
-# OCEAN PUZZLE - ROOM 3 ALTAR SIGN @N@ of 10 (script 9 of 10)
+# OCEAN PUZZLE - ROOM 3 ALTAR SIGN @N@ of 10 (script 9 of 11)
 # ==============================================================
 # Script type : interact
 # Bind to     : [FILL IN: x y z of altar head @N@ in Room 3]
@@ -173,8 +173,23 @@ ALTAR = """# ==============================================================
 @done
 """
 
+
+# ---------------- Settings ----------------
+# Seconds from clicking the Start object to the 10th note.
+INST_SECONDS = 15
+# Seconds the parkour course stays up after a correct melody.
+PARKOUR_SECONDS = 30
+# Parkour course, shown and hidden with /clone (fill in once built):
+#   PARKOUR_SHOWN  = "x1 y1 z1 x2 y2 z2" of a hidden copy of the finished course
+#   PARKOUR_HIDDEN = "x1 y1 z1 x2 y2 z2" of a same-size copy of the area WITHOUT the course
+#   PARKOUR_TARGET = "x y z" where the course appears (the lowest-x/y/z corner)
+PARKOUR_SHOWN = ""
+PARKOUR_HIDDEN = ""
+PARKOUR_TARGET = ""
+# -------------------------------------------
+
 DOOR = """# ==============================================================
-# OCEAN PUZZLE - DOOR: @TITLE@ (script 8 of 10)
+# OCEAN PUZZLE - DOOR: @TITLE@ (script 8 of 11)
 # ==============================================================
 # Script type : interact
 # Bind to     : [FILL IN: x y z of the head @WHERE@]
@@ -182,38 +197,34 @@ DOOR = """# ==============================================================
 # Import      : /s i i <paste URL>, then click the head
 #
 # What it does:
-#   Opens @DOORNAME@ (fills it with air) for 5 seconds,
+#   Opens the Room @D@ door (fills it with air) for 5 seconds,
 #   then seals it again. @WHO@
 #   If someone clicks while it is already open, it stays open
 #   until 5 seconds after the LAST click.
 #
-# Settings: the 5 door scripts are identical except for the
-#   lines under "Settings for this copy" below. The Room 3 and
-#   Room 4 doors each have an outside and an inside head that
-#   both control the same door, so those pairs must use the same
-#   door coordinates. The Room 4 exit has only one head (inside).
+# Settings: the 4 door scripts are identical except for the
+#   lines under "Settings for this copy" below. Each door has an
+#   outside head and an inside head that both control it, so
+#   both Room @D@ copies must use the same door coordinates.
 #
 # Requires: puzzle1 namespace (see Submit script header),
 #   including:
 #   /variable define puzzle1 relative Boolean solved3 = false
-#   /variable define puzzle1 relative Boolean solved4 = false
 #   /variable define puzzle1 Long door3_close_at = 0L
 #   /variable define puzzle1 Long door4_close_at = 0L
-#   /variable define puzzle1 Long door5_close_at = 0L
 #   (the door variables are NOT relative: shared by all)
 #
 # Map coordinates used inside this script:
-#   @DOORNAME@: [FILL IN] (the "corners" setting below)
+#   Room @D@ door: [FILL IN] (the "corners" setting below)
 #
 # Related scripts: the other Doors (8), Altar signs (9),
-#   Instrument voices (10), Submit (1)
+#   Instrument (10), Submit (1)
 # ==============================================================
 @using puzzle1
 # --- Settings for this copy ---
-# need: 0 = anyone, 1 = solved Room 1, 2 = solved Rooms 1 and 3,
-#       3 = completed Room 4
+# need: 0 = anyone, 1 = solved Room 1, 2 = solved Rooms 1 and 3
 @define Int need = @NEED@
-# door: 3 = Room 3 door, 4 = Room 4 door, 5 = Room 4 exit
+# door: 3 = Room 3 door, 4 = Room 4 door
 @define Int door = @D@
 # corners: "x1 y1 z1 x2 y2 z2" of the door blocks
 @define String corners = ""
@@ -232,17 +243,11 @@ DOOR = """# ==============================================================
 @player &3Oracle: &bThe seal waits for the signs to be set in their true order...
 @return
 @fi
-@if need >= 3 && !solved4
-@player &3Oracle: &bThe way onward opens only for those whose song the instrument has sung...
-@return
-@fi
 @define Long closeAt = system::currentTimeMillis() + 5000L
 @if door == 3
 @var door3_close_at = closeAt
-@elseif door == 4
-@var door4_close_at = closeAt
 @else
-@var door5_close_at = closeAt
+@var door4_close_at = closeAt
 @fi
 @bypass /fill {{corners}} air
 @bypass /playsound minecraft:block.conduit.activate record {{player.getName()}} ~ ~ ~ 1 1
@@ -251,8 +256,6 @@ DOOR = """# ==============================================================
 @define Long last = door3_close_at
 @if door == 4
 @var last = door4_close_at
-@elseif door == 5
-@var last = door5_close_at
 @fi
 @if last <= closeAt
 @bypass /fill {{corners}} {{material}}
@@ -260,17 +263,65 @@ DOOR = """# ==============================================================
 """
 
 DOORS = [
-    ("Room3_Outside", "3", "1", "outside the Room 3 entrance", "the Room 3 door", "Opens only for players who solved Room 1 (solved)."),
-    ("Room3_Inside", "3", "0", "inside Room 3, next to its entrance", "the Room 3 door", "Opens for anyone, so nobody gets stuck inside."),
-    ("Room4_Outside", "4", "2", "outside the Room 4 entrance", "the Room 4 door", "Opens only for players who solved Room 1 AND Room 3\n#   (solved and solved3)."),
-    ("Room4_Inside", "4", "0", "inside Room 4, next to its entrance", "the Room 4 door", "Opens for anyone, so nobody gets stuck inside."),
-    ("Room4_Exit", "5", "3", "inside Room 4, next to its exit", "the Room 4 exit", "Opens only for players who completed Room 4\n#   (solved4), on the way to the next checkpoint."),
+    ("Room3_Outside", "3", "1", "outside the Room 3 entrance", "Opens only for players who solved Room 1 (solved)."),
+    ("Room3_Inside", "3", "0", "inside Room 3, next to its entrance", "Opens for anyone, so nobody gets stuck inside."),
+    ("Room4_Outside", "4", "2", "outside the Room 4 entrance", "Opens only for players who solved Room 1 AND Room 3\n#   (solved and solved3)."),
+    ("Room4_Inside", "4", "0", "inside Room 4, next to its entrance", "Opens for anyone, so nobody gets stuck inside."),
 ]
 
 ORDINALS = 'String["1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th", "10th", "11th", "12th", "13th", "14th", "15th", "16th", "17th", "18th", "19th", "20th", "21st", "22nd", "23rd", "24th", "25th"]'
 
+START = """# ==============================================================
+# OCEAN PUZZLE - ROOM 4 INSTRUMENT: START (script 10 of 11)
+# ==============================================================
+# Script type : interact
+# Bind to     : [FILL IN: x y z of the Start object in Room 4
+#               (a head, button or similar, near the instrument)]
+# Map/area    : [FILL IN: map name / room]
+# Import      : /s i i <paste URL>, then click the Start object
+#
+# What it does:
+#   Starts a performance of the Room 4 melody. After clicking it,
+#   the player has @SECS@ seconds to hit all 10 instrument note
+#   blocks in order (see the Instrument voice scripts). Until it
+#   is clicked, the note blocks are free to play and tune.
+#   Clicking it again restarts the performance.
+#   Only players who solved Rooms 1 and 3 can start it.
+#
+# Requires: puzzle1 namespace (see Submit script header),
+#   including:
+#   /variable define puzzle1 relative String inst_seq = ""
+#   /variable define puzzle1 relative Long inst_started_at = 0L
+#   /variable define puzzle1 relative Int inst_wrong = 0
+#
+# Map coordinates used inside this script: none
+#
+# Related scripts: Instrument voices 1-10 (10), Doors (8),
+#   Finish (11)
+# ==============================================================
+@using puzzle1
+@if !solved || !solved3 || answer == ""
+@player &3Oracle: &bThe instrument does not yet know your song...
+@return
+@fi
+@define Long now = system::currentTimeMillis()
+@var inst_seq = ""
+@var inst_wrong = 0
+@var inst_started_at = now
+@bypass /playsound minecraft:block.conduit.activate record {{player.getName()}} ~ ~ ~ 1 1
+@player &f&oThe instrument awakens... its voices await your hand.
+@delay @SECS@s
+@if inst_started_at == now
+@var inst_started_at = 0L
+@var inst_seq = ""
+@if player.isOnline()
+@player &3Oracle: &bThe melody fades beneath the tide... too slow, seeker.
+@fi
+@fi
+"""
+
 INSTRUMENT = """# ==============================================================
-# OCEAN PUZZLE - ROOM 4 INSTRUMENT VOICE @N@ of 10 (script 10 of 10)
+# OCEAN PUZZLE - ROOM 4 INSTRUMENT VOICE @N@ of 10 (script 10 of 11)
 # ==============================================================
 # Script type : interact
 # Bind to     : [FILL IN: x y z of the Room 4 note block for Symbol @N@]
@@ -285,80 +336,88 @@ INSTRUMENT = """# ==============================================================
 # What it does:
 #   The ancient instrument. Players tune each Room 4 note block
 #   to its symbol's note (the note that symbol plays in Room 2),
-#   then hit (left-click) the blocks in order of the symbols'
-#   Room 3 values, lowest first:
+#   click the Start object, then hit (left-click) the blocks in
+#   order of the symbols' Room 3 values, lowest first:
 #   Symbols 7, 9, 4, 6, 10, 5, 1, 2, 8, 3,
-#   all within 15 seconds of the first note.
-#   - Right-click (tuning): shows the new pitch, like Note Tune,
-#     and cancels any melody in progress.
-#   - Hitting the wrong block first does nothing, so players can
-#     test sounds freely. Hitting a block out of order mid-melody
-#     breaks it (hitting Symbol 7 starts a new melody at once).
-#   - More than 15 seconds after the first note: the melody fades.
+#   within @SECS@ seconds of clicking Start.
+#   - Before Start is clicked, the blocks are free to play.
+#   - Right-click (tuning) shows the new pitch, like Note Tune,
+#     and breaks a performance in progress.
+#   - A block hit out of order breaks the performance.
+#   - Too slow: the Start script says the melody faded.
 #   - All 10 in order and in time, but some blocks mistuned: the
 #     Oracle says how many (never which). No hearts are lost.
-#   - All 10 in order, in time and in tune: the player and their
-#     online teammates complete Room 4 (solved4), and the team is
-#     disbanded. The Room 4 exit head (Doors) then opens for them.
-#   Only players who solved Rooms 1 and 3 can perform. For anyone
-#   else, and after completing, these are plain note blocks.
-#   "Breaks" and "fades" messages only appear once at least 2
-#   notes were played in order, so testing one block stays quiet.
-#   SETTING: the 15 second limit is the 15000L on two lines below.
+#   - All 10 in order, in time and in tune: the parkour course
+#     appears for @PSECS@ seconds (cloned in), and online teammates
+#     are told. Then it disappears again (cloned back out).
+#     Failing the parkour means playing the melody again.
+#     Completing it leads to the Finish script (11), which
+#     clears all progress and the team.
+#   Only players who solved Rooms 1 and 3 can perform.
+#
+# Settings: parkour coordinates are the 3 lines under
+#   "Settings" below (identical in all 10 files).
 #
 # Requires: puzzle1 namespace (see Submit script header),
 #   including:
-#   /variable define puzzle1 relative Boolean solved4 = false
 #   /variable define puzzle1 relative String inst_seq = ""
 #   /variable define puzzle1 relative Long inst_started_at = 0L
 #   /variable define puzzle1 relative Int inst_wrong = 0
+#   /variable define puzzle1 Long parkour_close_at = 0L
+#   (parkour_close_at is NOT relative: shared by all)
 #
-# Map coordinates used inside this script: none
+# Map coordinates used inside this script:
+#   Parkour course: [FILL IN] (the "Settings" lines below)
 #
 # Related scripts: Instrument voices 1-10 (identical except for
-#   the symbol number below), Doors (8), Reset (4), Symbols (7),
-#   Altar signs (9)
+#   the symbol number below), Instrument Start (10), Finish (11),
+#   Reset (4), Symbols (7), Altar signs (9)
 # ==============================================================
 @using puzzle1
 @define Int symbol = @N@
 @define String order = "7,9,4,6,10,5,1,2,8,3"
+# --- Settings ---
+# shown: "x1 y1 z1 x2 y2 z2" of a hidden copy of the finished course
+@define String shown = "@SHOWN@"
+# hidden: "x1 y1 z1 x2 y2 z2" of a same-size copy of the area without it
+@define String hidden = "@HIDDEN@"
+# target: "x y z" where the course appears (its lowest corner)
+@define String target = "@TARGET@"
+# --- End settings ---
 @define String before = block.getBlockDataValue("note")
 @delay 1
 @define String after = block.getBlockDataValue("note")
-# --- Right-click (tuning): show the pitch, cancel any melody ---
+# --- Right-click (tuning): show the pitch; breaks a performance ---
 @if after != before
 @define String[] ordinals = @ORDINALS@
 @player &f&oThe note shifts to its {{ordinals[Int(after)]}} position.
+@if inst_started_at != 0L
+@var inst_started_at = 0L
 @var inst_seq = ""
+@player &3Oracle: &bA voice shifts mid-song, and the melody breaks...
+@fi
 @return
 @fi
-# --- A hit: only counts for players who reached Room 4 ---
-@if solved4 || !solved || !solved3 || answer == ""
+# --- A hit: only counts during a performance ---
+@if inst_started_at == 0L || !solved || !solved3 || answer == ""
 @return
 @fi
 @define Long now = system::currentTimeMillis()
+@if now - inst_started_at > @MS@L
+@var inst_started_at = 0L
+@var inst_seq = ""
+@return
+@fi
 @define Int played = 0
 @if inst_seq != ""
 @var played = inst_seq.split(",").length()
 @fi
-@if played > 0 && now - inst_started_at > 15000L
-@var inst_seq = ""
-@var played = 0
-@fi
 @define String[] steps = order.split(",")
 @if steps[played] != String(symbol)
-@if played >= 2
-@player &3Oracle: &bThe melody breaks... the voices strayed from their procession.
-@fi
+@var inst_started_at = 0L
 @var inst_seq = ""
-@var played = 0
-@if steps[0] != String(symbol)
+@player &3Oracle: &bThe melody breaks... the voices strayed from their procession.
 @return
-@fi
-@fi
-@if played == 0
-@var inst_started_at = now
-@var inst_wrong = 0
 @fi
 @define String[] notes = answer.split(",")
 @if after != notes[symbol - 1]
@@ -369,22 +428,11 @@ INSTRUMENT = """# ==============================================================
 @else
 @var inst_seq = inst_seq + "," + String(symbol)
 @fi
-@var played = played + 1
-@if played < 10
-# --- The first note starts a 15s timer; if the melody isn't done, it fades ---
-@if played == 1
-@delay 15s
-@if inst_seq != "" && inst_started_at == now
-@define Int reached = inst_seq.split(",").length()
-@var inst_seq = ""
-@if reached >= 2 && player.isOnline()
-@player &3Oracle: &bThe melody fades beneath the tide... too slow, seeker.
-@fi
-@fi
-@fi
+@if played + 1 < 10
 @return
 @fi
 # --- 10th note, in order and in time: check the tuning ---
+@var inst_started_at = 0L
 @var inst_seq = ""
 @if inst_wrong > 0
 @if inst_wrong == 1
@@ -394,28 +442,35 @@ INSTRUMENT = """# ==============================================================
 @fi
 @return
 @fi
-@TEAM@@var solved4 = true
-@player &3Oracle: &bThe ancient instrument sings, and the deep sings with it... Your song is complete.
-@player &3Oracle: &bThe way onward lies open to you.
-@if team == ""
+@player &3Oracle: &bThe ancient instrument sings, and the deep sings with it...
+@if shown == "" || hidden == "" || target == ""
+@player &7&o[Note] The parkour course's coordinates haven't been set yet.
 @return
 @fi
-# --- Room 4 complete: mark teammates and disband the team entirely ---
-@for String id in stay.split(",")
+@player &3Oracle: &bA path rises from below. Make haste, before the tide reclaims it.
+# --- Tell online teammates (no variables are changed) ---
+@if team != ""
+@define String me = player.getUniqueId()
+@define Player p = player
+@for String id in team_members.split(",")
 @if id != me
 @var p = Player(id)
 @if p != null
-@var solved4[p] = true
-@var team[p] = ""
-@var team_members[p] = ""
-@var p.sendMessage("§3Oracle: §b{{player.getName()}} has awakened the ancient instrument... the deep sings for you all. The way onward lies open.")
-@var p.sendMessage("§7§o[Note] The puzzle is complete, so your team has disbanded.")
+@if team[p] == team && p.isOnline()
+@var p.sendMessage("§3Oracle: §b{{player.getName()}} has awakened the ancient instrument... a path rises from below. Make haste!")
+@fi
 @fi
 @fi
 @done
-@var team = ""
-@var team_members = ""
-@player &7&o[Note] The puzzle is complete, so your team has disbanded.
+@fi
+# --- Raise the course; sink it @PSECS@s after the LAST correct melody ---
+@define Long closeAt = now + @PMS@L
+@var parkour_close_at = closeAt
+@bypass /clone {{shown}} {{target}}
+@delay @PSECS@s
+@if parkour_close_at <= closeAt
+@bypass /clone {{hidden}} {{target}}
+@fi
 """
 
 def write(folder, name, text):
@@ -423,15 +478,20 @@ def write(folder, name, text):
     with open(os.path.join(ROOT, folder, name), "w", encoding="utf-8", newline="\n") as f:
         f.write(text)
 
+def fill_inst(t):
+    return (t.replace("@ORDINALS@", ORDINALS).replace("@SECS@", str(INST_SECONDS))
+            .replace("@MS@", str(INST_SECONDS * 1000)).replace("@PSECS@", str(PARKOUR_SECONDS))
+            .replace("@PMS@", str(PARKOUR_SECONDS * 1000)).replace("@SHOWN@", PARKOUR_SHOWN)
+            .replace("@HIDDEN@", PARKOUR_HIDDEN).replace("@TARGET@", PARKOUR_TARGET))
+
 for n in range(1, 11):
     t = ALTAR.replace("@TEAM@", TEAM_CHECK).replace("@N@", str(n)).replace("@L@", LETTERS[n - 1])
     write("Room3_Altar", f"Ocean_Puzzle_Altar_{n:02d}.msc", t)
-    t = (INSTRUMENT.replace("@TEAM@", TEAM_CHECK).replace("@ORDINALS@", ORDINALS)
-         .replace("@N@", str(n)).replace("@L@", LETTERS[n - 1]))
+    t = fill_inst(INSTRUMENT).replace("@N@", str(n)).replace("@L@", LETTERS[n - 1])
     write("Room4_Instrument", f"Ocean_Puzzle_Instrument_{n:02d}.msc", t)
-for name, d, need, where, doorname, who in DOORS:
+write("Room4_Instrument", "Ocean_Puzzle_Instrument_Start.msc", fill_inst(START))
+for name, d, need, where, who in DOORS:
     t = (DOOR.replace("@TITLE@", name.replace("_", " ").upper()).replace("@D@", d)
-         .replace("@NEED@", need).replace("@WHERE@", where).replace("@DOORNAME@", doorname)
-         .replace("@WHO@", who))
+         .replace("@NEED@", need).replace("@WHERE@", where).replace("@WHO@", who))
     write("Doors", f"Ocean_Puzzle_Door_{name}.msc", t)
 print("done")

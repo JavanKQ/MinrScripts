@@ -31,41 +31,41 @@ Flow:
 - **Solve:** the stairway ceiling and wall are filled with air. The Exit walk trigger fills them back with prismarine bricks.
 - **Reset:** clears `answer`/`solved` partway down the one-way drop out of the maze. Leaving and rejoining the map restarts the puzzle; dying at the checkpoint does not.
 - **Teams (any size):** each player right-clicks the Team Conduit and types the same team word. The first player creates the word; it accepts new members for 2 minutes, then locks. At the end of the window, all members get the team roster, or, if nobody joined, the team is deleted and the creator is told. Every join gives the whole team a new shared song and sets them unsolved, so a finished player can't carry someone through. A player who has already solved Room 1 can't use the conduit at all (2026-11-24): "already bound and sung" if they're on a team, "cannot be bound anew" if they're solo. A wrong submit costs every online teammate 2 hearts (they get a chat line naming who submitted, plus the particles), so teams don't get extra guesses. A teammate's death re-rolls the whole team's song. A correct submit marks the whole team solved. Joining another team, or the Reset script, removes a player from their team. Each player stores a team ID (`word@createdSeconds`); updates only go to members whose current team ID matches, so stale rosters are harmless.
-- **Leaving a team (follows Minr's co-op rules, 2026-11-24):** a player is off the team, with no credit, if they're offline during any team event (new song on death, hearts on a wrong submit, a solve), rejoin the map (Reset), join another map, or reach the checkpoint after Room 4. Offline players' variables can't safely be written, so at each team event a "team check" (copied into Entrance and Submit) rebuilds the team from the online, same-ID members. If anyone is missing, the remaining members get a new team ID (`<old id>~<seconds>`), a new roster and a grey `[Note]` saying who left. The missing player keeps the old ID, so they're effectively solo when they return. If nobody is left, the player's team is cleared. Regions aren't needed: players can't leave the puzzle area except by finishing Room 4 or leaving the map. Leaving by Reset or by switching teams at the conduit notifies and regroups the remaining online teammates immediately; going offline is only noticed at the next team event. Room 4's scripts need the same team check, and **completing Room 4 must disband the team entirely** (clear `team` and `team_members` for every member) so nobody gets stray team messages afterwards.
+- **Leaving a team (follows Minr's co-op rules, 2026-11-24):** a player is off the team, with no credit, if they're offline during any team event (new song on death, hearts on a wrong submit, a solve), rejoin the map (Reset), join another map, or reach the checkpoint after Room 4. Offline players' variables can't safely be written, so at each team event a "team check" (copied into Entrance and Submit) rebuilds the team from the online, same-ID members. If anyone is missing, the remaining members get a new team ID (`<old id>~<seconds>`), a new roster and a grey `[Note]` saying who left. The missing player keeps the old ID, so they're effectively solo when they return. If nobody is left, the player's team is cleared. Regions aren't needed: players can't leave the puzzle area except by finishing Room 4 or leaving the map. Leaving by Reset or by switching teams at the conduit notifies and regroups the remaining online teammates immediately; going offline is only noticed at the next team event. **Finishing (walking over the Finish script after the Room 4 parkour) disbands the team entirely** (clears `team` and `team_members` for every online member on the same ID) so nobody gets stray team messages afterwards.
 - **Dialogue tone:** Oracle instructions should be cryptic but complete. Every rule is hinted through metaphor (note blocks = "voices", symbols = "signs", particles = "glimmer/smoulder"), not stated plainly. The user found plain wording "too straightforward." The Room 1 instructions are the reference example.
 - **Dialogue pacing:** multi-line Oracle dialogue uses `@delay 4s` between lines. The user found 3s too fast.
 - **Out-of-character notes** use grey `&7&o[Note]`, never the Oracle's format. The co-op note is at the end of the Room 1 instructions.
 
 Variables in `puzzle1`:
-- **Relative (per player):** `answer` (String), `solved` (Boolean), `submit_ready_at` (Long, 10s submit cooldown), `chime_ready_at` (Long, 2s cooldown shared by the 10 Room 2 symbols; clicks during it are silent), `oracle_ready_at` (Long, instruction cooldown shared by all instruction scripts: 60s after Room 1, 45s after Rooms 3 and 4; keep each cooldown longer than its speech), `team` (String team ID), `team_members` (String, comma-joined UUIDs), `solved3` (Boolean, Room 3 altar solved), `altar_seq` (String, comma-joined symbol numbers clicked so far), `altar_last_at` (Long, time of the last altar click), `altar_ready_at` (Long, 30s altar cooldown after a wrong order), `solved4` (Boolean, Room 4 complete), `inst_seq` (String, symbols played so far in the current melody), `inst_started_at` (Long, time of the melody's first note), `inst_wrong` (Int, mistuned blocks hit in the current melody).
-- **Global:** `team_registry` (String, `word:createdSeconds:uuid,uuid;...`, only used during the 2-minute join window), `door3_close_at` / `door4_close_at` / `door5_close_at` (Long, so a door closes 5s after the *last* click; 5 = Room 4 exit).
+- **Relative (per player):** `answer` (String), `solved` (Boolean), `submit_ready_at` (Long, 10s submit cooldown), `chime_ready_at` (Long, 2s cooldown shared by the 10 Room 2 symbols; clicks during it are silent), `oracle_ready_at` (Long, instruction cooldown shared by all instruction scripts: 60s after Room 1, 45s after Rooms 3 and 4; keep each cooldown longer than its speech), `team` (String team ID), `team_members` (String, comma-joined UUIDs), `solved3` (Boolean, Room 3 altar solved), `altar_seq` (String, comma-joined symbol numbers clicked so far), `altar_last_at` (Long, time of the last altar click), `altar_ready_at` (Long, 30s altar cooldown after a wrong order), `inst_seq` (String, symbols played so far in the current melody), `inst_started_at` (Long, when Start was clicked; 0 = no performance running), `inst_wrong` (Int, mistuned blocks hit in the current melody). There is deliberately no "Room 4 solved" variable: the checkpoint after the parkour saves progress.
+- **Global:** `team_registry` (String, `word:createdSeconds:uuid,uuid;...`, only used during the 2-minute join window), `door3_close_at` / `door4_close_at` (Long, so a door closes 5s after the *last* click), `parkour_close_at` (Long, so the parkour course sinks 30s after the *last* correct melody).
 
 Room 3 altar and doors (designed 2026-11-24):
 - **Doors (Rooms 3 and 4):** each door has an outside head and an inside head. A click fills the door with air for 5s. The inside heads open for anyone, so nobody gets trapped. The Room 3 outside head needs `solved`; the Room 4 outside head needs `solved` and `solved3`. A player who sneaks into Room 3 unsolved can solve it out of order, which is accepted, but they still need Room 1 for Room 4.
 - **Altar:** 10 symbol heads inside Room 3. Players click them in value order, lowest first. Every click plays the same amethyst chime and shows `(n/10)`; there's deliberately no rising pitch, which could be confused with Room 4. There's no right/wrong feedback until the 10th click. More than 15s between clicks, or clicking the same head twice, clears the offering with a message. A wrong order costs no hearts and has a 30s cooldown. The right order sets `solved3` for the player and their teammates (with the team check). Dying doesn't clear `solved3`, because the answer never changes; Reset and joining a team do.
-- **Room 4 instrument (2026-11-24):** each of Room 4's 10 note blocks has its own script, which knows its symbol (there's no NoteTune on Room 4's blocks). As in NoteTune, an unchanged note after `@delay 1` means a hit (playing) and a changed note means tuning. Tuning shows the pitch message and cancels the player's melody.
-  - **Who can play:** only hits by players with `solved`, `solved3`, an answer and no `solved4` count; for everyone else the blocks are plain note blocks.
-  - **Timing:** the melody must be played in Room 3 value order within **15s of the first note** (the user may raise this; it's `15000L` in two places per file).
-  - **Wrong first note:** a hit on the wrong first block is silent, so players can test sounds.
-  - **Mistakes:** an out-of-order hit breaks the melody, but hitting Symbol 7 restarts immediately. "Breaks"/"fades" messages only appear after 2 or more correct notes.
-  - **Tuning check:** each block's tuning is checked at the moment it's hit. A complete melody with mistuned blocks gets a count only (never which), with no hearts lost.
-  - **Success:** sets `solved4` for the player and online teammates (team check), then **disbands the team** (clears `team`/`team_members` for everyone who stayed).
-  - **Exit:** the Room 4 exit door head (`need = 3`) opens only for `solved4` players.
+- **Room 4 instrument (redesigned 2026-11-24):** each of Room 4's 10 note blocks has its own script, which knows its symbol (there's no NoteTune on Room 4's blocks). As in NoteTune, an unchanged note after `@delay 1` means a hit (playing) and a changed note means tuning. Tuning shows the pitch message and breaks a running performance.
+  - **Start object:** a separate Start object (head/button, `Instrument_Start`) begins a performance. Until it's clicked, the blocks are free to play, so players can experiment without confusion. Only players with `solved` and `solved3` can start. Clicking it again restarts.
+  - **Timing:** all 10 hits in Room 3 value order within **15s of clicking Start** (`INST_SECONDS` in the generator). Too slow → the Start script says the melody faded.
+  - **Mistakes:** an out-of-order hit breaks the performance (click Start again).
+  - **Tuning check:** each block's tuning is checked when it's hit. A complete melody with mistuned blocks gets a count only (never which). **No hearts are ever lost in Room 4.**
+  - **Success:** a mini parkour course appears for **30s** (`PARKOUR_SECONDS`), cloned in from a hidden copy and cloned back out from a same-size "empty" copy (`PARKOUR_SHOWN` / `PARKOUR_HIDDEN` / `PARKOUR_TARGET` in the generator). A new correct melody while it's up extends it. Online teammates get a message; no variables change. Failing the parkour means playing the melody again. While the course is up, anyone could use it (accepted, like the stairway).
+  - **Finish:** a walk script at the end of the parkour (`Ocean_Puzzle_Finish.msc`) clears all of the player's puzzle progress and disbands their team (online same-ID teammates are told). The next checkpoint saves map progress, so nothing needs to be kept. Teammates who haven't finished keep their progress and continue solo.
 
-**Folders (2026-11-24):** the core scripts stay at the top level. Groups go in folders: `Room2_Symbols/`, `Room3_Altar/`, `Room4_Instrument/`, `Doors/` and `Instructions/`. Put new script groups in a folder of their own. **The altar, instrument and door scripts are generated** by `tools/gen_room_scripts.py` (`py tools/gen_room_scripts.py`). Edit the templates there and regenerate, rather than editing the 25 files by hand. Regenerating overwrites hand edits such as door `corners`, so put those settings into the generator once they're known.
+**Folders (2026-11-24):** the core scripts stay at the top level. Groups go in folders: `Room2_Symbols/`, `Room3_Altar/`, `Room4_Instrument/`, `Doors/` and `Instructions/`. Put new script groups in a folder of their own. **The altar, instrument and door scripts are generated** by `tools/gen_room_scripts.py` (`py tools/gen_room_scripts.py`). Edit the templates and settings there and regenerate, rather than editing the 25 files by hand. Regenerating overwrites hand edits such as door `corners`, so put those settings into the generator once they're known.
 
 | File | Type | Purpose |
 |---|---|---|
-| Ocean_Puzzle_Noteblocks.msc | interact | Submit (1 of 10) |
-| Ocean_Puzzle_Entrance.msc | walk | New answer on entry (2 of 10) |
-| Ocean_Puzzle_Exit.msc | walk | Close stairway (3 of 10) |
-| Ocean_Puzzle_Reset.msc | walk | Clear progress (4 of 10) |
-| Ocean_Puzzle_NoteTune.msc | interact | "The note shifts to its Nth position." on Room 1's note blocks only (5 of 10) |
-| Ocean_Puzzle_TeamConduit.msc | interact | Team word linking on the conduit (6 of 10) |
-| Doors/Ocean_Puzzle_Door_Room3_Outside/Inside, Room4_Outside/Inside, Room4_Exit.msc | interact | Door heads (8 of 10). The 5 files are identical except for the settings block at the top (`need`, `door`, `corners`, `material`). `corners` is empty until coordinates are given, and the script refuses to run until it's set. |
-| Room3_Altar/Ocean_Puzzle_Altar_01..10.msc | interact | Room 3 altar signs (9 of 10). Identical except `symbol` (1-10). Generated. |
-| Room4_Instrument/Ocean_Puzzle_Instrument_01..10.msc | interact | Room 4 instrument note blocks (10 of 10). Identical except `symbol` (1-10). Generated. |
-| Room2_Symbols/Ocean_Puzzle_Symbol_01..10.msc | interact | Room 2 symbols (7 of 10). Each plays its slot of `answer` as a chime, heard only by the clicking player. The 10 files are identical except `slot` (0-9). Symbol N pairs with Room 1 note block N. |
+| Ocean_Puzzle_Noteblocks.msc | interact | Submit (1 of 11) |
+| Ocean_Puzzle_Entrance.msc | walk | New answer on entry (2 of 11) |
+| Ocean_Puzzle_Exit.msc | walk | Close stairway (3 of 11) |
+| Ocean_Puzzle_Reset.msc | walk | Clear progress (4 of 11) |
+| Ocean_Puzzle_NoteTune.msc | interact | "The note shifts to its Nth position." on Room 1's note blocks only (5 of 11) |
+| Ocean_Puzzle_TeamConduit.msc | interact | Team word linking on the conduit (6 of 11) |
+| Doors/Ocean_Puzzle_Door_Room3/4_Outside/Inside.msc | interact | Door heads (8 of 11). The 4 files are identical except for the settings block at the top (`need`, `door`, `corners`, `material`). `corners` is empty until coordinates are given, and the script refuses to run until it's set. |
+| Room3_Altar/Ocean_Puzzle_Altar_01..10.msc | interact | Room 3 altar signs (9 of 11). Identical except `symbol` (1-10). Generated. |
+| Room4_Instrument/Ocean_Puzzle_Instrument_01..10.msc + _Start.msc | interact | Room 4 instrument note blocks and the Start object (10 of 11). Voices are identical except `symbol` (1-10). Generated. |
+| Ocean_Puzzle_Finish.msc | walk | End of the parkour: clears all progress, disbands the team (11 of 11) |
+| Room2_Symbols/Ocean_Puzzle_Symbol_01..10.msc | interact | Room 2 symbols (7 of 11). Each plays its slot of `answer` as a chime, heard only by the clicking player. The 10 files are identical except `slot` (0-9). Symbol N pairs with Room 1 note block N. |
 | Instructions/Ocean_Puzzle_Instructions_Room1/3/4.msc | interact | Oracle instructions |
 
 ## Status (as of 2026-11-24)
@@ -87,11 +87,13 @@ Everything was re-imported on 2026-11-24. Keep this list up to date: add every s
 | Script | Bind to | What changed |
 |---|---|---|
 | `Room2_Symbols/Ocean_Puzzle_Symbol_01..10.msc` (all 10) | each Room 2 symbol head | 2s chime cooldown shared by all symbols; white-italic line "The chime washes over your soul like a tide." after each chime |
-| `Ocean_Puzzle_Reset.msc` | Reset block | Also clears `solved3`, `altar_seq`, `solved4` and `inst_seq` |
+| `Ocean_Puzzle_Reset.msc` | Reset block | Also clears `solved3`, `altar_seq`, `inst_started_at` and `inst_seq` |
 | `Ocean_Puzzle_TeamConduit.msc` | conduit | Joining a team also resets `solved3` for the whole team; players who already solved Room 1 are refused (no team creating or joining) |
-| `Doors/Ocean_Puzzle_Door_*.msc` (5, NEW) | door heads (Room 3 in/out, Room 4 in/out, Room 4 exit) | New. Needs the door `corners` (and `material`) filled in before importing |
+| `Doors/Ocean_Puzzle_Door_*.msc` (4, NEW) | door heads (Room 3 in/out, Room 4 in/out) | New. Needs the door `corners` (and `material`) filled in before importing |
 | `Room3_Altar/Ocean_Puzzle_Altar_01..10.msc` (10, NEW) | Room 3 altar heads | New. Altar head N must wear Symbol N's skin |
-| `Room4_Instrument/Ocean_Puzzle_Instrument_01..10.msc` (10, NEW) | Room 4 note blocks (on packed ice) | New. Block N must be marked with Symbol N's skin. Don't bind NoteTune to these |
+| `Room4_Instrument/Ocean_Puzzle_Instrument_01..10.msc` (10, NEW) | Room 4 note blocks (on packed ice) | New. Block N must be marked with Symbol N's skin. Don't bind NoteTune to these. Needs the parkour clone coordinates set in the generator |
+| `Room4_Instrument/Ocean_Puzzle_Instrument_Start.msc` (NEW) | Room 4 Start object (head/button) | New. Starts a 15s performance |
+| `Ocean_Puzzle_Finish.msc` (NEW, walk) | end of the parkour, full path width | New. Clears all progress and disbands the team |
 
 **One-time setup commands (run before importing the above):**
 ```
@@ -102,8 +104,7 @@ Everything was re-imported on 2026-11-24. Keep this list up to date: add every s
 /variable define puzzle1 relative Long altar_ready_at = 0L
 /variable define puzzle1 Long door3_close_at = 0L
 /variable define puzzle1 Long door4_close_at = 0L
-/variable define puzzle1 Long door5_close_at = 0L
-/variable define puzzle1 relative Boolean solved4 = false
+/variable define puzzle1 Long parkour_close_at = 0L
 /variable define puzzle1 relative String inst_seq = ""
 /variable define puzzle1 relative Long inst_started_at = 0L
 /variable define puzzle1 relative Int inst_wrong = 0
@@ -111,11 +112,21 @@ Everything was re-imported on 2026-11-24. Keep this list up to date: add every s
 
 ## Next up
 
-1. **Test coordinates (waiting on the user):** the corners and block type for the Room 3 door, the Room 4 door and the Room 4 exit, plus the 5 door heads, the 10 altar heads and the 10 Room 4 note blocks. Fill in the door `corners` settings (in the generator), then test the doors, the altar and the instrument.
-2. Instrument test points: whether a hit fires the script for players in the map's game mode (NoteTune suggests yes); whether 15s is enough; the team-wide `solved4` and disband.
+1. **Test coordinates (waiting on the user):**
+   - The corners and block type for the Room 3 and Room 4 doors.
+   - The 4 door heads, the 10 altar heads, the 10 Room 4 note blocks and the Start object.
+   - The parkour course: its hidden "shown" copy, the same-size "empty" copy, and the target corner.
+   - The Finish walk blocks.
+
+   Put the door `corners` and parkour coordinates in the generator settings, then test the doors, the altar, the instrument and the parkour.
+2. Instrument test points:
+   - Whether a hit fires the script for players in the map's game mode (NoteTune suggests yes).
+   - Whether 15s (from Start) is enough, and whether 30s of parkour is right.
+   - That `/clone` works through `@bypass`.
+   - That Finish disbands the team.
 3. Rewrite the Room 4 instructions in the cryptic style of Room 1 (4s per line). Room 3's are done.
 4. Later: co-op edge-case tests (see "NOT yet tested" above).
-5. **Before admin handoff, once every script is done:** the user prepares the main map and gives the real coordinates. Put them in every header (`Bind to`, `Map/area`, coordinates used inside the script) and in the scripts themselves: the Submit note blocks, stairway and particles; the Entrance blocks; the door `corners`; and the binding notes for the altar heads and instrument blocks. Set `debug = false` in Submit.
+5. **Before admin handoff, once every script is done:** the user prepares the main map and gives the real coordinates. Put them in every header (`Bind to`, `Map/area`, coordinates used inside the script) and in the scripts themselves: the Submit note blocks, stairway and particles; the Entrance blocks; the door `corners`; the parkour clone coordinates; and the binding notes for the altar heads, instrument blocks, Start object and Finish. Set `debug = false` in Submit.
 
 ## Decisions
 

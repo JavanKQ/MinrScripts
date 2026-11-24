@@ -1,0 +1,58 @@
+# ==============================================================
+# OCEAN PUZZLE - FINISH (11 of 11)
+# ==============================================================
+# Script type : walk
+# Bind to     : [FILL IN: x y z] at the end of the Room 4 parkour
+#               course, on the way to the next checkpoint. Bind to
+#               every block of the path's width (one bind each), the
+#               same way as the Entrance script, so nobody can step
+#               around it.
+# Map/area    : [FILL IN: map name / room]
+# Import      : /script import walk <paste URL>, then click the block
+#
+# What it does:
+#   The player has finished the whole Ocean Puzzle. Clears all of
+#   their puzzle progress (answer, Room 1 and Room 3 solved
+#   status, any unfinished altar offering or melody) and
+#   disbands their team: every online teammate still on the same
+#   team is told and removed from it. Teammates who haven't
+#   finished keep their own progress and can still play the
+#   melody and run the parkour on their own.
+#   The checkpoint beyond saves the player's map progress, so
+#   nothing here needs to be kept. Walking over it again does
+#   nothing.
+#
+# Requires: puzzle1 namespace (see Submit script header)
+# Related scripts: Instrument (10), Reset (4), Team Conduit (6)
+# ==============================================================
+@using puzzle1
+@if answer == "" && !solved && !solved3 && team == ""
+@return
+@fi
+# --- Disband the team for everyone still on it ---
+@if team != ""
+@define String me = player.getUniqueId()
+@define Player q = player
+@for String id in team_members.split(",")
+@if id != me
+@var q = Player(id)
+@if q != null
+@if team[q] == team && q.isOnline()
+@var team[q] = ""
+@var team_members[q] = ""
+@var q.sendMessage("§7§o[Note] {{player.getName()}} has completed the Ocean Puzzle, so your team has disbanded.")
+@fi
+@fi
+@fi
+@done
+@player &7&o[Note] You have completed the Ocean Puzzle, so your team has disbanded.
+@fi
+@var solved = false
+@var solved3 = false
+@var altar_seq = ""
+@var inst_started_at = 0L
+@var inst_seq = ""
+@var answer = ""
+@var team = ""
+@var team_members = ""
+@player &3Oracle: &bThe deep releases you, seeker... Your song will echo in these halls long after you have gone.

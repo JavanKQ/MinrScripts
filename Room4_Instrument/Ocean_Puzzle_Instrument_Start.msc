@@ -1,0 +1,47 @@
+# ==============================================================
+# OCEAN PUZZLE - ROOM 4 INSTRUMENT: START (script 10 of 11)
+# ==============================================================
+# Script type : interact
+# Bind to     : [FILL IN: x y z of the Start object in Room 4
+#               (a head, button or similar, near the instrument)]
+# Map/area    : [FILL IN: map name / room]
+# Import      : /s i i <paste URL>, then click the Start object
+#
+# What it does:
+#   Starts a performance of the Room 4 melody. After clicking it,
+#   the player has 15 seconds to hit all 10 instrument note
+#   blocks in order (see the Instrument voice scripts). Until it
+#   is clicked, the note blocks are free to play and tune.
+#   Clicking it again restarts the performance.
+#   Only players who solved Rooms 1 and 3 can start it.
+#
+# Requires: puzzle1 namespace (see Submit script header),
+#   including:
+#   /variable define puzzle1 relative String inst_seq = ""
+#   /variable define puzzle1 relative Long inst_started_at = 0L
+#   /variable define puzzle1 relative Int inst_wrong = 0
+#
+# Map coordinates used inside this script: none
+#
+# Related scripts: Instrument voices 1-10 (10), Doors (8),
+#   Finish (11)
+# ==============================================================
+@using puzzle1
+@if !solved || !solved3 || answer == ""
+@player &3Oracle: &bThe instrument does not yet know your song...
+@return
+@fi
+@define Long now = system::currentTimeMillis()
+@var inst_seq = ""
+@var inst_wrong = 0
+@var inst_started_at = now
+@bypass /playsound minecraft:block.conduit.activate record {{player.getName()}} ~ ~ ~ 1 1
+@player &f&oThe instrument awakens... its voices await your hand.
+@delay 15s
+@if inst_started_at == now
+@var inst_started_at = 0L
+@var inst_seq = ""
+@if player.isOnline()
+@player &3Oracle: &bThe melody fades beneath the tide... too slow, seeker.
+@fi
+@fi
