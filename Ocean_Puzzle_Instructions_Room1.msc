@@ -11,7 +11,7 @@
 #   the heart cost of wrong answers, and that dying resets the
 #   song. Ends with a grey out-of-character note for co-op
 #   players that each player's answer is different.
-#   Can be replayed once every 45 seconds per player.
+#   Can be replayed once every 60 seconds per player.
 #
 # Requires: puzzle1 namespace (see Submit script header)
 #
@@ -26,7 +26,7 @@
     @return
 @fi
 
-@var oracle_ready_at = now + 45000L
+@var oracle_ready_at = now + 60000L
 
 @player &3Oracle: &bMark my words well, seeker. Not one of them is spoken idly.
 @delay 4s
