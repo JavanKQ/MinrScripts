@@ -9,7 +9,7 @@
 # What it does:
 #   The Oracle explains the symbol value grid puzzle in metaphor
 #   (see Ocean_Puzzle_Room3_Grids.md for the real rules).
-#   Speech lasts about 32 seconds. Can be replayed once every
+#   Speech lasts about 16 seconds. Can be replayed once every
 #   45 seconds per player.
 #
 # Requires: puzzle1 namespace (see Submit script header)
@@ -33,14 +33,6 @@
 @delay 4s
 @player &3Oracle: &bWhere a row ends and a column settles, the waters gather into one.
 @delay 4s
-@player &3Oracle: &bBetween every two stones runs a current of its own. None is named.
-@delay 4s
 @player &3Oracle: &bThe currents never change from wall to wall. What binds one binds all.
-@delay 4s
-@player &3Oracle: &bThey flow as the tide does: across from the left, down from the surface. Never otherwise.
-@delay 4s
-@player &3Oracle: &bThe deep keeps no broken numbers, and nothing sinks below nothing.
-@delay 4s
-@player &3Oracle: &bBegin where the signs are fewest. What one wall leaves unspoken, another will answer.
 @delay 4s
 @player &3Oracle: &bDo not mistake a pattern for a law until every wall agrees.
