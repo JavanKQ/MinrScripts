@@ -10,6 +10,7 @@ MSC 2.0 scripts for a puzzle map on zero.minr.org (Minecraft). See [References.m
 - **Import:** `/s i i <paste URL>` (interact) or `/script import walk <paste URL>`, then click the block. Pastes go on paste.minr.org.
 - **Walk scripts** fire when the player's feet enter the space *above* the bound block. They can be bound to air: place a temporary block, import, click it, then break it.
 - **Git:** commit work for the current map straight to `main`. Create a branch only when starting work on a different map.
+- **Colors in `sendMessage`:** `p.sendMessage(...)` (messages to *other* players) does NOT convert `&` color codes; teammates saw plain white text. Use `§` codes there (`§3Oracle: §b...`, `§7§o[Note]`). `@player` lines do convert `&` codes, so keep `&` there.
 - **Player-facing text:** ancient ocean temple theme. Speaker format is `&3Oracle: &b<message>` (dark aqua name, aqua message). Tuning feedback is white italics (`&f&o`).
 
 ## MSC syntax confirmed working on the test server
@@ -56,6 +57,7 @@ Variables in `puzzle1`:
 - **Working under `puzzle1`:** Submit and Entrance, after re-importing the Entrance (an old `oceanpuzzle` copy was still bound). NoteTune works; `@delay 1t` was rejected, so it uses `@delay 1`. Interact scripts also fire on left-click (hit), so NoteTune compares the note before and after the delay and stays silent if it didn't change.
 - **Tested solo and working:** all of Rooms 1-2's flow (instructions, NoteTune, entrance, submit, cooldown, hearts, death and new song, solve, stairway, exit, reset) and the Team Conduit with a team of one: word validation, prompt timeout, creating a word, "already bound", team-of-one submits and deaths, and the "bond dissolves" expiry. So `@prompt`, `String.matches`, `Player(uuid)` and the "{{...}}" Long-to-Int trick work.
 - **`@prompt` timeout message:** it showed in yellow, ignoring `&` codes. It now uses `§` codes instead; whether that works is untested. If it doesn't, drop the colors from that one line.
+- **Co-op tested 2026-11-24 (2 players):** a team solved Room 1 together and both were marked solved. Teammates saw messages without color; fixed with `§` codes (untested).
 - **NOT yet tested (needs a second player):** the team check (dropping offline or switched teammates, new team ID, "no longer on your team" note), plus co-op behavior. That means joining a team (shared new song for everyone), messages to teammates via `p.sendMessage(...)` (unknown whether `&` colors work there), changing another player's variables (`answer[p] = ...`), teammates losing 2 hearts and seeing particles on a wrong answer (`q.setHealth`), team-wide solve, team-wide new song on death, and the roster message when the word expires.
 - **Room 2 symbols and per-block particle feedback: tested solo and working (2026-11-23),** so `@bypass /playsound` and `/particle ... force <player>` work, as does `{{1573 - i}}.5` inside a command.
 - **Debug:** the Submit script has `debug = true`, which prints the answer in chat. Turn it off before handing off to admins.
@@ -66,9 +68,9 @@ The user hasn't imported anything since 2026-11-23. Keep this list up to date: a
 
 | Script | Bind to | What changed |
 |---|---|---|
-| `Ocean_Puzzle_Noteblocks.msc` (Submit) | submit block | Restored wrong-count message; team check (drops offline or switched teammates) |
-| `Ocean_Puzzle_Entrance.msc` | the 6 air blocks at y68 | Team check before the team-wide new song |
-| `Ocean_Puzzle_TeamConduit.msc` | conduit | Expiry roster still works after a team ID change |
+| `Ocean_Puzzle_Noteblocks.msc` (Submit) | submit block | Restored wrong-count message; team check (drops offline or switched teammates); teammate messages use `§` colors |
+| `Ocean_Puzzle_Entrance.msc` | the 6 air blocks at y68 | Team check before the team-wide new song; teammate messages use `§` colors |
+| `Ocean_Puzzle_TeamConduit.msc` | conduit | Expiry roster still works after a team ID change; teammate messages use `§` colors |
 | `Ocean_Puzzle_Instructions_Room1.msc` | Room 1 head block | Cryptic rewrite, "Mark my words" opening line, "What each sign remembers" hint, 60s cooldown |
 | `Ocean_Puzzle_Instructions_Room3.msc` | Room 3 head block | Rewritten in cryptic style for the new grid rules |
 

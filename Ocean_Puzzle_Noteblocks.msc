@@ -120,7 +120,7 @@
 @if p != null
 @var team[p] = newId
 @var team_members[p] = stay
-@var p.sendMessage("&7&o[Note] {{leftNames}} is no longer on your team (went offline or joined another team).")
+@var p.sendMessage("§7§o[Note] {{leftNames}} is no longer on your team (went offline or joined another team).")
 @fi
 @done
 @fi
@@ -135,7 +135,7 @@
 @var p = Player(id)
 @if p != null
 @var solved[p] = true
-@var p.sendMessage("&3Oracle: &b{{player.getName()}} has sung the elders' song true... the way above is revealed to you all.")
+@var p.sendMessage("§3Oracle: §b{{player.getName()}} has sung the elders' song true... the way above is revealed to you all.")
 @fi
 @fi
 @done
@@ -170,7 +170,7 @@
 @if id != me
 @var p = Player(id)
 @if p != null
-@var p.sendMessage("&3Oracle: &b{{player.getName()}}'s offering was false... {{wrong}} of the notes stray, and the elders' displeasure falls upon you all.")
+@var p.sendMessage("§3Oracle: §b{{player.getName()}}'s offering was false... {{wrong}} of the notes stray, and the elders' displeasure falls upon you all.")
 @for Int j in list::range(0, blocks.length())
 @if marks[j] == "1"
 @bypass /particle minecraft:happy_villager -1851.5 69.5 {{1573 - j}}.5 0.25 0.2 0.25 0 12 force {{p.getName()}}

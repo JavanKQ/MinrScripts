@@ -79,7 +79,7 @@
 @if p != null
 @var team[p] = newId
 @var team_members[p] = stay
-@var p.sendMessage("&7&o[Note] {{leftNames}} is no longer on your team (went offline or joined another team).")
+@var p.sendMessage("§7§o[Note] {{leftNames}} is no longer on your team (went offline or joined another team).")
 @fi
 @done
 @fi
@@ -94,7 +94,7 @@
 @var p = Player(id)
 @if p != null
 @var answer[p] = song
-@var p.sendMessage("&3Oracle: &b{{player.getName()}} was claimed by the deep... the elders have composed a new song for you all.")
+@var p.sendMessage("§3Oracle: §b{{player.getName()}} was claimed by the deep... the elders have composed a new song for you all.")
 @fi
 @fi
 @done
