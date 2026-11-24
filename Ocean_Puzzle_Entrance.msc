@@ -15,7 +15,9 @@
 #   each time they enter the puzzle area. Skipped if the
 #   player has already solved the puzzle. If the player is on
 #   a team (see Team Conduit), every teammate gets the same new
-#   song and a message.
+#   song and a message. Teammates who are offline or have
+#   joined another team are dropped from the team first, and
+#   the rest are told who left.
 #
 # Placement note:
 #   Must be on the checkpoint side of the one-way drop, where
@@ -38,20 +40,61 @@
 @define String song = notes.join(",")
 @var answer = song
 @player &3Oracle: &bThe tides shift... the elders' song is sung anew.
+# --- Team check: drop teammates who are offline or on another team ---
+@define String me = player.getUniqueId()
+@define String stay = me
+@define String leftNames = ""
+@define Boolean dropped = false
+@define Player p = player
+@if team != ""
+@for String id in team_members.split(",")
+@if id != me
+@var p = Player(id)
+@if p == null
+@var dropped = true
+@if leftNames != ""
+@var leftNames = leftNames + ", "
+@fi
+@var leftNames = leftNames + "a teammate"
+@elseif team[p] != team || !p.isOnline()
+@var dropped = true
+@if leftNames != ""
+@var leftNames = leftNames + ", "
+@fi
+@var leftNames = leftNames + p.getName()
+@else
+@var stay = stay + "," + id
+@fi
+@fi
+@done
+@if dropped
+@if stay == me
+@var team = ""
+@var team_members = ""
+@player &7&o[Note] You and {{leftNames}} are no longer on the same team. You are now playing solo.
+@else
+@define String newId = team + "~" + "{{system::currentTimeMillis() / 1000L}}"
+@for String id in stay.split(",")
+@var p = Player(id)
+@if p != null
+@var team[p] = newId
+@var team_members[p] = stay
+@var p.sendMessage("&7&o[Note] {{leftNames}} is no longer on your team (went offline or joined another team).")
+@fi
+@done
+@fi
+@fi
+@fi
+# --- End team check ---
 @if team == ""
 @return
 @fi
-@define Player p = player
-@for String id in team_members.split(",")
+@for String id in stay.split(",")
+@if id != me
 @var p = Player(id)
 @if p != null
-@if team[p] == team
-@if p.getUniqueId() != player.getUniqueId()
 @var answer[p] = song
-@if p.isOnline()
 @var p.sendMessage("&3Oracle: &b{{player.getName()}} was claimed by the deep... the elders have composed a new song for you all.")
-@fi
-@fi
 @fi
 @fi
 @done

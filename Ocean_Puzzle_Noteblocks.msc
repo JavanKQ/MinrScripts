@@ -16,7 +16,9 @@
 #   stairway is opened. On a team, a wrong answer costs every
 #   online teammate 2 hearts (they get the same count message
 #   plus the particles), and a correct answer marks every
-#   teammate solved.
+#   teammate solved. Teammates who are offline or have joined
+#   another team are dropped from the team first (no hearts,
+#   no credit), and the rest are told who left.
 #   10 second cooldown between submissions.
 #
 # Requires (run once, before importing any Ocean Puzzle script):
@@ -79,20 +81,61 @@
 @done
 @define Int wrong = blocks.length() - correct
 @define String[] marks = flags.split(",")
+# --- Team check: drop teammates who are offline or on another team ---
+@define String me = player.getUniqueId()
+@define String stay = me
+@define String leftNames = ""
+@define Boolean dropped = false
+@define Player p = player
+@if team != ""
+@for String id in team_members.split(",")
+@if id != me
+@var p = Player(id)
+@if p == null
+@var dropped = true
+@if leftNames != ""
+@var leftNames = leftNames + ", "
+@fi
+@var leftNames = leftNames + "a teammate"
+@elseif team[p] != team || !p.isOnline()
+@var dropped = true
+@if leftNames != ""
+@var leftNames = leftNames + ", "
+@fi
+@var leftNames = leftNames + p.getName()
+@else
+@var stay = stay + "," + id
+@fi
+@fi
+@done
+@if dropped
+@if stay == me
+@var team = ""
+@var team_members = ""
+@player &7&o[Note] You and {{leftNames}} are no longer on the same team. You are now playing solo.
+@else
+@define String newId = team + "~" + "{{system::currentTimeMillis() / 1000L}}"
+@for String id in stay.split(",")
+@var p = Player(id)
+@if p != null
+@var team[p] = newId
+@var team_members[p] = stay
+@var p.sendMessage("&7&o[Note] {{leftNames}} is no longer on your team (went offline or joined another team).")
+@fi
+@done
+@fi
+@fi
+@fi
+# --- End team check ---
 @if wrong == 0
 @var solved = true
 @if team != ""
-@define Player p = player
-@for String id in team_members.split(",")
+@for String id in stay.split(",")
+@if id != me
 @var p = Player(id)
 @if p != null
-@if team[p] == team
-@if p.getUniqueId() != player.getUniqueId()
 @var solved[p] = true
-@if p.isOnline()
 @var p.sendMessage("&3Oracle: &b{{player.getName()}} has sung the elders' song true... the way above is revealed to you all.")
-@fi
-@fi
 @fi
 @fi
 @done
@@ -123,24 +166,19 @@
 @if team == ""
 @return
 @fi
-@define Player q = player
-@for String id in team_members.split(",")
-@var q = Player(id)
-@if q != null
-@if team[q] == team
-@if q.getUniqueId() != player.getUniqueId()
-@if q.isOnline()
-@var q.sendMessage("&3Oracle: &b{{player.getName()}}'s offering was false... {{wrong}} of the notes stray, and the elders' displeasure falls upon you all.")
+@for String id in stay.split(",")
+@if id != me
+@var p = Player(id)
+@if p != null
+@var p.sendMessage("&3Oracle: &b{{player.getName()}}'s offering was false... {{wrong}} of the notes stray, and the elders' displeasure falls upon you all.")
 @for Int j in list::range(0, blocks.length())
 @if marks[j] == "1"
-@bypass /particle minecraft:happy_villager -1851.5 69.5 {{1573 - j}}.5 0.25 0.2 0.25 0 12 force {{q.getName()}}
+@bypass /particle minecraft:happy_villager -1851.5 69.5 {{1573 - j}}.5 0.25 0.2 0.25 0 12 force {{p.getName()}}
 @else
-@bypass /particle minecraft:smoke -1851.5 69.5 {{1573 - j}}.5 0.2 0.2 0.2 0.01 15 force {{q.getName()}}
+@bypass /particle minecraft:smoke -1851.5 69.5 {{1573 - j}}.5 0.2 0.2 0.2 0.01 15 force {{p.getName()}}
 @fi
 @done
-@var q.setHealth(math::maxDouble(q.getHealth() - 4.0D, 0.0D))
-@fi
-@fi
+@var p.setHealth(math::maxDouble(p.getHealth() - 4.0D, 0.0D))
 @fi
 @fi
 @done
