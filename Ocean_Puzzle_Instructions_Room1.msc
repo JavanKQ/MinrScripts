@@ -38,7 +38,7 @@
 @delay 3s
 @player &3Oracle: &bWhen all ten pairings are set, offer your answer.
 @delay 3s
-@player &3Oracle: &bThe monument will reveal how many are true, but never which ones.
+@player &3Oracle: &bThe monument will reveal which tones ring true, and which stray.
 @delay 3s
 @player &3Oracle: &bBut take heed: each false offering will cost you a measure of your life.
 @delay 3s

@@ -8,11 +8,14 @@
 #
 # What it does:
 #   Checks the 10 note blocks in Room 1 against this player's
-#   answer. Wrong = player loses half a heart and is told how many
-#   notes are wrong. Correct = player is marked solved and the
-#   stairway is opened. On a team, a wrong answer costs every
-#   online teammate half a heart (and tells them how many are wrong),
-#   and a correct answer marks every teammate solved.
+#   answer. Wrong = player loses 2 hearts (5 wrong submits is
+#   death) and the Oracle names which note blocks are wrong
+#   (1st = -1852 68 1573). Green sparkles also appear over the
+#   right blocks and smoke over the wrong ones, shown only to the
+#   player and their teammates. Correct = player is marked solved
+#   and the stairway is opened. On a team, a wrong answer costs
+#   every online teammate 2 hearts (they get the same message and
+#   particles), and a correct answer marks every teammate solved.
 #   10 second cooldown between submissions.
 #
 # Requires (run once, before importing any Ocean Puzzle script):
@@ -31,6 +34,8 @@
 #   Stair ceiling : -1846 70 1562 to -1841 70 1565
 #   Stair wall    : -1846 69 1565 to -1841 67 1565
 #   (both /fill lines appear in 2 places below)
+#   Particles     : -1851.5 69.5 <1573.5 down to 1564.5>, i.e.
+#                   centered above each note block (2 places below)
 #
 # Related scripts: Entrance (2), Exit (3), Reset (4), Note Tune (5), Team Conduit (6), Symbols (7)
 # ==============================================================
@@ -58,6 +63,7 @@
 @define Block[] blocks = Block[Block(-1852, 68, 1573, w), Block(-1852, 68, 1572, w), Block(-1852, 68, 1571, w), Block(-1852, 68, 1570, w), Block(-1852, 68, 1569, w), Block(-1852, 68, 1568, w), Block(-1852, 68, 1567, w), Block(-1852, 68, 1566, w), Block(-1852, 68, 1565, w), Block(-1852, 68, 1564, w)]
 @define Int correct = 0
 @define String n = ""
+@define String flags = ""
 @for Int i in list::range(0, blocks.length())
 @var n = blocks[i].getBlockDataValue("note")
 @if debug
@@ -65,9 +71,13 @@
 @fi
 @if n == expected[i]
 @var correct = correct + 1
+@var flags = flags + "1,"
+@else
+@var flags = flags + "0,"
 @fi
 @done
 @define Int wrong = blocks.length() - correct
+@define String[] marks = flags.split(",")
 @if wrong == 0
 @var solved = true
 @if team != ""
@@ -92,14 +102,40 @@
 @bypass /fill -1846 69 1565 -1841 67 1565 air
 @return
 @fi
-@if player.getHealth() <= 1.0D
-@player &3Oracle: &bThe elders' patience is spent... The sea reclaims you.
-@elseif wrong == 1
-@player &3Oracle: &bOne note still strays from the song of the elders... Listen closely, and try again.
+@define String[] ordinals = String["1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th", "10th"]
+@define String strays = ""
+@define Int k = 0
+@for Int i in list::range(0, blocks.length())
+@if marks[i] == "0"
+@var k = k + 1
+@if k == 1
+@var strays = ordinals[i]
+@elseif k == wrong
+@var strays = strays + " and " + ordinals[i]
 @else
-@player &3Oracle: &b{{wrong}} of these notes are not of the pitch the elders composed... Try again.
+@var strays = strays + ", " + ordinals[i]
 @fi
-@var player.setHealth(math::maxDouble(player.getHealth() - 1.0D, 0.0D))
+@fi
+@done
+@define String verdict = "The " + strays + " tones stray from the elders' song. The rest ring true."
+@if wrong == 1
+@var verdict = "The " + strays + " tone strays from the elders' song. The rest ring true."
+@elseif wrong == blocks.length()
+@var verdict = "Not one tone rings true to the elders' song."
+@fi
+@if player.getHealth() <= 4.0D
+@player &3Oracle: &bThe elders' patience is spent... The sea reclaims you.
+@else
+@player &3Oracle: &b{{verdict}}
+@for Int i in list::range(0, blocks.length())
+@if marks[i] == "1"
+@bypass /particle minecraft:happy_villager -1851.5 69.5 {{1573 - i}}.5 0.25 0.2 0.25 0 12 force {{player.getName()}}
+@else
+@bypass /particle minecraft:smoke -1851.5 69.5 {{1573 - i}}.5 0.2 0.2 0.2 0.01 15 force {{player.getName()}}
+@fi
+@done
+@fi
+@var player.setHealth(math::maxDouble(player.getHealth() - 4.0D, 0.0D))
 @if team == ""
 @return
 @fi
@@ -110,8 +146,15 @@
 @if team[q] == team
 @if q.getUniqueId() != player.getUniqueId()
 @if q.isOnline()
-@var q.sendMessage("&3Oracle: &b{{player.getName()}}'s offering was false... {{wrong}} of the notes stray, and the elders' displeasure falls upon you all.")
-@var q.setHealth(math::maxDouble(q.getHealth() - 1.0D, 0.0D))
+@var q.sendMessage("&3Oracle: &b{{player.getName()}}'s offering was false, and the elders' displeasure falls upon you all. {{verdict}}")
+@for Int j in list::range(0, blocks.length())
+@if marks[j] == "1"
+@bypass /particle minecraft:happy_villager -1851.5 69.5 {{1573 - j}}.5 0.25 0.2 0.25 0 12 force {{q.getName()}}
+@else
+@bypass /particle minecraft:smoke -1851.5 69.5 {{1573 - j}}.5 0.2 0.2 0.2 0.01 15 force {{q.getName()}}
+@fi
+@done
+@var q.setHealth(math::maxDouble(q.getHealth() - 4.0D, 0.0D))
 @fi
 @fi
 @fi
