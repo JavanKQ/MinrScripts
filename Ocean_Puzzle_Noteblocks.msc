@@ -9,14 +9,14 @@
 # What it does:
 #   Checks the 10 note blocks in Room 1 against this player's
 #   answer. Wrong = player loses 2 hearts (5 wrong submits is
-#   death). Green sparkles appear over the right note blocks and
-#   smoke over the wrong ones, shown only to the player and their
-#   teammates. There is no chat message: the particles are the
-#   only feedback. Correct = player is marked solved and the
+#   death). The Oracle says how many notes are wrong (but not
+#   which), and green sparkles appear over the right note blocks
+#   and smoke over the wrong ones, shown only to the player and
+#   their teammates. Correct = player is marked solved and the
 #   stairway is opened. On a team, a wrong answer costs every
-#   online teammate 2 hearts (they get a chat message naming who
-#   submitted, plus the particles), and a correct answer marks
-#   every teammate solved.
+#   online teammate 2 hearts (they get the same count message
+#   plus the particles), and a correct answer marks every
+#   teammate solved.
 #   10 second cooldown between submissions.
 #
 # Requires (run once, before importing any Ocean Puzzle script):
@@ -106,6 +106,11 @@
 @if player.getHealth() <= 4.0D
 @player &3Oracle: &bThe elders' patience is spent... The sea reclaims you.
 @else
+@if wrong == 1
+@player &3Oracle: &bOne note still strays from the song of the elders... Listen closely, and try again.
+@else
+@player &3Oracle: &b{{wrong}} of these notes are not of the pitch the elders composed... Try again.
+@fi
 @for Int i in list::range(0, blocks.length())
 @if marks[i] == "1"
 @bypass /particle minecraft:happy_villager -1851.5 69.5 {{1573 - i}}.5 0.25 0.2 0.25 0 12 force {{player.getName()}}
@@ -125,7 +130,7 @@
 @if team[q] == team
 @if q.getUniqueId() != player.getUniqueId()
 @if q.isOnline()
-@var q.sendMessage("&3Oracle: &b{{player.getName()}}'s offering was false, and the elders' displeasure falls upon you all.")
+@var q.sendMessage("&3Oracle: &b{{player.getName()}}'s offering was false... {{wrong}} of the notes stray, and the elders' displeasure falls upon you all.")
 @for Int j in list::range(0, blocks.length())
 @if marks[j] == "1"
 @bypass /particle minecraft:happy_villager -1851.5 69.5 {{1573 - j}}.5 0.25 0.2 0.25 0 12 force {{q.getName()}}

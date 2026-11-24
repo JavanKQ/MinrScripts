@@ -28,22 +28,22 @@
 
 @var oracle_ready_at = now + 45000L
 
-@player &3Oracle: &bTen tones sleep in the first chamber, each bound to a different pitch.
+@player &3Oracle: &bSeeker, the elders left a song in this temple. It falls to you to restore it.
 @delay 4s
-@player &3Oracle: &bAmong the drowned stones, ten ancient symbols await your touch.
+@player &3Oracle: &bTen note blocks wait in this chamber. Ten symbols wait among the drowned stones.
 @delay 4s
-@player &3Oracle: &bEach symbol will sound the note to which it is bound.
+@player &3Oracle: &bTouch a symbol, and it will sing one note of the song.
 @delay 4s
-@player &3Oracle: &bCarry each sound between the chambers. Find the note block that answers it.
+@player &3Oracle: &bTune each note block to the voice of the symbol bound to it.
 @delay 4s
-@player &3Oracle: &bWhen all ten pairings are set, offer your answer.
+@player &3Oracle: &bWhen all ten are set, make your offering at the monument.
 @delay 4s
-@player &3Oracle: &bThe monument will reveal which tones ring true, and which stray.
+@player &3Oracle: &bThe monument will say how many notes stray, and mark which ones ring true.
 @delay 4s
-@player &3Oracle: &bBut take heed: each false offering will cost you a measure of your life.
+@player &3Oracle: &bEach false offering costs you dearly. You may falter four times. The fifth belongs to the sea.
 @delay 4s
-@player &3Oracle: &bShould the deep claim you, the elders will compose a new song, and all you have learned will be lost to the tide.
+@player &3Oracle: &bShould the deep claim you, the elders will compose a new song, and all you have learned will be lost.
 @delay 4s
-@player &3Oracle: &bListen closely, seeker. The deep keeps its counsel.
+@player &3Oracle: &bListen well, seeker. The deep keeps its counsel.
 @delay 4s
 @player &7&o[Note] Playing co-op? Each player is given their own song. To share one, every teammate must right-click the conduit and type the same team word within 2 minutes. Joining a team starts the puzzle over for the whole team.
