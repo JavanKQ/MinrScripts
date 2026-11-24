@@ -28,22 +28,22 @@
 
 @var oracle_ready_at = now + 45000L
 
-@player &3Oracle: &bSeeker, the elders left a song in this temple. It falls to you to restore it.
+@player &3Oracle: &bLong ago, the elders sealed their song within these walls. Only one who hears it may pass.
 @delay 4s
-@player &3Oracle: &bTen note blocks wait in this chamber. Ten symbols wait among the drowned stones.
+@player &3Oracle: &bTen voices lie silent in this chamber. Ten signs keep watch among the drowned stones.
 @delay 4s
-@player &3Oracle: &bTouch a symbol, and it will sing one note of the song.
+@player &3Oracle: &bWake a sign, and it will remember its note for you.
 @delay 4s
-@player &3Oracle: &bTune each note block to the voice of the symbol bound to it.
+@player &3Oracle: &bTeach each silent voice the note its sign remembers.
 @delay 4s
-@player &3Oracle: &bWhen all ten are set, make your offering at the monument.
+@player &3Oracle: &bWhen the ten sing as one, offer the song to the monument.
 @delay 4s
-@player &3Oracle: &bThe monument will say how many notes stray, and mark which ones ring true.
+@player &3Oracle: &bIt will count the voices that stray. Watch closely: the true will glimmer, the false will smoulder.
 @delay 4s
-@player &3Oracle: &bEach false offering costs you dearly. You may falter four times. The fifth belongs to the sea.
+@player &3Oracle: &bThe elders forgive four false offerings. Never a fifth.
 @delay 4s
-@player &3Oracle: &bShould the deep claim you, the elders will compose a new song, and all you have learned will be lost.
+@player &3Oracle: &bIf the deep takes you, the song is rewritten, and all you learned sinks with you.
 @delay 4s
-@player &3Oracle: &bListen well, seeker. The deep keeps its counsel.
+@player &3Oracle: &bListen, seeker. The deep keeps its counsel.
 @delay 4s
 @player &7&o[Note] Playing co-op? Each player is given their own song. To share one, every teammate must right-click the conduit and type the same team word within 2 minutes. Joining a team starts the puzzle over for the whole team.
