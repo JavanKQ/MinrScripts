@@ -68,6 +68,10 @@ Room 3 altar and doors (designed 2026-11-24):
 | Room2_Symbols/Ocean_Puzzle_Symbol_01..10.msc | interact | Room 2 symbols (7 of 11). Each plays its slot of `answer` as a chime, heard only by the clicking player. The 10 files are identical except `slot` (0-9). Symbol N pairs with Room 1 note block N. |
 | Instructions/Ocean_Puzzle_Instructions_Room1/3/4.msc | interact | Oracle instructions |
 
+## Switching machines
+
+The user works on more than one machine. This file is the full record: Claude's memory isn't synced between machines, so anything worth keeping goes here. On a new machine, run `git pull` first. On Windows, Python is run as `py`; elsewhere it may be `python3`. Generated scripts come from `tools/gen_room_scripts.py`, and `tools/room3_grids.py` reproduces the Room 3 grids.
+
 ## Status (as of 2026-11-24)
 
 - **Tested and working** under the old `oceanpuzzle` namespace: submit check, hearts, entrance re-roll, stairway open/close.
@@ -124,7 +128,7 @@ Everything was re-imported on 2026-11-24. Keep this list up to date: add every s
    - Whether 15s (from Start) is enough, and whether 30s of parkour is right.
    - That `/clone` works through `@bypass`.
    - That Finish disbands the team.
-3. Rewrite the Room 4 instructions in the cryptic style of Room 1 (4s per line). Room 3's are done.
+3. Rewrite the Room 4 instructions in the cryptic style of Room 1 (4s per line; keep the 45s cooldown longer than the speech). The current text predates the redesign. It must hint at: tuning each voice to its sign's Room 2 note, waking the instrument with the Start object, playing in value order (lowest first) within 15s, and the path that appears afterwards. Room 3's instructions are done.
 4. Later: co-op edge-case tests (see "NOT yet tested" above).
 5. **Before admin handoff, once every script is done:** the user prepares the main map and gives the real coordinates. Put them in every header (`Bind to`, `Map/area`, coordinates used inside the script) and in the scripts themselves: the Submit note blocks, stairway and particles; the Entrance blocks; the door `corners`; the parkour clone coordinates; and the binding notes for the altar heads, instrument blocks, Start object and Finish. Set `debug = false` in Submit.
 
