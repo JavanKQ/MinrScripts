@@ -26,15 +26,15 @@
 @var oracle_ready_at = now + 45000L
 
 @player &3Oracle: &bYou have learned which tones answer to the symbols.
-@delay 3s
+@delay 4s
 @player &3Oracle: &bNow the third chamber asks a deeper question: what number sleeps within each sign?
-@delay 3s
+@delay 4s
 @player &3Oracle: &bFive grids lie before you, each more tangled than the last.
-@delay 3s
+@delay 4s
 @player &3Oracle: &bThey offer no plain sum, no guiding mark of arithmetic.
-@delay 3s
+@delay 4s
 @player &3Oracle: &bStudy how the signs stand together. Their kinship is the key.
-@delay 3s
+@delay 4s
 @player &3Oracle: &bBy patient thought, uncover the value of all ten.
-@delay 3s
+@delay 4s
 @player &3Oracle: &bDo not mistake a pattern for a law until every grid agrees.

@@ -29,21 +29,21 @@
 @var oracle_ready_at = now + 45000L
 
 @player &3Oracle: &bTen tones sleep in the first chamber, each bound to a different pitch.
-@delay 3s
+@delay 4s
 @player &3Oracle: &bAmong the drowned stones, ten ancient symbols await your touch.
-@delay 3s
+@delay 4s
 @player &3Oracle: &bEach symbol will sound the note to which it is bound.
-@delay 3s
+@delay 4s
 @player &3Oracle: &bCarry each sound between the chambers. Find the note block that answers it.
-@delay 3s
+@delay 4s
 @player &3Oracle: &bWhen all ten pairings are set, offer your answer.
-@delay 3s
+@delay 4s
 @player &3Oracle: &bThe monument will reveal which tones ring true, and which stray.
-@delay 3s
+@delay 4s
 @player &3Oracle: &bBut take heed: each false offering will cost you a measure of your life.
-@delay 3s
+@delay 4s
 @player &3Oracle: &bShould the deep claim you, the elders will compose a new song, and all you have learned will be lost to the tide.
-@delay 3s
+@delay 4s
 @player &3Oracle: &bListen closely, seeker. The deep keeps its counsel.
-@delay 3s
+@delay 4s
 @player &7&o[Note] Playing co-op? Each player is given their own song. To share one, every teammate must right-click the conduit and type the same team word within 2 minutes. Joining a team starts the puzzle over for the whole team.
