@@ -8,18 +8,18 @@ The same 10 symbols are used in Rooms 2, 3 and 4. They're 10 custom player heads
 
 | Letter (designs) | Symbol number (scripts and headers) | Room 2 script |
 |---|---|---|
-| A | Symbol 1 | `Ocean_Puzzle_Symbol_01.msc` |
-| B | Symbol 2 | `Ocean_Puzzle_Symbol_02.msc` |
-| C | Symbol 3 | `Ocean_Puzzle_Symbol_03.msc` |
-| D | Symbol 4 | `Ocean_Puzzle_Symbol_04.msc` |
-| E | Symbol 5 | `Ocean_Puzzle_Symbol_05.msc` |
-| F | Symbol 6 | `Ocean_Puzzle_Symbol_06.msc` |
-| G | Symbol 7 | `Ocean_Puzzle_Symbol_07.msc` |
-| H | Symbol 8 | `Ocean_Puzzle_Symbol_08.msc` |
-| I | Symbol 9 | `Ocean_Puzzle_Symbol_09.msc` |
-| J | Symbol 10 | `Ocean_Puzzle_Symbol_10.msc` |
+| A | Symbol 1 | `Room2_Symbols/Ocean_Puzzle_Symbol_01.msc` |
+| B | Symbol 2 | `Room2_Symbols/Ocean_Puzzle_Symbol_02.msc` |
+| C | Symbol 3 | `Room2_Symbols/Ocean_Puzzle_Symbol_03.msc` |
+| D | Symbol 4 | `Room2_Symbols/Ocean_Puzzle_Symbol_04.msc` |
+| E | Symbol 5 | `Room2_Symbols/Ocean_Puzzle_Symbol_05.msc` |
+| F | Symbol 6 | `Room2_Symbols/Ocean_Puzzle_Symbol_06.msc` |
+| G | Symbol 7 | `Room2_Symbols/Ocean_Puzzle_Symbol_07.msc` |
+| H | Symbol 8 | `Room2_Symbols/Ocean_Puzzle_Symbol_08.msc` |
+| I | Symbol 9 | `Room2_Symbols/Ocean_Puzzle_Symbol_09.msc` |
+| J | Symbol 10 | `Room2_Symbols/Ocean_Puzzle_Symbol_10.msc` |
 
-**For admins:** which skin is "Symbol 1", "Symbol 2" and so on is decided by the map builder when placing heads and applying scripts. Whatever skin is bound to `Ocean_Puzzle_Symbol_01.msc` in Room 2 must be the head used for every **A** in these grids and for Symbol 1 in Room 4, and the same for the other nine.
+**For admins:** which skin is "Symbol 1", "Symbol 2" and so on is decided by the map builder when placing heads and applying scripts. Whatever skin is bound to `Room2_Symbols/Ocean_Puzzle_Symbol_01.msc` in Room 2 must be the head used for every **A** in these grids and for Symbol 1 in Room 4, and the same for the other nine.
 
 ## How the grids work
 
@@ -82,4 +82,4 @@ Exactly one set of values fits (checked over every value from 0 to 120), and all
 
 - Room 4's check script uses the symbol-number order above.
 - To regenerate this exact set: `py tools/room3_grids.py 131`. Changing the generator's settings can change what a seed produces, so treat this file as the record of the chosen set.
-- The Room 3 instructions hint at the rules in metaphor without stating them. See `Ocean_Puzzle_Instructions_Room3.msc`.
+- The Room 3 instructions hint at the rules in metaphor without stating them. See `Instructions/Ocean_Puzzle_Instructions_Room3.msc`.
