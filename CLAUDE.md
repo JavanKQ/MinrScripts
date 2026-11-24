@@ -20,7 +20,8 @@ MSC 2.0 scripts for a puzzle map on zero.minr.org (Minecraft). See [References.m
 
 - **Room 1:** 10 note blocks. Players tune them and press a submit block.
 - **Room 2:** 10 clickable symbols. Each plays one note from that player's answer.
-- **Room 3:** grid puzzle to work out each symbol's hidden number value.
+- **Room 3:** five symbol-arithmetic grids (no scripts) that pin each symbol's number value. Each row and column has its own hidden operator, the same in every grid. Full design, answer and Room 4 order: [Ocean_Puzzle_Room3_Grids.md](Ocean_Puzzle_Room3_Grids.md). Room 4 order, lowest first: Symbols 8, 6, 5, 10, 4, 3, 1, 2, 7, 9. `tools/room3_grids.py` can generate and check new grid sets (`py tools/room3_grids.py`).
+- **Symbols are custom player heads.** Only their skins differ. Designs use letters A-J and scripts use Symbol 1-10 (A = Symbol 1 ... J = Symbol 10). The map builder matches skins to numbers physically, and the same skin must be Symbol N in Rooms 2, 3 and 4. Explain this in headers for admins.
 - **Room 4:** "ancient instrument." Players tune 10 note blocks (symbols in a different order) to each symbol's Room 2 note, then play the melody quickly in order of value, lowest first. The per-player `answer` therefore has to last from Room 1 through Room 4.
 
 Flow:
@@ -73,7 +74,7 @@ The user hasn't imported anything since 2026-11-23. Keep this list up to date: a
 ## Next up
 
 1. Co-op test with a second player (see "NOT yet tested" above).
-2. Room 4 instrument check script.
+2. Room 4 instrument check script (Room 3 is designed; see the grids file for the order).
 3. Rewrite the Room 3 and 4 instructions in the cryptic style of Room 1 (4s per line).
 
 ## Decisions
