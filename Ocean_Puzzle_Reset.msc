@@ -10,6 +10,9 @@
 #   Clears the player's Ocean Puzzle progress (answer, solved
 #   status and team). Players who leave and re-join the map must
 #   come through here again, so their puzzle restarts.
+#   If the player was on a team, their online teammates are told
+#   right away and regrouped without them (or made solo if only
+#   one is left).
 #
 # Placement note:
 #   Partway down the one-way drop at the end of the maze, into
@@ -22,6 +25,44 @@
 # Related scripts: Submit (1), Entrance (2), Exit (3), Note Tune (5), Team Conduit (6), Symbols (7)
 # ==============================================================
 @using puzzle1
+# --- Tell the rest of the team right away, and regroup them without this player ---
+@if team != ""
+@define String me = player.getUniqueId()
+@define String rest = ""
+@define Player q = player
+@for String id in team_members.split(",")
+@if id != me
+@var q = Player(id)
+@if q != null
+@if team[q] == team && q.isOnline()
+@if rest != ""
+@var rest = rest + ","
+@fi
+@var rest = rest + id
+@fi
+@fi
+@fi
+@done
+@if rest != ""
+@define String restId = team + "~" + "{{system::currentTimeMillis() / 1000L}}"
+@define Boolean alone = !rest.contains(",")
+@for String id in rest.split(",")
+@var q = Player(id)
+@if q != null
+@if alone
+@var team[q] = ""
+@var team_members[q] = ""
+@var q.sendMessage("§7§o[Note] {{player.getName()}} has left your team. You are now playing solo.")
+@else
+@var team[q] = restId
+@var team_members[q] = rest
+@var q.sendMessage("§7§o[Note] {{player.getName()}} has left your team.")
+@fi
+@fi
+@done
+@fi
+@fi
+# --- End team notice ---
 @var solved = false
 @var answer = ""
 @var team = ""

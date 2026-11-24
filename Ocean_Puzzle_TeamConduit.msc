@@ -17,6 +17,9 @@
 #   When the 2 minutes are up, every member is told the word
 #   has expired and who is on the team. If nobody joined, the
 #   team is deleted and the creator is told.
+#   A player who joins or creates a team while on another one
+#   leaves the old team; its online members are told right away
+#   and regrouped without them.
 #
 # Requires: puzzle1 namespace (see Submit script header)
 # Related scripts: Submit (1), Entrance (2), Exit (3), Reset (4),
@@ -49,6 +52,47 @@
 @fi
 @fi
 @done
+# --- If leaving an old team, tell its other members and regroup them ---
+@define Boolean already = false
+@if found != ""
+@var already = found.contains(me)
+@fi
+@if team != "" && !already
+@define String rest = ""
+@define Player q = player
+@for String id in team_members.split(",")
+@if id != me
+@var q = Player(id)
+@if q != null
+@if team[q] == team && q.isOnline()
+@if rest != ""
+@var rest = rest + ","
+@fi
+@var rest = rest + id
+@fi
+@fi
+@fi
+@done
+@if rest != ""
+@define String restId = team + "~" + nowText
+@define Boolean alone = !rest.contains(",")
+@for String id in rest.split(",")
+@var q = Player(id)
+@if q != null
+@if alone
+@var team[q] = ""
+@var team_members[q] = ""
+@var q.sendMessage("§7§o[Note] {{player.getName()}} has left your team. You are now playing solo.")
+@else
+@var team[q] = restId
+@var team_members[q] = rest
+@var q.sendMessage("§7§o[Note] {{player.getName()}} has left your team.")
+@fi
+@fi
+@done
+@fi
+@fi
+# --- End old team notice ---
 @if found == ""
 @define String myId = word + "@" + now
 @var team_registry = kept + word + ":" + now + ":" + me + ";"
