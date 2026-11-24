@@ -1,0 +1,71 @@
+# ==============================================================
+# OCEAN PUZZLE - DOOR: ROOM4 OUTSIDE (script 8 of 9)
+# ==============================================================
+# Script type : interact
+# Bind to     : [FILL IN: x y z of the head outside the Room 4 entrance]
+# Map/area    : [FILL IN: map name / room]
+# Import      : /s i i <paste URL>, then click the head
+#
+# What it does:
+#   Opens the Room 4 door (fills it with air) for 5 seconds,
+#   then seals it again. Opens only for players who solved Room 1 AND Room 3
+#   (solved and solved3).
+#   If someone clicks while the door is already open, it stays
+#   open until 5 seconds after the LAST click.
+#
+# Settings: the 4 door scripts are identical except for the
+#   lines under "Settings for this copy" below. Each door has an
+#   outside head and an inside head that both control it, so
+#   both Room 4 copies must use the same door coordinates.
+#
+# Requires: puzzle1 namespace (see Submit script header),
+#   including:
+#   /variable define puzzle1 relative Boolean solved3 = false
+#   /variable define puzzle1 Long door3_close_at = 0L
+#   /variable define puzzle1 Long door4_close_at = 0L
+#   (the two door variables are NOT relative: shared by all)
+#
+# Map coordinates used inside this script:
+#   Room 4 door: [FILL IN] (the "corners" setting below)
+#
+# Related scripts: the other Doors (8), Altar signs (9), Submit (1)
+# ==============================================================
+@using puzzle1
+# --- Settings for this copy ---
+# need: 0 = anyone, 1 = solved Room 1, 2 = solved Rooms 1 and 3
+@define Int need = 2
+@define Int door = 4
+# corners: "x1 y1 z1 x2 y2 z2" of the door blocks
+@define String corners = ""
+# material: the block the door is made of
+@define String material = "minecraft:prismarine_bricks"
+# --- End settings ---
+@if corners == ""
+@player &7&o[Note] This door's coordinates haven't been set yet.
+@return
+@fi
+@if need >= 1 && !solved
+@player &3Oracle: &bThe seal does not yet know your song...
+@return
+@fi
+@if need >= 2 && !solved3
+@player &3Oracle: &bThe seal waits for the signs to be set in their true order...
+@return
+@fi
+@define Long closeAt = system::currentTimeMillis() + 5000L
+@if door == 3
+@var door3_close_at = closeAt
+@else
+@var door4_close_at = closeAt
+@fi
+@bypass /fill {{corners}} air
+@bypass /playsound minecraft:block.conduit.activate record {{player.getName()}} ~ ~ ~ 1 1
+@player &f&oThe seal parts before you... but not for long.
+@delay 5s
+@define Long last = door3_close_at
+@if door == 4
+@var last = door4_close_at
+@fi
+@if last <= closeAt
+@bypass /fill {{corners}} {{material}}
+@fi

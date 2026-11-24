@@ -1,5 +1,5 @@
 # ==============================================================
-# OCEAN PUZZLE - PROGRESS RESET (4 of 7)
+# OCEAN PUZZLE - PROGRESS RESET (4 of 9)
 # ==============================================================
 # Script type : walk (interact is fine for testing)
 # Bind to     : [FILL IN: x y z]
@@ -7,8 +7,9 @@
 # Import      : /script import walk <paste URL>, then click the block
 #
 # What it does:
-#   Clears the player's Ocean Puzzle progress (answer, solved
-#   status and team). Players who leave and re-join the map must
+#   Clears the player's Ocean Puzzle progress (answer, Room 1
+#   and Room 3 solved status, any unfinished altar offering,
+#   and team). Players who leave and re-join the map must
 #   come through here again, so their puzzle restarts.
 #   If the player was on a team, their online teammates are told
 #   right away and regrouped without them (or made solo if only
@@ -64,6 +65,8 @@
 @fi
 # --- End team notice ---
 @var solved = false
+@var solved3 = false
+@var altar_seq = ""
 @var answer = ""
 @var team = ""
 @var team_members = ""

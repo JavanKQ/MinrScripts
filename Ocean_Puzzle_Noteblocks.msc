@@ -1,5 +1,5 @@
 # ==============================================================
-# OCEAN PUZZLE - SUBMIT (1 of 7)
+# OCEAN PUZZLE - SUBMIT (1 of 9)
 # ==============================================================
 # Script type : interact
 # Bind to     : [FILL IN: x y z of the submit block]
@@ -30,8 +30,15 @@
 #   /variable define puzzle1 relative Long chime_ready_at = 0L
 #   /variable define puzzle1 relative String team = ""
 #   /variable define puzzle1 relative String team_members = ""
+#   /variable define puzzle1 relative Boolean solved3 = false
+#   /variable define puzzle1 relative String altar_seq = ""
+#   /variable define puzzle1 relative Long altar_last_at = 0L
+#   /variable define puzzle1 relative Long altar_ready_at = 0L
 #   /variable define puzzle1 String team_registry = ""
-#   (team_registry is NOT relative: it is shared by all players)
+#   /variable define puzzle1 Long door3_close_at = 0L
+#   /variable define puzzle1 Long door4_close_at = 0L
+#   (team_registry and the door variables are NOT relative: they
+#   are shared by all players)
 #
 # Map coordinates used inside this script:
 #   Note blocks   : -1852 68 1573 through -1852 68 1564

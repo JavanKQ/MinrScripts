@@ -1,0 +1,163 @@
+# ==============================================================
+# OCEAN PUZZLE - ROOM 3 ALTAR SIGN 1 of 10 (script 9 of 9)
+# ==============================================================
+# Script type : interact
+# Bind to     : [FILL IN: x y z of altar head 1 in Room 3]
+#               This head must wear the SAME skin as Symbol 1
+#               (design letter A) in Rooms 2 and 4.
+# Map/area    : [FILL IN: map name / room]
+# Import      : /s i i <paste URL>, then click altar head 1
+#
+# What it does:
+#   Room 3's answer. Ten symbol heads sit on an altar inside
+#   Room 3, one per symbol. Players click them in order of the
+#   symbols' values (from the Room 3 grids), lowest first:
+#   Symbols 7, 9, 4, 6, 10, 5, 1, 2, 8, 3.
+#   Every click plays the same confirmation sound and shows a
+#   count (n/10). Nothing says whether a click was right; the
+#   order is only checked after the 10th click.
+#   - More than 15 seconds between clicks: the offering is
+#     cleared and the player is told to begin again.
+#   - Clicking a head already used in this offering: cleared,
+#     with a message, so the player can begin again.
+#   - Wrong order: no hearts lost, the Oracle says it's wrong
+#     (not where), and the altar waits 30 seconds per player.
+#   - Right order: the player and their online teammates are
+#     marked as having solved Room 3 (solved3), which lets the
+#     Room 4 door open for them. Teammates who are offline or
+#     on another team are dropped from the team first.
+#   Left-clicking a head also counts as a click.
+#
+# Requires: puzzle1 namespace (see Submit script header),
+#   including:
+#   /variable define puzzle1 relative Boolean solved3 = false
+#   /variable define puzzle1 relative String altar_seq = ""
+#   /variable define puzzle1 relative Long altar_last_at = 0L
+#   /variable define puzzle1 relative Long altar_ready_at = 0L
+#
+# Map coordinates used inside this script: none
+#
+# Related scripts: Altar signs 1-10 (identical except for the
+#   symbol number on the line below), Doors (8), Reset (4),
+#   Team Conduit (6). Design: Ocean_Puzzle_Room3_Grids.md
+# ==============================================================
+@using puzzle1
+@define Int symbol = 1
+@define String order = "7,9,4,6,10,5,1,2,8,3"
+@if solved3
+@player &3Oracle: &bThe signs already rest in their true order... The way onward knows you.
+@return
+@fi
+@define Long now = system::currentTimeMillis()
+@if altar_ready_at > now
+@define Long seconds = (altar_ready_at - now + 999L) / 1000L
+@player &3Oracle: &bThe altar still trembles from your last offering... Wait {{seconds}} seconds.
+@return
+@fi
+# --- Too slow since the last click: start over ---
+@if altar_seq != "" && now - altar_last_at > 15000L
+@var altar_seq = ""
+@player &3Oracle: &bThe signs have forgotten your unfinished offering... It begins anew.
+@fi
+# --- Same head twice: start over ---
+@define Boolean repeat = false
+@if altar_seq != ""
+@for String s in altar_seq.split(",")
+@if s == String(symbol)
+@var repeat = true
+@fi
+@done
+@fi
+@if repeat
+@var altar_seq = ""
+@player &3Oracle: &bEach sign may be offered but once... Your offering is undone. Begin again.
+@return
+@fi
+@if altar_seq == ""
+@var altar_seq = String(symbol)
+@else
+@var altar_seq = altar_seq + "," + String(symbol)
+@fi
+@var altar_last_at = now
+@define Int count = altar_seq.split(",").length()
+@bypass /playsound minecraft:block.amethyst_block.chime record {{player.getName()}} ~ ~ ~ 1 1
+@if count < 10
+@player &f&oThe sign stirs beneath your touch. &7({{count}}/10)
+# --- Wait 15s; if no newer click came, the offering lapses ---
+@delay 15s
+@if altar_seq != "" && altar_last_at == now
+@var altar_seq = ""
+@if player.isOnline()
+@player &3Oracle: &bThe signs fall silent, your offering unfinished... Begin again.
+@fi
+@fi
+@return
+@fi
+# --- 10th click: check the order ---
+@define String offered = altar_seq
+@var altar_seq = ""
+@if offered != order
+@var altar_ready_at = now + 30000L
+@player &3Oracle: &bThe signs stir... and fall still. This is not their true order.
+@return
+@fi
+# --- Team check: drop teammates who are offline or on another team ---
+@define String me = player.getUniqueId()
+@define String stay = me
+@define String leftNames = ""
+@define Boolean dropped = false
+@define Player p = player
+@if team != ""
+@for String id in team_members.split(",")
+@if id != me
+@var p = Player(id)
+@if p == null
+@var dropped = true
+@if leftNames != ""
+@var leftNames = leftNames + ", "
+@fi
+@var leftNames = leftNames + "a teammate"
+@elseif team[p] != team || !p.isOnline()
+@var dropped = true
+@if leftNames != ""
+@var leftNames = leftNames + ", "
+@fi
+@var leftNames = leftNames + p.getName()
+@else
+@var stay = stay + "," + id
+@fi
+@fi
+@done
+@if dropped
+@if stay == me
+@var team = ""
+@var team_members = ""
+@player &7&o[Note] You and {{leftNames}} are no longer on the same team. You are now playing solo.
+@else
+@define String newId = team + "~" + "{{system::currentTimeMillis() / 1000L}}"
+@for String id in stay.split(",")
+@var p = Player(id)
+@if p != null
+@var team[p] = newId
+@var team_members[p] = stay
+@var p.sendMessage("§7§o[Note] {{leftNames}} is no longer on your team (went offline or joined another team).")
+@fi
+@done
+@fi
+@fi
+@fi
+# --- End team check ---
+@var solved3 = true
+@player &3Oracle: &bThe signs settle into their true order... The way onward knows you now.
+@if team == ""
+@return
+@fi
+@for String id in stay.split(",")
+@if id != me
+@var p = Player(id)
+@if p != null
+@var solved3[p] = true
+@var p.sendMessage("§3Oracle: §b{{player.getName()}} has set the signs in their true order... the way onward knows you all.")
+@fi
+@fi
+@done
