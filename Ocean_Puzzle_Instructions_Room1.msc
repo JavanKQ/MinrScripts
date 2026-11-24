@@ -28,6 +28,8 @@
 
 @var oracle_ready_at = now + 45000L
 
+@player &3Oracle: &bMark my words well, seeker. Not one of them is spoken idly.
+@delay 4s
 @player &3Oracle: &bLong ago, the elders sealed their song within these walls. Only one who hears it may pass.
 @delay 4s
 @player &3Oracle: &bTen voices lie silent in this chamber. Ten signs keep watch among the drowned stones.
