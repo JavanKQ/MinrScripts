@@ -1,11 +1,12 @@
 # ==============================================================
-# OCEAN PUZZLE - NOTE TUNE MESSAGE (5 of 9)
+# OCEAN PUZZLE - NOTE TUNE MESSAGE (5 of 10)
 # ==============================================================
 # Script type : interact
 # Bind to     : EVERY puzzle note block, one bind each.
 #               Room 1 (test server coords):
 #               -1852 68 1573 through -1852 68 1564 (10 blocks)
-#               Room 4: [FILL IN: 10 note block coords]
+#               NOT Room 4: its note blocks use the Instrument
+#               scripts (10), which show the same message.
 # Map/area    : [FILL IN: map name / room]
 # Import      : /s i i <paste URL>, then click each note block
 #

@@ -1,0 +1,193 @@
+# ==============================================================
+# OCEAN PUZZLE - ROOM 4 INSTRUMENT VOICE 7 of 10 (script 10 of 10)
+# ==============================================================
+# Script type : interact
+# Bind to     : [FILL IN: x y z of the Room 4 note block for Symbol 7]
+#               This note block must be marked with the SAME skin
+#               as Symbol 7 (design letter G) in Rooms 2 and 3,
+#               and sit on PACKED ICE (chime) like Room 1's blocks.
+#               Do NOT also bind Note Tune (5) to Room 4's blocks:
+#               this script already shows the same tuning message.
+# Map/area    : [FILL IN: map name / room]
+# Import      : /s i i <paste URL>, then click the note block
+#
+# What it does:
+#   The ancient instrument. Players tune each Room 4 note block
+#   to its symbol's note (the note that symbol plays in Room 2),
+#   then hit (left-click) the blocks in order of the symbols'
+#   Room 3 values, lowest first:
+#   Symbols 7, 9, 4, 6, 10, 5, 1, 2, 8, 3,
+#   all within 15 seconds of the first note.
+#   - Right-click (tuning): shows the new pitch, like Note Tune,
+#     and cancels any melody in progress.
+#   - Hitting the wrong block first does nothing, so players can
+#     test sounds freely. Hitting a block out of order mid-melody
+#     breaks it (hitting Symbol 7 starts a new melody at once).
+#   - More than 15 seconds after the first note: the melody fades.
+#   - All 10 in order and in time, but some blocks mistuned: the
+#     Oracle says how many (never which). No hearts are lost.
+#   - All 10 in order, in time and in tune: the player and their
+#     online teammates complete Room 4 (solved4), and the team is
+#     disbanded. The Room 4 exit head (Doors) then opens for them.
+#   Only players who solved Rooms 1 and 3 can perform. For anyone
+#   else, and after completing, these are plain note blocks.
+#   "Breaks" and "fades" messages only appear once at least 2
+#   notes were played in order, so testing one block stays quiet.
+#   SETTING: the 15 second limit is the 15000L on two lines below.
+#
+# Requires: puzzle1 namespace (see Submit script header),
+#   including:
+#   /variable define puzzle1 relative Boolean solved4 = false
+#   /variable define puzzle1 relative String inst_seq = ""
+#   /variable define puzzle1 relative Long inst_started_at = 0L
+#   /variable define puzzle1 relative Int inst_wrong = 0
+#
+# Map coordinates used inside this script: none
+#
+# Related scripts: Instrument voices 1-10 (identical except for
+#   the symbol number below), Doors (8), Reset (4), Symbols (7),
+#   Altar signs (9)
+# ==============================================================
+@using puzzle1
+@define Int symbol = 7
+@define String order = "7,9,4,6,10,5,1,2,8,3"
+@define String before = block.getBlockDataValue("note")
+@delay 1
+@define String after = block.getBlockDataValue("note")
+# --- Right-click (tuning): show the pitch, cancel any melody ---
+@if after != before
+@define String[] ordinals = String["1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th", "10th", "11th", "12th", "13th", "14th", "15th", "16th", "17th", "18th", "19th", "20th", "21st", "22nd", "23rd", "24th", "25th"]
+@player &f&oThe note shifts to its {{ordinals[Int(after)]}} position.
+@var inst_seq = ""
+@return
+@fi
+# --- A hit: only counts for players who reached Room 4 ---
+@if solved4 || !solved || !solved3 || answer == ""
+@return
+@fi
+@define Long now = system::currentTimeMillis()
+@define Int played = 0
+@if inst_seq != ""
+@var played = inst_seq.split(",").length()
+@fi
+@if played > 0 && now - inst_started_at > 15000L
+@var inst_seq = ""
+@var played = 0
+@fi
+@define String[] steps = order.split(",")
+@if steps[played] != String(symbol)
+@if played >= 2
+@player &3Oracle: &bThe melody breaks... the voices strayed from their procession.
+@fi
+@var inst_seq = ""
+@var played = 0
+@if steps[0] != String(symbol)
+@return
+@fi
+@fi
+@if played == 0
+@var inst_started_at = now
+@var inst_wrong = 0
+@fi
+@define String[] notes = answer.split(",")
+@if after != notes[symbol - 1]
+@var inst_wrong = inst_wrong + 1
+@fi
+@if played == 0
+@var inst_seq = String(symbol)
+@else
+@var inst_seq = inst_seq + "," + String(symbol)
+@fi
+@var played = played + 1
+@if played < 10
+# --- The first note starts a 15s timer; if the melody isn't done, it fades ---
+@if played == 1
+@delay 15s
+@if inst_seq != "" && inst_started_at == now
+@define Int reached = inst_seq.split(",").length()
+@var inst_seq = ""
+@if reached >= 2 && player.isOnline()
+@player &3Oracle: &bThe melody fades beneath the tide... too slow, seeker.
+@fi
+@fi
+@fi
+@return
+@fi
+# --- 10th note, in order and in time: check the tuning ---
+@var inst_seq = ""
+@if inst_wrong > 0
+@if inst_wrong == 1
+@player &3Oracle: &bThe procession was true... yet one voice sang false.
+@else
+@player &3Oracle: &bThe procession was true... yet {{inst_wrong}} voices sang false.
+@fi
+@return
+@fi
+# --- Team check: drop teammates who are offline or on another team ---
+@define String me = player.getUniqueId()
+@define String stay = me
+@define String leftNames = ""
+@define Boolean dropped = false
+@define Player p = player
+@if team != ""
+@for String id in team_members.split(",")
+@if id != me
+@var p = Player(id)
+@if p == null
+@var dropped = true
+@if leftNames != ""
+@var leftNames = leftNames + ", "
+@fi
+@var leftNames = leftNames + "a teammate"
+@elseif team[p] != team || !p.isOnline()
+@var dropped = true
+@if leftNames != ""
+@var leftNames = leftNames + ", "
+@fi
+@var leftNames = leftNames + p.getName()
+@else
+@var stay = stay + "," + id
+@fi
+@fi
+@done
+@if dropped
+@if stay == me
+@var team = ""
+@var team_members = ""
+@player &7&o[Note] You and {{leftNames}} are no longer on the same team. You are now playing solo.
+@else
+@define String newId = team + "~" + "{{system::currentTimeMillis() / 1000L}}"
+@for String id in stay.split(",")
+@var p = Player(id)
+@if p != null
+@var team[p] = newId
+@var team_members[p] = stay
+@var p.sendMessage("§7§o[Note] {{leftNames}} is no longer on your team (went offline or joined another team).")
+@fi
+@done
+@fi
+@fi
+@fi
+# --- End team check ---
+@var solved4 = true
+@player &3Oracle: &bThe ancient instrument sings, and the deep sings with it... Your song is complete.
+@player &3Oracle: &bThe way onward lies open to you.
+@if team == ""
+@return
+@fi
+# --- Room 4 complete: mark teammates and disband the team entirely ---
+@for String id in stay.split(",")
+@if id != me
+@var p = Player(id)
+@if p != null
+@var solved4[p] = true
+@var team[p] = ""
+@var team_members[p] = ""
+@var p.sendMessage("§3Oracle: §b{{player.getName()}} has awakened the ancient instrument... the deep sings for you all. The way onward lies open.")
+@var p.sendMessage("§7§o[Note] The puzzle is complete, so your team has disbanded.")
+@fi
+@fi
+@done
+@var team = ""
+@var team_members = ""
+@player &7&o[Note] The puzzle is complete, so your team has disbanded.
