@@ -17,6 +17,8 @@
 #   When the 2 minutes are up, every member is told the word
 #   has expired and who is on the team. If nobody joined, the
 #   team is deleted and the creator is told.
+#   Players who have already solved Room 1 can't create or join
+#   a team (the conduit refuses before asking for a word).
 #   A player who joins or creates a team while on another one
 #   leaves the old team; its online members are told right away
 #   and regrouped without them.
@@ -26,6 +28,15 @@
 #                  Note Tune (5)
 # ==============================================================
 @using puzzle1
+# --- Players who already solved Room 1 can't create or join a team ---
+@if solved
+@if team != ""
+@player &3Oracle: &bYour song is already bound and sung... The conduit has nothing more to give you.
+@else
+@player &3Oracle: &bYour song has already been sung... It cannot be bound anew.
+@fi
+@return
+@fi
 @define String word = ""
 @player &3Oracle: &bSpeak the word that shall bind your song to your companions'...
 @prompt 30s word §3Oracle: §bThe conduit's glow fades. Return when you are ready.
