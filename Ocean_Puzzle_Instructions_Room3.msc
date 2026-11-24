@@ -7,8 +7,10 @@
 # Import      : /s i i <paste URL>, then click the head block
 #
 # What it does:
-#   The Oracle explains the symbol value grid puzzle.
-#   Can be replayed once every 45 seconds per player.
+#   The Oracle explains the symbol value grid puzzle in metaphor
+#   (see Ocean_Puzzle_Room3_Grids.md for the real rules).
+#   Speech lasts about 32 seconds. Can be replayed once every
+#   45 seconds per player.
 #
 # Requires: puzzle1 namespace (see Submit script header)
 #
@@ -25,16 +27,20 @@
 
 @var oracle_ready_at = now + 45000L
 
-@player &3Oracle: &bYou have learned which tones answer to the symbols.
+@player &3Oracle: &bYou have learned the voice of every sign. Now learn its worth.
 @delay 4s
-@player &3Oracle: &bNow the third chamber asks a deeper question: what number sleeps within each sign?
+@player &3Oracle: &bWithin each sign sleeps a number. Five walls guard the secret.
 @delay 4s
-@player &3Oracle: &bFive grids lie before you, each more tangled than the last.
+@player &3Oracle: &bWhere a row ends and a column settles, the waters gather into one.
 @delay 4s
-@player &3Oracle: &bThey offer no plain sum, no guiding mark of arithmetic.
+@player &3Oracle: &bBetween every two stones runs a current of its own. None is named.
 @delay 4s
-@player &3Oracle: &bStudy how the signs stand together. Their kinship is the key.
+@player &3Oracle: &bThe currents never change from wall to wall. What binds one binds all.
 @delay 4s
-@player &3Oracle: &bBy patient thought, uncover the value of all ten.
+@player &3Oracle: &bThey flow as the tide does: across from the left, down from the surface. Never otherwise.
 @delay 4s
-@player &3Oracle: &bDo not mistake a pattern for a law until every grid agrees.
+@player &3Oracle: &bThe deep keeps no broken numbers, and nothing sinks below nothing.
+@delay 4s
+@player &3Oracle: &bBegin where the signs are fewest. What one wall leaves unspoken, another will answer.
+@delay 4s
+@player &3Oracle: &bDo not mistake a pattern for a law until every wall agrees.

@@ -20,7 +20,7 @@ MSC 2.0 scripts for a puzzle map on zero.minr.org (Minecraft). See [References.m
 
 - **Room 1:** 10 note blocks. Players tune them and press a submit block.
 - **Room 2:** 10 clickable symbols. Each plays one note from that player's answer.
-- **Room 3:** five symbol-arithmetic grids (no scripts) that pin each symbol's number value. Each row and column has its own hidden operator, the same in every grid. Full design, answer and Room 4 order: [Ocean_Puzzle_Room3_Grids.md](Ocean_Puzzle_Room3_Grids.md). Room 4 order, lowest first: Symbols 8, 6, 5, 10, 4, 3, 1, 2, 7, 9. `tools/room3_grids.py` can generate and check new grid sets (`py tools/room3_grids.py`).
+- **Room 3:** five symbol-arithmetic grids (no puzzle scripts). Every gap between two cells has its own hidden operator (+, -, x, /; 12 in all), the same in every grid. Lines are worked strictly left to right / top to bottom, division is always whole, nothing is negative. Grid 1 deliberately leaves some operators open until Grid 2. Full design, answer and order: [Ocean_Puzzle_Room3_Grids.md](Ocean_Puzzle_Room3_Grids.md). Room 4 order, lowest first: Symbols 7, 9, 4, 6, 10, 5, 1, 2, 8, 3. `tools/room3_grids.py` generates and checks grid sets (`py tools/room3_grids.py 131` reproduces the chosen one).
 - **Symbols are custom player heads.** Only their skins differ. Designs use letters A-J and scripts use Symbol 1-10 (A = Symbol 1 ... J = Symbol 10). The map builder matches skins to numbers physically, and the same skin must be Symbol N in Rooms 2, 3 and 4. Explain this in headers for admins.
 - **Room 4:** "ancient instrument." Players tune 10 note blocks (symbols in a different order) to each symbol's Room 2 note, then play the melody quickly in order of value, lowest first. The per-player `answer` therefore has to last from Room 1 through Room 4.
 
@@ -70,12 +70,13 @@ The user hasn't imported anything since 2026-11-23. Keep this list up to date: a
 | `Ocean_Puzzle_Entrance.msc` | the 6 air blocks at y68 | Team check before the team-wide new song |
 | `Ocean_Puzzle_TeamConduit.msc` | conduit | Expiry roster still works after a team ID change |
 | `Ocean_Puzzle_Instructions_Room1.msc` | Room 1 head block | Cryptic rewrite, "Mark my words" opening line, "What each sign remembers" hint, 60s cooldown |
+| `Ocean_Puzzle_Instructions_Room3.msc` | Room 3 head block | Rewritten in cryptic style for the new grid rules |
 
 ## Next up
 
 1. Co-op test with a second player (see "NOT yet tested" above).
 2. Room 4 instrument check script (Room 3 is designed; see the grids file for the order).
-3. Rewrite the Room 3 and 4 instructions in the cryptic style of Room 1 (4s per line).
+3. Rewrite the Room 4 instructions in the cryptic style of Room 1 (4s per line). Room 3's are done.
 
 ## Decisions
 
