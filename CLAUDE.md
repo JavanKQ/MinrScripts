@@ -25,10 +25,10 @@ MSC 2.0 scripts for a puzzle map on zero.minr.org (Minecraft). See [References.m
 
 Flow:
 - **Entrance:** the player drops through a one-way drop and gets a new random answer: 10 distinct notes from 0-24, stored as a comma-joined String. This is skipped if they've already solved it.
-- **Wrong submit:** costs 1 heart (10 lives). Dying respawns the player at the checkpoint, they drop back through, and they get a new answer. This stops brute-forcing, because what a player learned by guessing is lost on death.
+- **Wrong submit:** costs half a heart (20 tries). Changed from 1 heart (10 tries) on 2026-11-23 because tuning by ear and carrying notes across the chasm made 10 too harsh. Dying respawns the player at the checkpoint, they drop back through, and they get a new answer. This stops brute-forcing, because what a player learned by guessing is lost on death.
 - **Solve:** the stairway ceiling and wall are filled with air. The Exit walk trigger fills them back with prismarine bricks.
 - **Reset:** clears `answer`/`solved` partway down the one-way drop out of the maze. Leaving and rejoining the map restarts the puzzle; dying at the checkpoint does not.
-- **Teams (any size):** each player right-clicks the Team Conduit and types the same team word. The first player creates the word; it accepts new members for 2 minutes, then locks. At the end of the window, all members get the team roster, or, if nobody joined, the team is deleted and the creator is told. Every join gives the whole team a new shared song and sets them unsolved, so a finished player can't carry someone through. A wrong submit costs every online teammate 1 heart, so teams don't get extra guesses. A teammate's death re-rolls the whole team's song. A correct submit marks the whole team solved. Joining another team, or the Reset script, removes a player from their team. Each player stores a team ID (`word@createdSeconds`); updates only go to members whose current team ID matches, so stale rosters are harmless.
+- **Teams (any size):** each player right-clicks the Team Conduit and types the same team word. The first player creates the word; it accepts new members for 2 minutes, then locks. At the end of the window, all members get the team roster, or, if nobody joined, the team is deleted and the creator is told. Every join gives the whole team a new shared song and sets them unsolved, so a finished player can't carry someone through. A wrong submit costs every online teammate half a heart, so teams don't get extra guesses. A teammate's death re-rolls the whole team's song. A correct submit marks the whole team solved. Joining another team, or the Reset script, removes a player from their team. Each player stores a team ID (`word@createdSeconds`); updates only go to members whose current team ID matches, so stale rosters are harmless.
 - **Out-of-character notes** use grey `&7&o[Note]`, never the Oracle's format. The co-op note is at the end of the Room 1 instructions.
 
 Variables in `puzzle1`:
@@ -52,7 +52,7 @@ Variables in `puzzle1`:
 - **Working under `puzzle1`:** Submit and Entrance, after re-importing the Entrance (an old `oceanpuzzle` copy was still bound). NoteTune works; `@delay 1t` was rejected, so it uses `@delay 1`. Interact scripts also fire on left-click (hit), so NoteTune compares the note before and after the delay and stays silent if it didn't change.
 - **Tested solo and working:** all of Rooms 1-2's flow (instructions, NoteTune, entrance, submit, cooldown, hearts, death and new song, solve, stairway, exit, reset) and the Team Conduit with a team of one: word validation, prompt timeout, creating a word, "already bound", team-of-one submits and deaths, and the "bond dissolves" expiry. So `@prompt`, `String.matches`, `Player(uuid)` and the "{{...}}" Long-to-Int trick work.
 - **`@prompt` timeout message:** it showed in yellow, ignoring `&` codes. It now uses `§` codes instead; whether that works is untested. If it doesn't, drop the colors from that one line.
-- **NOT yet tested (needs a second player):** co-op behavior. That means joining a team (shared new song for everyone), messages to teammates via `p.sendMessage(...)` (unknown whether `&` colors work there), changing another player's variables (`answer[p] = ...`), teammates losing a heart on a wrong answer (`q.setHealth`), team-wide solve, team-wide new song on death, and the roster message when the word expires.
+- **NOT yet tested (needs a second player):** co-op behavior. That means joining a team (shared new song for everyone), messages to teammates via `p.sendMessage(...)` (unknown whether `&` colors work there), changing another player's variables (`answer[p] = ...`), teammates losing half a heart on a wrong answer (`q.setHealth`), team-wide solve, team-wide new song on death, and the roster message when the word expires.
 - **Room 2 symbols: written, NOT yet tested.** Unconfirmed: `@bypass /playsound` targeting `{{player.getName()}}` at `~ ~ ~` (the player's position), and `Int(String)` used as a list index.
 - **Debug:** the Submit script has `debug = true`, which prints the answer in chat. Turn it off before handing off to admins.
 
@@ -67,5 +67,5 @@ Variables in `puzzle1`:
 
 ## Open questions
 
-- Whether natural regeneration is off in the puzzle area. If it's on, hearts regenerate during the cooldown and "10 lives" becomes weaker.
+- Whether natural regeneration is off in the puzzle area. If it's on, hearts regenerate during the cooldown and "20 tries" becomes weaker.
 - The stairway is shared blocks, so while it's open, other players could slip through. This is currently accepted.

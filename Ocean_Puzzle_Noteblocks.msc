@@ -8,10 +8,10 @@
 #
 # What it does:
 #   Checks the 10 note blocks in Room 1 against this player's
-#   answer. Wrong = player loses 1 heart and is told how many
+#   answer. Wrong = player loses half a heart and is told how many
 #   notes are wrong. Correct = player is marked solved and the
 #   stairway is opened. On a team, a wrong answer costs every
-#   online teammate 1 heart (and tells them how many are wrong),
+#   online teammate half a heart (and tells them how many are wrong),
 #   and a correct answer marks every teammate solved.
 #   10 second cooldown between submissions.
 #
@@ -92,14 +92,14 @@
 @bypass /fill -1846 69 1565 -1841 67 1565 air
 @return
 @fi
-@if player.getHealth() <= 2.0D
+@if player.getHealth() <= 1.0D
 @player &3Oracle: &bThe elders' patience is spent... The sea reclaims you.
 @elseif wrong == 1
 @player &3Oracle: &bOne note still strays from the song of the elders... Listen closely, and try again.
 @else
 @player &3Oracle: &b{{wrong}} of these notes are not of the pitch the elders composed... Try again.
 @fi
-@var player.setHealth(math::maxDouble(player.getHealth() - 2.0D, 0.0D))
+@var player.setHealth(math::maxDouble(player.getHealth() - 1.0D, 0.0D))
 @if team == ""
 @return
 @fi
@@ -111,7 +111,7 @@
 @if q.getUniqueId() != player.getUniqueId()
 @if q.isOnline()
 @var q.sendMessage("&3Oracle: &b{{player.getName()}}'s offering was false... {{wrong}} of the notes stray, and the elders' displeasure falls upon you all.")
-@var q.setHealth(math::maxDouble(q.getHealth() - 2.0D, 0.0D))
+@var q.setHealth(math::maxDouble(q.getHealth() - 1.0D, 0.0D))
 @fi
 @fi
 @fi
