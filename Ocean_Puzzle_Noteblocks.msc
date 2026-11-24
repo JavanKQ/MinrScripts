@@ -27,6 +27,7 @@
 #   /variable define puzzle1 relative Boolean solved = false
 #   /variable define puzzle1 relative Long submit_ready_at = 0L
 #   /variable define puzzle1 relative Long oracle_ready_at = 0L
+#   /variable define puzzle1 relative Long chime_ready_at = 0L
 #   /variable define puzzle1 relative String team = ""
 #   /variable define puzzle1 relative String team_members = ""
 #   /variable define puzzle1 String team_registry = ""

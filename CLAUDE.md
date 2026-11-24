@@ -37,7 +37,7 @@ Flow:
 - **Out-of-character notes** use grey `&7&o[Note]`, never the Oracle's format. The co-op note is at the end of the Room 1 instructions.
 
 Variables in `puzzle1`:
-- **Relative (per player):** `answer` (String), `solved` (Boolean), `submit_ready_at` (Long, 10s submit cooldown), `oracle_ready_at` (Long, instruction cooldown shared by all instruction scripts: 60s after Room 1, 45s after Rooms 3 and 4; keep each cooldown longer than its speech), `team` (String team ID), `team_members` (String, comma-joined UUIDs).
+- **Relative (per player):** `answer` (String), `solved` (Boolean), `submit_ready_at` (Long, 10s submit cooldown), `chime_ready_at` (Long, 2s cooldown shared by the 10 Room 2 symbols; clicks during it are silent), `oracle_ready_at` (Long, instruction cooldown shared by all instruction scripts: 60s after Room 1, 45s after Rooms 3 and 4; keep each cooldown longer than its speech), `team` (String team ID), `team_members` (String, comma-joined UUIDs).
 - **Global:** `team_registry` (String, `word:createdSeconds:uuid,uuid;...`, only used during the 2-minute join window).
 
 | File | Type | Purpose |
@@ -69,7 +69,7 @@ Everything was re-imported on 2026-11-24. Keep this list up to date: add every s
 
 | Script | Bind to | What changed |
 |---|---|---|
-| (none) | | |
+| `Ocean_Puzzle_Symbol_01..10.msc` (all 10) | each Room 2 symbol head | 2s chime cooldown shared by all symbols; ethereal white-italic line after each chime. **One-time setup first:** `/variable define puzzle1 relative Long chime_ready_at = 0L` |
 
 ## Next up
 
