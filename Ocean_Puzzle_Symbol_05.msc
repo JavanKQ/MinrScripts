@@ -47,4 +47,4 @@
 @define String[] notes = answer.split(",")
 @define String pitch = pitches[Int(notes[slot])]
 @bypass /playsound minecraft:block.note_block.chime record {{player.getName()}} ~ ~ ~ 1 {{pitch}}
-@player &f&oThe chime ebbs through you, and your soul answers.
+@player &f&oThe chime washes over your soul like a tide.
