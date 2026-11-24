@@ -59,7 +59,16 @@ Variables in `puzzle1`:
 - **Room 2 symbols and per-block particle feedback: tested solo and working (2026-11-23),** so `@bypass /playsound` and `/particle ... force <player>` work, as does `{{1573 - i}}.5` inside a command.
 - **Debug:** the Submit script has `debug = true`, which prints the answer in chat. Turn it off before handing off to admins.
 
-- **Last changes, possibly not re-imported yet:** the restored wrong-count message in Submit and the cryptic Room 1 instructions. Before testing, make sure the test server has the current versions of `Ocean_Puzzle_Noteblocks.msc` and `Ocean_Puzzle_Instructions_Room1.msc`.
+## Pending re-import
+
+The user hasn't imported anything since 2026-11-23. Keep this list up to date: add every script changed since then, and clear the list only when the user confirms they've re-imported. When they ask what needs importing, give this whole list, plus any one-time setup commands.
+
+| Script | Bind to | What changed |
+|---|---|---|
+| `Ocean_Puzzle_Noteblocks.msc` (Submit) | submit block | Restored wrong-count message; team check (drops offline or switched teammates) |
+| `Ocean_Puzzle_Entrance.msc` | the 6 air blocks at y68 | Team check before the team-wide new song |
+| `Ocean_Puzzle_TeamConduit.msc` | conduit | Expiry roster still works after a team ID change |
+| `Ocean_Puzzle_Instructions_Room1.msc` | Room 1 head block | Cryptic rewrite, "Mark my words" opening line, "What each sign remembers" hint, 60s cooldown |
 
 ## Next up
 
