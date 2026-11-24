@@ -69,7 +69,7 @@ Everything was re-imported on 2026-11-24. Keep this list up to date: add every s
 
 | Script | Bind to | What changed |
 |---|---|---|
-| `Ocean_Puzzle_Symbol_01..10.msc` (all 10) | each Room 2 symbol head | 2s chime cooldown shared by all symbols; ethereal white-italic line after each chime. **One-time setup first:** `/variable define puzzle1 relative Long chime_ready_at = 0L` |
+| `Ocean_Puzzle_Symbol_01..10.msc` (all 10) | each Room 2 symbol head | 2s chime cooldown shared by all symbols; short ethereal white-italic line after each chime. **One-time setup first:** `/variable define puzzle1 relative Long chime_ready_at = 0L` |
 
 ## Next up
 
