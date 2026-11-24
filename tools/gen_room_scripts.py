@@ -447,7 +447,7 @@ INSTRUMENT = """# ==============================================================
 @player &7&o[Note] The parkour course's coordinates haven't been set yet.
 @return
 @fi
-@player &3Oracle: &bA path rises from below. Make haste, before the tide reclaims it.
+@player &3Oracle: &bA path falls into being, like raindrops upon still water... Make haste, before it fades.
 # --- Tell online teammates (no variables are changed) ---
 @if team != ""
 @define String me = player.getUniqueId()
@@ -457,7 +457,7 @@ INSTRUMENT = """# ==============================================================
 @var p = Player(id)
 @if p != null
 @if team[p] == team && p.isOnline()
-@var p.sendMessage("§3Oracle: §b{{player.getName()}} has awakened the ancient instrument... a path rises from below. Make haste!")
+@var p.sendMessage("§3Oracle: §b{{player.getName()}} has awakened the ancient instrument... a path falls into being like raindrops. Make haste!")
 @fi
 @fi
 @fi

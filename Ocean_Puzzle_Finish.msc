@@ -16,8 +16,10 @@
 #   status, any unfinished altar offering or melody) and
 #   disbands their team: every online teammate still on the same
 #   team is told and removed from it. Teammates who haven't
-#   finished keep their own progress and can still play the
-#   melody and run the parkour on their own.
+#   finished keep ALL their own progress (nothing of theirs is
+#   reset) and can still play the melody and run the parkour
+#   on their own. Finish can also be placed farther down the
+#   line, e.g. right at the next checkpoint.
 #   The checkpoint beyond saves the player's map progress, so
 #   nothing here needs to be kept. Walking over it again does
 #   nothing.
@@ -40,7 +42,7 @@
 @if team[q] == team && q.isOnline()
 @var team[q] = ""
 @var team_members[q] = ""
-@var q.sendMessage("§7§o[Note] {{player.getName()}} has completed the Ocean Puzzle, so your team has disbanded.")
+@var q.sendMessage("§7§o[Note] {{player.getName()}} has completed the Ocean Puzzle, so your team has disbanded. Your own progress is kept: the instrument still awaits you.")
 @fi
 @fi
 @fi
