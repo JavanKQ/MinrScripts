@@ -58,16 +58,20 @@ Variables in `puzzle1`:
 - **Room 2 symbols and per-block particle feedback: tested solo and working (2026-11-23),** so `@bypass /playsound` and `/particle ... force <player>` work, as does `{{1573 - i}}.5` inside a command.
 - **Debug:** the Submit script has `debug = true`, which prints the answer in chat. Turn it off before handing off to admins.
 
+- **Last changes, possibly not re-imported yet:** the restored wrong-count message in Submit and the cryptic Room 1 instructions. Before testing, make sure the test server has the current versions of `Ocean_Puzzle_Noteblocks.msc` and `Ocean_Puzzle_Instructions_Room1.msc`.
+
 ## Next up
 
-1. Test the Room 2 symbols. Each should sound the same as its Room 1 note block once that block is tuned to the answer (the Submit debug output shows the answer).
-2. Room 4 instrument check.
+1. Co-op test with a second player (see "NOT yet tested" above).
+2. Room 4 instrument check script.
+3. Rewrite the Room 3 and 4 instructions in the cryptic style of Room 1 (4s per line).
 
 ## Decisions
+
+- **Health (confirmed 2026-11-23):** natural regeneration is off, saturation is fixed and damage is disabled in the puzzle area, so wrong submits are the only way to lose health or die.
 
 - **Instrument (2026-11-23):** packed ice under the Room 1 and Room 4 note blocks, which gives the chime sound (`minecraft:block.note_block.chime`, F#5-F#7), chosen for its watery, magical feel. The symbols play the same sound at pitch 2^((note-12)/12).
 
 ## Open questions
 
-- **Health (confirmed 2026-11-23):** natural regeneration is off, saturation is fixed and damage is disabled in the puzzle area, so wrong submits are the only way to lose health or die.
 - The stairway is shared blocks, so while it's open, other players could slip through. This is currently accepted.
