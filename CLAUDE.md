@@ -67,5 +67,5 @@ Variables in `puzzle1`:
 
 ## Open questions
 
-- Whether natural regeneration is off in the puzzle area. If it's on, hearts regenerate during the cooldown and "20 tries" becomes weaker.
+- **Health (confirmed 2026-11-23):** natural regeneration is off, saturation is fixed and damage is disabled in the puzzle area, so wrong submits are the only way to lose health or die.
 - The stairway is shared blocks, so while it's open, other players could slip through. This is currently accepted.
