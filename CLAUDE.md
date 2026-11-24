@@ -51,35 +51,32 @@ Variables in `puzzle1`:
 | Ocean_Puzzle_Symbol_01..10.msc | interact | Room 2 symbols (7 of 7). Each plays its slot of `answer` as a chime, heard only by the clicking player. The 10 files are identical except `slot` (0-9). Symbol N pairs with Room 1 note block N. |
 | Ocean_Puzzle_Instructions_Room1/3/4.msc | interact | Oracle instructions |
 
-## Status (as of 2026-11-23)
+## Status (as of 2026-11-24)
 
 - **Tested and working** under the old `oceanpuzzle` namespace: submit check, hearts, entrance re-roll, stairway open/close.
 - **Working under `puzzle1`:** Submit and Entrance, after re-importing the Entrance (an old `oceanpuzzle` copy was still bound). NoteTune works; `@delay 1t` was rejected, so it uses `@delay 1`. Interact scripts also fire on left-click (hit), so NoteTune compares the note before and after the delay and stays silent if it didn't change.
 - **Tested solo and working:** all of Rooms 1-2's flow (instructions, NoteTune, entrance, submit, cooldown, hearts, death and new song, solve, stairway, exit, reset) and the Team Conduit with a team of one: word validation, prompt timeout, creating a word, "already bound", team-of-one submits and deaths, and the "bond dissolves" expiry. So `@prompt`, `String.matches`, `Player(uuid)` and the "{{...}}" Long-to-Int trick work.
 - **`@prompt` timeout message:** it showed in yellow, ignoring `&` codes. It now uses `§` codes instead; whether that works is untested. If it doesn't, drop the colors from that one line.
-- **Co-op tested 2026-11-24 (2 players):** a team solved Room 1 together and both were marked solved. Teammates saw messages without color; fixed with `§` codes (untested).
-- **NOT yet tested (needs a second player):** the team check (dropping offline or switched teammates, new team ID, "no longer on your team" note), plus co-op behavior. That means joining a team (shared new song for everyone), messages to teammates via `p.sendMessage(...)` (unknown whether `&` colors work there), changing another player's variables (`answer[p] = ...`), teammates losing 2 hearts and seeing particles on a wrong answer (`q.setHealth`), team-wide solve, team-wide new song on death, and the roster message when the word expires.
+- **Co-op tested 2026-11-24 (2 players), after re-importing everything:** a standard 2-player playthrough of Rooms 1-2 works. The team solved together and both were marked solved, and teammate messages now show in color (`§` codes in `sendMessage` confirmed).
+- **NOT yet tested (edge cases, needs a second player):** the team check when someone goes offline or switches teams before a team event (new team ID, "no longer on your team" note), e.g. a teammate logging off and the rest completing the puzzle. The user considers this low priority.
+- **Room 3 playtest (2026-11-24):** a second player tried the grids for about 10 minutes without getting A. That is the intended difficulty; keep it.
 - **Room 2 symbols and per-block particle feedback: tested solo and working (2026-11-23),** so `@bypass /playsound` and `/particle ... force <player>` work, as does `{{1573 - i}}.5` inside a command.
 - **Debug:** the Submit script has `debug = true`, which prints the answer in chat. Turn it off before handing off to admins.
 
 ## Pending re-import
 
-The user hasn't imported anything since 2026-11-23. Keep this list up to date: add every script changed since then, and clear the list only when the user confirms they've re-imported. When they ask what needs importing, give this whole list, plus any one-time setup commands.
+Everything was re-imported on 2026-11-24. Keep this list up to date: add every script changed since then, and clear the list only when the user confirms they've re-imported. When they ask what needs importing, give this whole list, plus any one-time setup commands.
 
 | Script | Bind to | What changed |
 |---|---|---|
-| `Ocean_Puzzle_Noteblocks.msc` (Submit) | submit block | Restored wrong-count message; team check (drops offline or switched teammates); teammate messages use `§` colors |
-| `Ocean_Puzzle_Entrance.msc` | the 6 air blocks at y68 | Team check before the team-wide new song; teammate messages use `§` colors |
-| `Ocean_Puzzle_TeamConduit.msc` | conduit | Expiry roster still works after a team ID change; teammate messages use `§` colors; tells the old team right away when a player switches teams |
-| `Ocean_Puzzle_Instructions_Room1.msc` | Room 1 head block | Cryptic rewrite, "Mark my words" opening line, "What each sign remembers" hint, 60s cooldown |
-| `Ocean_Puzzle_Instructions_Room3.msc` | Room 3 head block | Rewritten in cryptic style for the new grid rules |
-| `Ocean_Puzzle_Reset.msc` | Reset block (interact for testing) | Tells remaining teammates right away when a player resets |
+| (none) | | |
 
 ## Next up
 
-1. Co-op test with a second player (see "NOT yet tested" above).
-2. Room 4 instrument check script (Room 3 is designed; see the grids file for the order).
+1. Room 3 submission (altar) to unlock Room 4. Open questions: how Room 4 opens, the penalty for a wrong submission, and whether 10 extra heads fit the build.
+2. Room 4 instrument check script (see the grids file for the order). It needs the team check and must disband the team on completion.
 3. Rewrite the Room 4 instructions in the cryptic style of Room 1 (4s per line). Room 3's are done.
+4. Later: co-op edge-case tests (see "NOT yet tested" above).
 
 ## Decisions
 
