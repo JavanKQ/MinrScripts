@@ -13,7 +13,7 @@ All scripts are MSC 2.0 in the namespace `puzzle1`. **Only use the files in this
 ## Checkpoints
 
 - **Puzzle area checkpoint:** [FILL IN: x y z]. Deaths in the puzzle send players here.
-- **Checkpoint after the puzzle:** [FILL IN: x y z]. It **must be past the Finish line**, so it can't be reached without passing Finish.
+- **Checkpoint after the puzzle:** `11443 168 10955`. It **must be past the Finish line** (Finish is at z=10964), so it can't be reached without passing Finish.
 
 ## Setup commands (run once, before importing)
 
