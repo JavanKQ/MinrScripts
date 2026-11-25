@@ -15,7 +15,7 @@ MSC 2.0 scripts for a puzzle map on zero.minr.org (Minecraft). See [References.m
 
 ## MSC syntax confirmed working on the test server
 
-`Block[...]` list literals, `Block(x, y, z, world)`, `block.getBlockDataValue("note")` (returns the note as a String, 0-24), `list::range(a, b)`, `list[i]`, `String == String`, `@for ... @done`, `@if/@elseif/@else/@fi`, `@using`, relative namespace variables, `player.setHealth(...)`, `@bypass /fill ...`, `#` comments.
+`Block[...]` list literals, `Block(x, y, z, world)`, `block.getBlockDataValue("note")` (returns the note as a String, 0-24), `list::range(a, b)`, `list[i]`, `String == String`, `@for ... @done`, `@if/@elseif/@else/@fi`, `@using`, relative namespace variables, `player.setHealth(...)` (including `0.0D` to kill), `@bypass /fill ...`, `@bypass /setblock ...`, `@bypass /playsound ...`, `@bypass /particle ... force <player>`, `@prompt`, `String.matches`, `Player(uuid)`, `p.isOnline()`, `p.sendMessage` (with `§` colors), `#` comments. Not yet confirmed: `@bypass /tp` (Maze teleport).
 
 ## Ocean Puzzle (namespace `puzzle1`)
 
@@ -69,11 +69,19 @@ Room 3 altar and doors (designed 2026-11-24):
 | Room2_Symbols/Ocean_Puzzle_Symbol_01..10.msc | interact | Room 2 symbols (7 of 12). Each plays its slot of `answer` as a chime, heard only by the clicking player. The 10 files are identical except `slot` (0-9). Symbol N pairs with Room 1 note block N. |
 | Instructions/Ocean_Puzzle_Instructions_Room1/3/4.msc | interact | Oracle instructions |
 
+## Where we left off (2026-11-25)
+
+- **Puzzle:** all 4 rooms are scripted, imported on the test server, and a full solo run works. Co-op works for Rooms 1-2. Co-op for Rooms 3-4, failure paths and edge cases are untested.
+- **Current phase:** preparing the main map for Minr's playtesting phase. The user fills `[FILL IN]` coordinates in `MainMap/ADMINS.md` piece by piece and tells Claude. Claude then copies them into the `MainMap/` scripts (hand copies, plus `MAIN` in the generator, regenerated with `py tools/gen_room_scripts.py main`). The user talks to the admins directly.
+- **Filled so far:** Room 1 note blocks and the maze teleport plates (see "Main map").
+- **Still to write:** the dialogue scripts listed under "Still to write".
+- **Test server:** nothing is pending import.
+
 ## Switching machines
 
 The user works on more than one machine. This file is the full record: Claude's memory isn't synced between machines, so anything worth keeping goes here. On a new machine, run `git pull` first. On Windows, Python is run as `py`; elsewhere it may be `python3`. Generated scripts come from `tools/gen_room_scripts.py`, and `tools/room3_grids.py` reproduces the Room 3 grids.
 
-## Status (as of 2026-11-24)
+## Status (as of 2026-11-25)
 
 - **Tested and working** under the old `oceanpuzzle` namespace: submit check, hearts, entrance re-roll, stairway open/close.
 - **Working under `puzzle1`:** Submit and Entrance, after re-importing the Entrance (an old `oceanpuzzle` copy was still bound). NoteTune works; `@delay 1t` was rejected, so it uses `@delay 1`. Interact scripts also fire on left-click (hit), so NoteTune compares the note before and after the delay and stays silent if it didn't change.
@@ -84,7 +92,7 @@ The user works on more than one machine. This file is the full record: Claude's 
 - **Full solo run tested and working (2026-11-25):** Rooms 1-4 end to end: doors (Room 3 opens after Room 1, Room 4 stays shut until the altar), altar, instrument with Start, parkour shows and hides via `/setblock`, Finish passes a qualified player. Finish's anti-cheat kill also works: an old instrument script that didn't set `solved4` got the player killed there. Failure paths and co-op for Rooms 3-4 are still untested.
 - **Room 3 playtest (2026-11-24):** a second player tried the grids for about 10 minutes without getting A. That is the intended difficulty; keep it.
 - **Room 2 symbols and per-block particle feedback: tested solo and working (2026-11-23),** so `@bypass /playsound` and `/particle ... force <player>` work, as does `{{1573 - i}}.5` inside a command.
-- **Debug:** the Submit script has `debug = true`, which prints the answer in chat. Turn it off before handing off to admins.
+- **Debug:** the test-server Submit has `debug = true` (prints the answer in chat), which is handy for testing. The `MainMap/` Submit has `debug = false`.
 
 ## Pending re-import
 
@@ -109,20 +117,10 @@ The puzzle is ready for Minr's playtesting phase. Submitted maps are played by G
 
 ## Next up
 
-1. **Test coordinates (waiting on the user):**
-   - Both test doors are done (sea lantern; Room 3 `-1846 77 1553 -1841 75 1553`, Room 4 `-1839 76 1558 -1839 74 1560`; in `DOOR_CORNERS`/`DOOR_MATERIAL` in the generator). The real doors will be larger and more detailed, so switch the door scripts to the same `/clone` show/hide approach as the parkour (one command however detailed the door is) instead of many `/fill`s.
-   - The 4 door heads, the 10 Room 4 note blocks and the Start object.
-   - The Finish walk blocks.
-
-   Put the door `corners` and parkour coordinates in the generator settings, then test the doors, the altar, the instrument and the parkour.
-2. Instrument test points:
-   - Whether a hit fires the script for players in the map's game mode (NoteTune suggests yes).
-   - Whether 15s (from Start) is enough, and whether 30s of parkour is right.
-   - That `/setblock` works through `@bypass` (show and hide), and that `setHealth(0.0D)` at Finish kills an unqualified player.
-   - That Finish disbands the team.
-3. Room 4 instructions rewritten and imported 2026-11-25 (6 lines, ~20s, 45s cooldown). Line 3 ("Wake it") may need to point at the Start object once its look is decided.
-4. Later: co-op edge-case tests (see "NOT yet tested" above).
-5. **Before admin handoff:** every `[FILL IN]` in `MainMap/ADMINS.md` filled by the user, then copied into the MainMap scripts (see "Main map" above).
+1. **Main map coordinates:** as the user fills `MainMap/ADMINS.md`, copy each value into the `MainMap/` scripts and headers. When the real doors and parkour are known: if they're detailed, switch them to `/clone` copy-in/copy-out (a hidden copy of the closed door or the course, plus where it goes) instead of `/fill` or `/setblock`.
+2. **Still-to-write scripts** (below): for each one, ask for the text or idea, the speaker, how it fires (walk or interact), how often, and its coordinates.
+3. **Room 4 instructions:** line 3 ("Wake it") may need to point at the Start object once its look is decided.
+4. **Later:** co-op tests for Rooms 3-4, plus the team edge cases (see "NOT yet tested"). Solo failure-path tests: door, altar and instrument mistakes, Forget, and the conduit cooldown.
 
 ## Still to write (added 2026-11-25)
 
