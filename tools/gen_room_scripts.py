@@ -55,7 +55,7 @@ TEAM_CHECK = """# --- Team check: drop teammates who are offline or on another t
 """
 
 ALTAR = """# ==============================================================
-# OCEAN PUZZLE - ROOM 3 ALTAR SIGN @N@ of 10 (script 9 of 11)
+# OCEAN PUZZLE - ROOM 3 ALTAR SIGN @N@ of 10 (script 9 of 12)
 # ==============================================================
 # Script type : interact
 # Bind to     : [FILL IN: x y z of altar head @N@ in Room 3]
@@ -198,7 +198,7 @@ DOOR_MATERIAL = {"3": "minecraft:sea_lantern", "4": "minecraft:sea_lantern"}
 # -------------------------------------------
 
 DOOR = """# ==============================================================
-# OCEAN PUZZLE - DOOR: @TITLE@ (script 8 of 11)
+# OCEAN PUZZLE - DOOR: @TITLE@ (script 8 of 12)
 # ==============================================================
 # Script type : interact
 # Bind to     : [FILL IN: x y z of the head @WHERE@]
@@ -291,7 +291,7 @@ DOORS = [
 ORDINALS = 'String["1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th", "10th", "11th", "12th", "13th", "14th", "15th", "16th", "17th", "18th", "19th", "20th", "21st", "22nd", "23rd", "24th", "25th"]'
 
 START = """# ==============================================================
-# OCEAN PUZZLE - ROOM 4 INSTRUMENT: START (script 10 of 11)
+# OCEAN PUZZLE - ROOM 4 INSTRUMENT: START (script 10 of 12)
 # ==============================================================
 # Script type : interact
 # Bind to     : [FILL IN: x y z of the Start object in Room 4
@@ -340,7 +340,7 @@ START = """# ==============================================================
 """
 
 INSTRUMENT = """# ==============================================================
-# OCEAN PUZZLE - ROOM 4 INSTRUMENT VOICE @N@ of 10 (script 10 of 11)
+# OCEAN PUZZLE - ROOM 4 INSTRUMENT VOICE @N@ of 10 (script 10 of 12)
 # ==============================================================
 # Script type : interact
 # Bind to     : [FILL IN: x y z of the Room 4 note block for Symbol @N@]

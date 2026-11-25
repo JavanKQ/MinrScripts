@@ -1,0 +1,96 @@
+# ==============================================================
+# OCEAN PUZZLE - FORGET YOUR SONG (12 of 12)
+# ==============================================================
+# Script type : interact
+# Bind to     : [FILL IN: x y z of the Forget head in Room 1]
+# Map/area    : [FILL IN: map name / room]
+# Import      : /s i i <paste URL>, then click the head
+#
+# What it does:
+#   For players who solved Room 1 but didn't write down their
+#   notes (which Room 4 needs). After typing "forget" in chat to
+#   confirm, the player gets a NEW song and Room 1 becomes
+#   unsolved, so they re-solve Room 1 (hearts and all) and can
+#   note the positions this time. Room 3 stays solved (its
+#   answer never changes). Any Room 4 melody progress is cleared.
+#   If the player is on a team, they leave it: their online
+#   teammates are told right away and keep their own song.
+#   Since they're unsolved again, they can make or join a new
+#   team at the Team Conduit (joining a team un-solves Room 3
+#   for the whole team, as usual).
+#   Does nothing for players who haven't solved Room 1.
+#
+# Placement note: in Room 1, where players returning from the
+#   later rooms will find it. Typing anything other than
+#   "forget", or waiting 20 seconds, cancels.
+#
+# Requires: puzzle1 namespace (see Submit script header)
+# Related scripts: Submit (1), Reset (4), Team Conduit (6),
+#   Symbols (7), Instrument (10)
+# ==============================================================
+@using puzzle1
+@if !solved || answer == ""
+@player &3Oracle: &bYou have no song yet to forget...
+@return
+@fi
+@define String word = ""
+@player &3Oracle: &bWould you cast your song back into the deep? It will not return, and the elders will compose you another.
+@player &7&o[Note] This gives you a new song and un-solves Room 1 (Room 3 stays solved). If you're on a team, you'll leave it. Type "forget" in chat to confirm.
+@prompt 20s word §3Oracle: §bThe waters still. Your song remains your own.
+@if word.trim().toLowerCase() != "forget"
+@player &3Oracle: &bThe waters still. Your song remains your own.
+@return
+@fi
+# --- Leave the team: tell the rest right away, regroup them without this player ---
+@if team != ""
+@define String me = player.getUniqueId()
+@define String rest = ""
+@define Player q = player
+@for String id in team_members.split(",")
+@if id != me
+@var q = Player(id)
+@if q != null
+@if team[q] == team && q.isOnline()
+@if rest != ""
+@var rest = rest + ","
+@fi
+@var rest = rest + id
+@fi
+@fi
+@fi
+@done
+@if rest != ""
+@define String restId = team + "~" + "{{system::currentTimeMillis() / 1000L}}"
+@define Boolean alone = !rest.contains(",")
+@for String id in rest.split(",")
+@var q = Player(id)
+@if q != null
+@if alone
+@var team[q] = ""
+@var team_members[q] = ""
+@var q.sendMessage("§7§o[Note] {{player.getName()}} has forgotten their song and left your team. You are now playing solo.")
+@else
+@var team[q] = restId
+@var team_members[q] = rest
+@var q.sendMessage("§7§o[Note] {{player.getName()}} has forgotten their song and left your team.")
+@fi
+@fi
+@done
+@fi
+@var team = ""
+@var team_members = ""
+@player &7&o[Note] You have left your team.
+@fi
+# --- New song; Room 1 unsolved again ---
+@define Int[] pool = list::range(0, 25)
+@var pool.shuffle()
+@define String[] notes = String[]
+@for Int i in list::range(0, 10)
+@var notes.append(String(pool[i]))
+@done
+@var answer = notes.join(",")
+@var solved = false
+@var solved4 = false
+@var inst_started_at = 0L
+@var inst_seq = ""
+@player &3Oracle: &bThe deep takes back your song... and the elders sing you another. Mark it well this time.

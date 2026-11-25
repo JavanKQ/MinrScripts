@@ -55,17 +55,18 @@ Room 3 altar and doors (designed 2026-11-24):
 
 | File | Type | Purpose |
 |---|---|---|
-| Ocean_Puzzle_Noteblocks.msc | interact | Submit (1 of 11) |
-| Ocean_Puzzle_Entrance.msc | walk | New answer on entry (2 of 11) |
-| Ocean_Puzzle_Exit.msc | walk | Close stairway (3 of 11) |
-| Ocean_Puzzle_Reset.msc | walk | Clear progress (4 of 11) |
-| Ocean_Puzzle_NoteTune.msc | interact | "The note shifts to its Nth position." on Room 1's note blocks only (5 of 11) |
-| Ocean_Puzzle_TeamConduit.msc | interact | Team word linking on the conduit (6 of 11) |
-| Doors/Ocean_Puzzle_Door_Room3/4_Outside/Inside.msc | interact | Door heads (8 of 11). The 4 files are identical except for the settings block at the top (`need`, `door`, `corners`, `material`). Door corners and material come from `DOOR_CORNERS`/`DOOR_MATERIAL` in the generator (test values are set). |
-| Room3_Altar/Ocean_Puzzle_Altar_01..10.msc | interact | Room 3 altar signs (9 of 11). Identical except `symbol` (1-10). Generated. |
-| Room4_Instrument/Ocean_Puzzle_Instrument_01..10.msc + _Start.msc | interact | Room 4 instrument note blocks and the Start object (10 of 11). Voices are identical except `symbol` (1-10). Generated. |
-| Ocean_Puzzle_Finish.msc | walk | End of the parkour: clears all progress, disbands the team (11 of 11) |
-| Room2_Symbols/Ocean_Puzzle_Symbol_01..10.msc | interact | Room 2 symbols (7 of 11). Each plays its slot of `answer` as a chime, heard only by the clicking player. The 10 files are identical except `slot` (0-9). Symbol N pairs with Room 1 note block N. |
+| Ocean_Puzzle_Noteblocks.msc | interact | Submit (1 of 12) |
+| Ocean_Puzzle_Entrance.msc | walk | New answer on entry (2 of 12) |
+| Ocean_Puzzle_Exit.msc | walk | Close stairway (3 of 12) |
+| Ocean_Puzzle_Reset.msc | walk | Clear progress (4 of 12) |
+| Ocean_Puzzle_NoteTune.msc | interact | "The note shifts to its Nth position." on Room 1's note blocks only (5 of 12) |
+| Ocean_Puzzle_TeamConduit.msc | interact | Team word linking on the conduit (6 of 12) |
+| Doors/Ocean_Puzzle_Door_Room3/4_Outside/Inside.msc | interact | Door heads (8 of 12). The 4 files are identical except for the settings block at the top (`need`, `door`, `corners`, `material`). Door corners and material come from `DOOR_CORNERS`/`DOOR_MATERIAL` in the generator (test values are set). |
+| Room3_Altar/Ocean_Puzzle_Altar_01..10.msc | interact | Room 3 altar signs (9 of 12). Identical except `symbol` (1-10). Generated. |
+| Room4_Instrument/Ocean_Puzzle_Instrument_01..10.msc + _Start.msc | interact | Room 4 instrument note blocks and the Start object (10 of 12). Voices are identical except `symbol` (1-10). Generated. |
+| Ocean_Puzzle_Finish.msc | walk | End of the parkour: clears all progress, disbands the team (11 of 12) |
+| Ocean_Puzzle_Forget.msc | interact | Room 1 "forget your song" head: confirm by typing `forget`; new song, Room 1 unsolved, leaves the team (12 of 12) |
+| Room2_Symbols/Ocean_Puzzle_Symbol_01..10.msc | interact | Room 2 symbols (7 of 12). Each plays its slot of `answer` as a chime, heard only by the clicking player. The 10 files are identical except `slot` (0-9). Symbol N pairs with Room 1 note block N. |
 | Instructions/Ocean_Puzzle_Instructions_Room1/3/4.msc | interact | Oracle instructions |
 
 ## Switching machines
@@ -96,6 +97,7 @@ Everything was re-imported on 2026-11-24. Keep this list up to date: add every s
 | `Ocean_Puzzle_TeamConduit.msc` | conduit | Joining a team also resets `solved3` for the whole team; players who already solved Room 1 are refused (no team creating or joining) |
 | `Doors/Ocean_Puzzle_Door_*.msc` (all 4, RE-IMPORT) | Room 3 and Room 4 door heads | Imported and working 2026-11-25; re-import for the 5s per-player click cooldown (needs `door_ready_at` defined first) |
 | `Instructions/Ocean_Puzzle_Instructions_Room4.msc` | Room 4 head block | Cryptic rewrite for the redesigned Room 4 (Start object, 15s, path) |
+| `Ocean_Puzzle_Forget.msc` (NEW) | a head in Room 1 | New. Self-reset of Room 1 for players who didn't write their notes down |
 
 **One-time setup commands:** the user ran all of them on 2026-11-25 (`chime_ready_at`, `solved3`, `altar_seq`, `altar_last_at`, `altar_ready_at`, `door3_close_at`, `door4_close_at`, `parkour_close_at`, `inst_seq`, `inst_started_at`, `inst_wrong`). **New since then, still to run:** `/variable define puzzle1 relative Boolean solved4 = false`, `/variable define puzzle1 relative Boolean finished = false`, `/variable define puzzle1 relative Long door_ready_at = 0L`. The full list is in the Submit script header. If a script says a variable isn't defined, run that one again from there.
 **Imported 2026-11-25:** the 10 Room 3 altar heads, all 4 door heads, the 10 instrument blocks (current version), the Start object, Finish, and the `solved4`/`finished` variables. Whether the doors were re-imported with the 5s cooldown (and `door_ready_at` defined) is unconfirmed.
@@ -123,7 +125,8 @@ Everything was re-imported on 2026-11-24. Keep this list up to date: add every s
 
 - **Instrument (2026-11-23):** packed ice under the Room 1 and Room 4 note blocks, which gives the chime sound (`minecraft:block.note_block.chime`, F#5-F#7), chosen for its watery, magical feel. The symbols play the same sound at pitch 2^((note-12)/12).
 
-- **Forgotten notes (2026-11-25):** a player who didn't write down their Room 1 notes recovers them in Room 2. The symbols always replay that player's own `answer`, which nothing clears before Finish and other players can't change. They tune Room 4 by ear to match (same chime sound, no hearts lost, a count of mistuned voices). Room 1's note blocks are NOT a reliable source, because other players retune them. So Room 2 must stay reachable from Room 4 (via the inside door heads); never clear `answer` between Room 1 and Finish.
+- **Forgotten notes (2026-11-25):** a player who didn't write down their Room 1 notes recovers them in Room 2. The symbols always replay that player's own `answer`, which nothing clears before Finish and other players can't change. They tune Room 4 by ear to match (same chime sound, no hearts lost, a count of mistuned voices). Room 1's note blocks are NOT a reliable source, because other players retune them. So Room 2 must stay reachable from Room 4 (via the inside door heads); never clear `answer` between Room 1 and Finish (except by the player's own choice at Forget).
+- **Forget (2026-11-25):** Room 2's scattered symbols make re-listening tedious, so the user chose a self-reset over handing out the answer. The Forget head in Room 1 asks the player to type `forget`. It then gives a new song, sets `solved` (and `solved4`, any melody) back, keeps `solved3`, and removes the player from their team (teammates are told and keep their song). Griefing a team this way only removes the griefer. A forgetful team can re-team at the conduit, which un-solves Room 3 for them, as usual.
 
 ## Open questions
 
