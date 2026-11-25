@@ -1,6 +1,6 @@
 # Ocean Puzzle: admin setup sheet
 
-**Map:** [FILL IN: map name]  **Area:** [FILL IN: puzzle area name]  **Contact:** [FILL IN: map team contact]
+**Map:** [FILL IN: map name]
 
 A four-room ocean temple puzzle, played solo or in co-op teams:
 - **Room 1:** players tune 10 note blocks to a song made just for them.
@@ -10,21 +10,12 @@ A four-room ocean temple puzzle, played solo or in co-op teams:
 
 All scripts are MSC 2.0 in the namespace `puzzle1`. **Only use the files in this `MainMap/` folder.** Every script also has a header with the same binding details as the table below.
 
-## 1. Area and build requirements
+## Checkpoints
 
-- **Health:** in the puzzle area, natural regeneration must be off, saturation fixed and damage disabled. Wrong Room 1 answers cost hearts, and that must be the only way to lose health.
-- **Packed ice** under every Room 1 and Room 4 note block (gives the chime sound the puzzle relies on).
-- **Symbol skins:** the 10 symbols are custom player heads. Whichever skin is used for Symbol N must be the same in Room 2, on the Room 3 altar, next to the Room 4 note block for Symbol N, and for letter N on the Room 3 grids (A = Symbol 1 ... J = Symbol 10).
+- **Puzzle area checkpoint:** [FILL IN: x y z]. Deaths in the puzzle send players here.
+- **Checkpoint after the puzzle:** [FILL IN: x y z]. It **must be past the Finish line**, so it can't be reached without passing Finish.
 
-  | Symbol | 1 (A) | 2 (B) | 3 (C) | 4 (D) | 5 (E) | 6 (F) | 7 (G) | 8 (H) | 9 (I) | 10 (J) |
-  |---|---|---|---|---|---|---|---|---|---|---|
-  | Skin | [FILL IN] | [FILL IN] | [FILL IN] | [FILL IN] | [FILL IN] | [FILL IN] | [FILL IN] | [FILL IN] | [FILL IN] | [FILL IN] |
-
-- **Checkpoints:**
-  - Puzzle area checkpoint: [FILL IN: x y z]. Deaths in the puzzle send players here.
-  - Next checkpoint after the puzzle: [FILL IN: x y z]. It **must be past the Finish line**, so it can't be reached without passing Finish.
-
-## 2. Setup commands (run once, before importing)
+## Setup commands (run once, before importing)
 
 ```
 /namespace define puzzle1
