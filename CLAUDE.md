@@ -94,7 +94,7 @@ Everything was re-imported on 2026-11-24. Keep this list up to date: add every s
 | `Ocean_Puzzle_Reset.msc` | Reset block | Also clears `solved3`, `altar_seq`, `inst_started_at` and `inst_seq` |
 | `Ocean_Puzzle_TeamConduit.msc` | conduit | Joining a team also resets `solved3` for the whole team; players who already solved Room 1 are refused (no team creating or joining) |
 | `Doors/Ocean_Puzzle_Door_Room3_Outside.msc` + `_Room3_Inside.msc` (NEW) | Room 3 door heads (outside / inside) | Ready: test door is sea lantern at `-1846 77 1553` to `-1841 75 1553` |
-| `Doors/Ocean_Puzzle_Door_Room4_*.msc` (2, NEW) | Room 4 door heads | Not ready: Room 4 door corners not given yet |
+| `Doors/Ocean_Puzzle_Door_Room4_Outside.msc` + `_Room4_Inside.msc` (NEW) | Room 4 door heads (outside / inside) | Ready: test door is sea lantern at `-1839 76 1558` to `-1839 74 1560` |
 | `Room4_Instrument/Ocean_Puzzle_Instrument_01..10.msc` (10, NEW) | Room 4 note blocks (on packed ice) | New. Block N must be marked with Symbol N's skin. Don't bind NoteTune to these. Needs the parkour clone coordinates set in the generator |
 | `Room4_Instrument/Ocean_Puzzle_Instrument_Start.msc` (NEW) | Room 4 Start object (head/button) | New. Starts a 15s performance |
 | `Ocean_Puzzle_Finish.msc` (NEW, walk) | end of the parkour, full path width | New. Clears all progress and disbands the team |
@@ -105,7 +105,7 @@ Everything was re-imported on 2026-11-24. Keep this list up to date: add every s
 ## Next up
 
 1. **Test coordinates (waiting on the user):**
-   - The Room 4 door corners and block type. Room 3's test door is done (sea lantern, `-1846 77 1553 -1841 75 1553`, in `DOOR_CORNERS`/`DOOR_MATERIAL` in the generator). The real doors will be larger and more detailed, so switch the door scripts to the same `/clone` show/hide approach as the parkour (one command however detailed the door is) instead of many `/fill`s.
+   - Both test doors are done (sea lantern; Room 3 `-1846 77 1553 -1841 75 1553`, Room 4 `-1839 76 1558 -1839 74 1560`; in `DOOR_CORNERS`/`DOOR_MATERIAL` in the generator). The real doors will be larger and more detailed, so switch the door scripts to the same `/clone` show/hide approach as the parkour (one command however detailed the door is) instead of many `/fill`s.
    - The 4 door heads, the 10 Room 4 note blocks and the Start object.
    - The parkour course: its hidden "shown" copy, the same-size "empty" copy, and the target corner.
    - The Finish walk blocks.

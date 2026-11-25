@@ -188,8 +188,8 @@ PARKOUR_HIDDEN = ""
 PARKOUR_TARGET = ""
 # Doors: corners "x1 y1 z1 x2 y2 z2" and block, per door (3 = Room 3, 4 = Room 4).
 # Test server values; the real, more detailed doors will replace these.
-DOOR_CORNERS = {"3": "-1846 77 1553 -1841 75 1553", "4": ""}
-DOOR_MATERIAL = {"3": "minecraft:sea_lantern", "4": "minecraft:prismarine_bricks"}
+DOOR_CORNERS = {"3": "-1846 77 1553 -1841 75 1553", "4": "-1839 76 1558 -1839 74 1560"}
+DOOR_MATERIAL = {"3": "minecraft:sea_lantern", "4": "minecraft:sea_lantern"}
 # -------------------------------------------
 
 DOOR = """# ==============================================================
