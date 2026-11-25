@@ -47,6 +47,7 @@ All scripts are MSC 2.0 in the namespace `puzzle1`. **Only use the files in this
 
 | Script | Type | Bind to |
 |---|---|---|
+| `Maze/Maze_Teleport.msc` | walk | The block UNDER each pressure plate (2 binds): `11407 162 10964` and `11405 162 11002` |
 | `Ocean_Puzzle_Reset.msc` | walk | Partway down the one-way drop out of the maze, every block across its width: [FILL IN] |
 | `Ocean_Puzzle_Entrance.msc` | walk | The one-way drop into the puzzle area (checkpoint side), every block across its width: [FILL IN] |
 
@@ -98,16 +99,16 @@ Parkour course: [FILL IN: the single blocks and their block type, or a hidden co
 
 | Symbol | Room 1 note block | Room 2 symbol head | Room 3 altar head | Room 4 note block |
 |---|---|---|---|---|
-| 1 (A) | [FILL IN] | [FILL IN] | [FILL IN] | [FILL IN] |
-| 2 (B) | [FILL IN] | [FILL IN] | [FILL IN] | [FILL IN] |
-| 3 (C) | [FILL IN] | [FILL IN] | [FILL IN] | [FILL IN] |
-| 4 (D) | [FILL IN] | [FILL IN] | [FILL IN] | [FILL IN] |
-| 5 (E) | [FILL IN] | [FILL IN] | [FILL IN] | [FILL IN] |
-| 6 (F) | [FILL IN] | [FILL IN] | [FILL IN] | [FILL IN] |
-| 7 (G) | [FILL IN] | [FILL IN] | [FILL IN] | [FILL IN] |
-| 8 (H) | [FILL IN] | [FILL IN] | [FILL IN] | [FILL IN] |
-| 9 (I) | [FILL IN] | [FILL IN] | [FILL IN] | [FILL IN] |
-| 10 (J) | [FILL IN] | [FILL IN] | [FILL IN] | [FILL IN] |
+| 1 (A) | `11476 162 10968` | [FILL IN] | [FILL IN] | [FILL IN] |
+| 2 (B) | `11476 162 10969` | [FILL IN] | [FILL IN] | [FILL IN] |
+| 3 (C) | `11476 162 10970` | [FILL IN] | [FILL IN] | [FILL IN] |
+| 4 (D) | `11476 162 10971` | [FILL IN] | [FILL IN] | [FILL IN] |
+| 5 (E) | `11476 162 10972` | [FILL IN] | [FILL IN] | [FILL IN] |
+| 6 (F) | `11476 162 10973` | [FILL IN] | [FILL IN] | [FILL IN] |
+| 7 (G) | `11476 162 10974` | [FILL IN] | [FILL IN] | [FILL IN] |
+| 8 (H) | `11476 162 10975` | [FILL IN] | [FILL IN] | [FILL IN] |
+| 9 (I) | `11476 162 10976` | [FILL IN] | [FILL IN] | [FILL IN] |
+| 10 (J) | `11476 162 10977` | [FILL IN] | [FILL IN] | [FILL IN] |
 
 Room 1 note block N is the block whose note Symbol N plays (Submit checks them in this order). The Room 1 block does not need to sit next to its symbol; only the order matters.
 

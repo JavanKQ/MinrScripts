@@ -1,0 +1,26 @@
+# ==============================================================
+# MAZE - TELEPORT PLATES
+# ==============================================================
+# Script type : walk
+# Bind to     : the block UNDER each of the 2 pressure plates
+#               (2 binds, same paste):
+#                 Plate 1: 11407 162 10964 (plate at 11407 163 10964)
+#                 Plate 2: 11405 162 11002 (plate at 11405 163 11002)
+#               A walk script fires when the player's feet enter the
+#               space above the bound block, which is where the
+#               plate sits.
+# Map/area    : [FILL IN: map name]
+# Import      : /script import walk <paste URL>, then click the block
+#
+# What it does:
+#   Stepping on either pressure plate teleports the player to
+#   stand on 11481 162 10970, facing north. Happens every time;
+#   no variables, no message.
+#
+# Requires: nothing
+#
+# Map coordinates used inside this script:
+#   Destination: 11481.5 163 10970.5 (centre of the top of block
+#   11481 162 10970), yaw 180 = facing north, pitch 0
+# ==============================================================
+@bypass /tp {{player.getName()}} 11481.5 163 10970.5 180 0

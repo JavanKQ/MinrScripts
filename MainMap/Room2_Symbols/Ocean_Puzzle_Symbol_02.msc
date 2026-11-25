@@ -4,7 +4,7 @@
 # Script type : interact
 # Bind to     : [FILL IN: x y z of symbol 2 in Room 2]
 #               Symbol 2 must be the symbol paired with Room 1
-#               note block 2 (test server: -1852 68 1572), because
+#               note block 2 (11476 162 10969), because
 #               Submit checks that block against this same note.
 # Map/area    : [FILL IN: map name / room]
 # Import      : /s i i <paste URL>, then click symbol 2

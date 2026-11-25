@@ -101,8 +101,8 @@ All one-time setup commands are listed in the Submit script header.
 The puzzle is ready for Minr's playtesting phase. Submitted maps are played by Green+ players before release, and admins must import every script *before* playtesting. `MainMap/` holds the main-map copy of every script (46 files, no `Testing/`). Generated ones come from `py tools/gen_room_scripts.py main` (the `MAIN` settings in the generator); the rest are hand copies.
 - **Submit:** `debug = false`.
 - **Coordinates:** the copies still hold test coordinates or blanks. `MainMap/ADMINS.md` is the admins' setup sheet: map name, checkpoints, every setup command, import tables and a symbol table. The user handles skins, packed ice, region flags and post-import checks, and talks to the admins directly, so leave those out (2026-11-25). **The user fills the `[FILL IN]` coordinates in ADMINS.md directly and says when; then copy them into the MainMap scripts** (hand copies, plus the `MAIN` settings in the generator and regenerate with `main`). Some items come from other builders on the map team, so they may arrive in pieces. Keep ADMINS.md's command list and import table in sync with the scripts whenever a script or variable is added. Script headers keep their own binding details too (they travel with each paste).
+- **Coordinates filled so far (2026-11-25):** Room 1 note blocks `11476 162 10968` (Symbol 1) to `11476 162 10977` (Symbol 10), in MainMap Submit (blocks and particles at `11476.5 163.5 <z>.5`), the NoteTune and Symbol headers, and ADMINS.md. The main map's Room 1 is also a straight line, so the particle formula still works.
 - **Changes once coordinates arrive:**
-  - Generalize the Submit particles, which assume the test line at x = -1852.
   - Switch doors (and the parkour, if detailed) to `/clone` copy-in/copy-out.
   - Fill every header.
 - **Keep the copies in step:** changes to the test copies must also be made in `MainMap/` (or regenerated with `main`), and the reverse.
@@ -130,7 +130,7 @@ These are new scripts outside the four puzzle rooms. Each needs the user's text 
 1. **Map start dialogue:** dialogue at the start of the map.
 2. **Maze object dialogue:** dialogue when the player interacts with certain objects in the maze.
 3. **Maze end dialogue:** dialogue at the end of the maze.
-4. **Maze teleport:** a spot in the maze with 2 pressure plates; stepping on either teleports the player to a set location.
+4. **Maze teleport: DONE 2026-11-25** (`MainMap/Maze/Maze_Teleport.msc`, main map only, no test copy). It's a walk script bound to the block under each plate (`11407 162 10964`, `11405 162 11002`); `/tp` to `11481.5 163 10970.5`, facing north (yaw 180). It's silent and fires every time.
 5. **After-parkour dialogue:** dialogue after finishing the parkour. Finish already has a farewell line, so this may extend Finish or be a separate script further on.
 6. **Ocean object dialogue:** dialogue on interactable things in the ocean.
 

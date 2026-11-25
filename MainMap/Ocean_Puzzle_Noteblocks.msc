@@ -49,11 +49,11 @@
 #   are shared by all players)
 #
 # Map coordinates used inside this script:
-#   Note blocks   : -1852 68 1573 through -1852 68 1564
+#   Note blocks   : 11476 162 10968 (Symbol 1) through 11476 162 10977 (Symbol 10)
 #   Stair ceiling : -1846 70 1562 to -1841 70 1565
 #   Stair wall    : -1846 69 1565 to -1841 67 1565
 #   (both /fill lines appear in 2 places below)
-#   Particles     : -1851.5 69.5 <1573.5 down to 1564.5>, i.e.
+#   Particles     : 11476.5 163.5 <10968.5 up to 10977.5>, i.e.
 #                   centered above each note block (2 places below)
 #
 # Related scripts: Entrance (2), Exit (3), Reset (4), Note Tune (5), Team Conduit (6), Symbols (7)
@@ -79,7 +79,7 @@
 @var submit_ready_at = now + 10000L
 @define String[] expected = answer.split(",")
 @define String w = block.getWorld()
-@define Block[] blocks = Block[Block(-1852, 68, 1573, w), Block(-1852, 68, 1572, w), Block(-1852, 68, 1571, w), Block(-1852, 68, 1570, w), Block(-1852, 68, 1569, w), Block(-1852, 68, 1568, w), Block(-1852, 68, 1567, w), Block(-1852, 68, 1566, w), Block(-1852, 68, 1565, w), Block(-1852, 68, 1564, w)]
+@define Block[] blocks = Block[Block(11476, 162, 10968, w), Block(11476, 162, 10969, w), Block(11476, 162, 10970, w), Block(11476, 162, 10971, w), Block(11476, 162, 10972, w), Block(11476, 162, 10973, w), Block(11476, 162, 10974, w), Block(11476, 162, 10975, w), Block(11476, 162, 10976, w), Block(11476, 162, 10977, w)]
 @define Int correct = 0
 @define String n = ""
 @define String flags = ""
@@ -172,9 +172,9 @@
 @fi
 @for Int i in list::range(0, blocks.length())
 @if marks[i] == "1"
-@bypass /particle minecraft:happy_villager -1851.5 69.5 {{1573 - i}}.5 0.25 0.2 0.25 0 12 force {{player.getName()}}
+@bypass /particle minecraft:happy_villager 11476.5 163.5 {{10968 + i}}.5 0.25 0.2 0.25 0 12 force {{player.getName()}}
 @else
-@bypass /particle minecraft:smoke -1851.5 69.5 {{1573 - i}}.5 0.2 0.2 0.2 0.01 15 force {{player.getName()}}
+@bypass /particle minecraft:smoke 11476.5 163.5 {{10968 + i}}.5 0.2 0.2 0.2 0.01 15 force {{player.getName()}}
 @fi
 @done
 @fi
@@ -189,9 +189,9 @@
 @var p.sendMessage("§3Oracle: §b{{player.getName()}}'s offering was false... {{wrong}} of the notes stray, and the elders' displeasure falls upon you all.")
 @for Int j in list::range(0, blocks.length())
 @if marks[j] == "1"
-@bypass /particle minecraft:happy_villager -1851.5 69.5 {{1573 - j}}.5 0.25 0.2 0.25 0 12 force {{p.getName()}}
+@bypass /particle minecraft:happy_villager 11476.5 163.5 {{10968 + j}}.5 0.25 0.2 0.25 0 12 force {{p.getName()}}
 @else
-@bypass /particle minecraft:smoke -1851.5 69.5 {{1573 - j}}.5 0.2 0.2 0.2 0.01 15 force {{p.getName()}}
+@bypass /particle minecraft:smoke 11476.5 163.5 {{10968 + j}}.5 0.2 0.2 0.2 0.01 15 force {{p.getName()}}
 @fi
 @done
 @var p.setHealth(math::maxDouble(p.getHealth() - 4.0D, 0.0D))
