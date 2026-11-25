@@ -124,6 +124,16 @@ The puzzle is ready for Minr's playtesting phase. Submitted maps are played by G
 4. Later: co-op edge-case tests (see "NOT yet tested" above).
 5. **Before admin handoff:** fill in everything in `MainMap/COORDINATES_NEEDED.md` (see "Main map" above).
 
+## Still to write (added 2026-11-25)
+
+These are new scripts outside the four puzzle rooms. Each needs the user's text or ideas plus coordinates, should follow the Oracle style and pacing rules above, and gets a MainMap copy.
+1. **Map start dialogue:** dialogue at the start of the map.
+2. **Maze object dialogue:** dialogue when the player interacts with certain objects in the maze.
+3. **Maze end dialogue:** dialogue at the end of the maze.
+4. **Maze teleport:** a spot in the maze with 2 pressure plates; stepping on either teleports the player to a set location.
+5. **After-parkour dialogue:** dialogue after finishing the parkour. Finish already has a farewell line, so this may extend Finish or be a separate script further on.
+6. **Ocean object dialogue:** dialogue on interactable things in the ocean.
+
 ## Decisions
 
 - **Health (confirmed 2026-11-23):** natural regeneration is off, saturation is fixed and damage is disabled in the puzzle area, so wrong submits are the only way to lose health or die.
