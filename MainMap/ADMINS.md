@@ -58,8 +58,8 @@ All scripts are MSC 2.0 in the namespace `puzzle1`. **Only use the files in this
 | `Ocean_Puzzle_NoteTune.msc` | interact | Each of the 10 Room 1 note blocks (10 binds, same paste): see the note block table below |
 | `Ocean_Puzzle_Noteblocks.msc` (Submit) | interact | Submit block: [FILL IN] |
 | `Ocean_Puzzle_Exit.msc` | walk | Past the stairway, every block across the path's width: [FILL IN] |
-| `Instructions/Ocean_Puzzle_Instructions_Room1.msc` | interact | Room 1 instructions head: [FILL IN] |
-| `Ocean_Puzzle_TeamConduit.msc` | interact | Team Conduit: [FILL IN] |
+| `Instructions/Ocean_Puzzle_Instructions_Room1.msc` | interact | Room 1 instructions head: `11459 161 10971` |
+| `Ocean_Puzzle_TeamConduit.msc` | interact | Team Conduit: `11460 161 10979` |
 | `Ocean_Puzzle_Forget.msc` | interact | Forget head: [FILL IN] |
 
 Room 1 stairway (opened by Submit, closed by Exit): [FILL IN: region(s) and block type]
