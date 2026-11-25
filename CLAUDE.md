@@ -88,19 +88,13 @@ The user works on more than one machine. This file is the full record: Claude's 
 
 ## Pending re-import
 
-Everything was re-imported on 2026-11-24. Keep this list up to date: add every script changed since then, and clear the list only when the user confirms they've re-imported. When they ask what needs importing, give this whole list, plus any one-time setup commands.
+Everything else was imported, and all variables defined, by 2026-11-25. Keep this list up to date: add every script changed since then, and clear the list only when the user confirms they've re-imported. When they ask what needs importing, give this whole list, plus any one-time setup commands.
 
 | Script | Bind to | What changed |
 |---|---|---|
-| `Room2_Symbols/Ocean_Puzzle_Symbol_01..10.msc` (all 10) | each Room 2 symbol head | 2s chime cooldown shared by all symbols; white-italic line "The chime washes over your soul like a tide." after each chime |
-| `Ocean_Puzzle_Reset.msc` | Reset block | Also clears `solved3`, `solved4`, `finished`, `altar_seq`, `inst_started_at` and `inst_seq` |
-| `Ocean_Puzzle_TeamConduit.msc` | conduit | Joining a team also resets `solved3` for the whole team; players who already solved Room 1 are refused (no team creating or joining); 5s click cooldown, no stacked prompts (define `conduit_ready_at` first) |
-| `Doors/Ocean_Puzzle_Door_*.msc` (all 4, RE-IMPORT) | Room 3 and Room 4 door heads | Imported and working 2026-11-25; re-import for the 5s per-player click cooldown (needs `door_ready_at` defined first) |
-| `Instructions/Ocean_Puzzle_Instructions_Room4.msc` | Room 4 head block | Cryptic rewrite for the redesigned Room 4 (Start object, 15s, path) |
-| `Ocean_Puzzle_Forget.msc` (NEW) | a head in Room 1 | New. Self-reset of Room 1 for players who didn't write their notes down |
+| `Ocean_Puzzle_TeamConduit.msc` | conduit | 5s per-player click cooldown, no stacked prompts. **Run first:** `/variable define puzzle1 relative Long conduit_ready_at = 0L` (unconfirmed whether this was already done) |
 
-**One-time setup commands:** the user ran all of them on 2026-11-25 (`chime_ready_at`, `solved3`, `altar_seq`, `altar_last_at`, `altar_ready_at`, `door3_close_at`, `door4_close_at`, `parkour_close_at`, `inst_seq`, `inst_started_at`, `inst_wrong`). **New since then, still to run:** `/variable define puzzle1 relative Boolean solved4 = false`, `/variable define puzzle1 relative Boolean finished = false`, `/variable define puzzle1 relative Long door_ready_at = 0L`, `/variable define puzzle1 relative Long conduit_ready_at = 0L`. The full list is in the Submit script header. If a script says a variable isn't defined, run that one again from there.
-**Imported 2026-11-25:** the 10 Room 3 altar heads, all 4 door heads, the 10 instrument blocks (current version), the Start object, Finish, and the `solved4`/`finished` variables. Whether the doors were re-imported with the 5s cooldown (and `door_ready_at` defined) is unconfirmed.
+All one-time setup commands are listed in the Submit script header. If a script says a variable isn't defined, run that one again from there.
 
 ## Next up
 
@@ -115,7 +109,7 @@ Everything was re-imported on 2026-11-24. Keep this list up to date: add every s
    - Whether 15s (from Start) is enough, and whether 30s of parkour is right.
    - That `/setblock` works through `@bypass` (show and hide), and that `setHealth(0.0D)` at Finish kills an unqualified player.
    - That Finish disbands the team.
-3. Room 4 instructions rewritten 2026-11-25 (6 lines, ~20s, 45s cooldown); waiting on the user's review and an in-game test.
+3. Room 4 instructions rewritten and imported 2026-11-25 (6 lines, ~20s, 45s cooldown). Line 3 ("Wake it") may need to point at the Start object once its look is decided.
 4. Later: co-op edge-case tests (see "NOT yet tested" above).
 5. **Before admin handoff, once every script is done:** the user prepares the main map and gives the real coordinates. Put them in every header (`Bind to`, `Map/area`, coordinates used inside the script) and in the scripts themselves: the Submit note blocks, stairway and particles; the Entrance blocks; the door `corners`; the parkour clone coordinates; and the binding notes for the altar heads, instrument blocks, Start object and Finish. Set `debug = false` in Submit.
 
