@@ -44,7 +44,7 @@
 #   regions are separated by ;)
 @define String corners = "11457 162 10990 11457 160 10991;11454 162 10990 11454 160 10991"
 # material: the block the door is made of
-@define String material = "minecraft:prismarine_bricks"
+@define String material = "minecraft:prismarine_wall"
 # --- End settings ---
 @if corners == ""
 @player &7&o[Note] This door's coordinates haven't been set yet.

@@ -56,7 +56,7 @@ All scripts are MSC 2.0 in the namespace `puzzle1`. **Only use the files in this
 | Script | Type | Bind to |
 |---|---|---|
 | `Ocean_Puzzle_NoteTune.msc` | interact | Each of the 10 Room 1 note blocks (10 binds, same paste): see the note block table below |
-| `Ocean_Puzzle_Noteblocks.msc` (Submit) | interact | Submit block: [FILL IN] |
+| `Ocean_Puzzle_Noteblocks.msc` (Submit) | interact | Submit block: `11474 163 10978` |
 | `Ocean_Puzzle_Exit.msc` | walk | Past the stairway, every block across the path's width: [FILL IN] |
 | `Instructions/Ocean_Puzzle_Instructions_Room1.msc` | interact | Room 1 instructions head: `11459 161 10971` |
 | `Ocean_Puzzle_TeamConduit.msc` | interact | Team Conduit: `11460 161 10979` |
@@ -92,7 +92,7 @@ Room 3 door (set in the door scripts): prismarine wall, two regions: `11429 160-
 | `Doors/Ocean_Puzzle_Door_Room4_Inside.msc` | interact | Head inside the Room 4 door: [FILL IN] |
 | `Ocean_Puzzle_Finish.msc` | walk | `11443 167 10964` and `11444 167 10964` (one bind each) |
 
-Room 4 door (set in the door scripts): two regions: `11457 160-162 10990-10991` and `11454 160-162 10990-10991`.
+Room 4 door (set in the door scripts): prismarine wall, two regions: `11457 160-162 10990-10991` and `11454 160-162 10990-10991`.
 Parkour course (set in the Instrument scripts; players should find it hidden, i.e. air, before playtesting): 11 single glass panes, from `11443 161 10994` up to `11445 170 10990`. The Instrument scripts place them with `/setblock` and clear them back to air 30 s later.
 
 ### Symbol table (one row per symbol)
