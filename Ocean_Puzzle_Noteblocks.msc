@@ -37,6 +37,9 @@
 #   /variable define puzzle1 relative String inst_seq = ""
 #   /variable define puzzle1 relative Long inst_started_at = 0L
 #   /variable define puzzle1 relative Int inst_wrong = 0
+#   /variable define puzzle1 relative Boolean solved4 = false
+#   /variable define puzzle1 relative Boolean finished = false
+#   /variable define puzzle1 relative Long door_ready_at = 0L
 #   /variable define puzzle1 String team_registry = ""
 #   /variable define puzzle1 Long door3_close_at = 0L
 #   /variable define puzzle1 Long door4_close_at = 0L

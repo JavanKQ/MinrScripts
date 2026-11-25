@@ -8,7 +8,8 @@
 #
 # What it does:
 #   Clears the player's Ocean Puzzle progress (answer, Room 1
-#   and Room 3 solved status, any unfinished altar offering or
+#   and Room 3 solved status, Room 4 melody and "finished"
+#   status, any unfinished altar offering or
 #   melody, and team). Players who leave and re-join the map must
 #   come through here again, so their puzzle restarts.
 #   If the player was on a team, their online teammates are told
@@ -66,6 +67,8 @@
 # --- End team notice ---
 @var solved = false
 @var solved3 = false
+@var solved4 = false
+@var finished = false
 @var altar_seq = ""
 @var inst_started_at = 0L
 @var inst_seq = ""

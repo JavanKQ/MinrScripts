@@ -21,16 +21,32 @@
 #   on their own. Finish can also be placed farther down the
 #   line, e.g. right at the next checkpoint.
 #   The checkpoint beyond saves the player's map progress, so
-#   nothing here needs to be kept. Walking over it again does
-#   nothing.
+#   nothing here needs to be kept. Once a player has finished,
+#   walking over it again does nothing (until Reset).
 #
-# Requires: puzzle1 namespace (see Submit script header)
+#   ANTI-CHEAT: anyone who reaches this without having solved
+#   Room 1, Room 3 AND played the Room 4 melody (solved,
+#   solved3, solved4) is killed, which sends them back to the
+#   puzzle area checkpoint. The next checkpoint must be past
+#   this line so nobody can reach it without passing here.
+#
+# Requires: puzzle1 namespace (see Submit script header),
+#   including:
+#   /variable define puzzle1 relative Boolean solved4 = false
+#   /variable define puzzle1 relative Boolean finished = false
 # Related scripts: Instrument (10), Reset (4), Team Conduit (6)
 # ==============================================================
 @using puzzle1
-@if answer == "" && !solved && !solved3 && team == ""
+@if finished
 @return
 @fi
+# --- Anti-cheat: must have completed every room ---
+@if !solved || !solved3 || !solved4
+@player &3Oracle: &bThe deep does not know your song... and it will not let you pass.
+@var player.setHealth(0.0D)
+@return
+@fi
+@var finished = true
 # --- Disband the team for everyone still on it ---
 @if team != ""
 @define String me = player.getUniqueId()
@@ -51,6 +67,7 @@
 @fi
 @var solved = false
 @var solved3 = false
+@var solved4 = false
 @var altar_seq = ""
 @var inst_started_at = 0L
 @var inst_seq = ""

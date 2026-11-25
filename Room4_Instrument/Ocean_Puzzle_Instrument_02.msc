@@ -26,26 +26,28 @@
 #   - All 10 in order and in time, but some blocks mistuned: the
 #     Oracle says how many (never which). No hearts are lost.
 #   - All 10 in order, in time and in tune: the parkour course
-#     appears for 30 seconds (cloned in), and online teammates
-#     are told. Then it disappears again (cloned back out).
+#     appears for 30 seconds, and the player and online
+#     teammates are marked as having played it (solved4, which
+#     Finish checks). Then the course disappears again.
 #     Failing the parkour means playing the melody again.
 #     Completing it leads to the Finish script (11), which
 #     clears all progress and the team.
 #   Only players who solved Rooms 1 and 3 can perform.
 #
-# Settings: parkour coordinates are the 3 lines under
-#   "Settings" below (identical in all 10 files).
+# Settings: the parkour blocks are the lines under "Settings"
+#   below (identical in all 10 files).
 #
 # Requires: puzzle1 namespace (see Submit script header),
 #   including:
 #   /variable define puzzle1 relative String inst_seq = ""
 #   /variable define puzzle1 relative Long inst_started_at = 0L
 #   /variable define puzzle1 relative Int inst_wrong = 0
+#   /variable define puzzle1 relative Boolean solved4 = false
 #   /variable define puzzle1 Long parkour_close_at = 0L
 #   (parkour_close_at is NOT relative: shared by all)
 #
 # Map coordinates used inside this script:
-#   Parkour course: [FILL IN] (the "Settings" lines below)
+#   Parkour course: the "course" setting below (test server)
 #
 # Related scripts: Instrument voices 1-10 (identical except for
 #   the symbol number below), Instrument Start (10), Finish (11),
@@ -55,12 +57,10 @@
 @define Int symbol = 2
 @define String order = "7,9,4,6,10,5,1,2,8,3"
 # --- Settings ---
-# shown: "x1 y1 z1 x2 y2 z2" of a hidden copy of the finished course
-@define String shown = ""
-# hidden: "x1 y1 z1 x2 y2 z2" of a same-size copy of the area without it
-@define String hidden = ""
-# target: "x y z" where the course appears (its lowest corner)
-@define String target = ""
+# course: "x y z" of each parkour block, separated by ;
+@define String course = "-1824 75 1571;-1826 76 1571;-1829 77 1571;-1832 78 1571;-1835 79 1571;-1838 80 1571;-1838 81 1568;-1838 82 1565;-1838 83 1562;-1838 84 1559;-1836 85 1558;-1833 86 1558;-1830 87 1558"
+# material: the block the parkour is made of
+@define String material = "minecraft:sea_lantern"
 # --- End settings ---
 @define String before = block.getBlockDataValue("note")
 @delay 1
@@ -121,12 +121,9 @@
 @return
 @fi
 @player &3Oracle: &bThe ancient instrument sings, and the deep sings with it...
-@if shown == "" || hidden == "" || target == ""
-@player &7&o[Note] The parkour course's coordinates haven't been set yet.
-@return
-@fi
 @player &3Oracle: &bA path falls into being, like raindrops upon still water... Make haste, before it fades.
-# --- Tell online teammates (no variables are changed) ---
+# --- Mark the melody as played (Finish checks this), for online teammates too ---
+@var solved4 = true
 @if team != ""
 @define String me = player.getUniqueId()
 @define Player p = player
@@ -135,6 +132,7 @@
 @var p = Player(id)
 @if p != null
 @if team[p] == team && p.isOnline()
+@var solved4[p] = true
 @var p.sendMessage("§3Oracle: §b{{player.getName()}} has awakened the ancient instrument... a path falls into being like raindrops. Make haste!")
 @fi
 @fi
@@ -143,9 +141,17 @@
 @fi
 # --- Raise the course; sink it 30s after the LAST correct melody ---
 @define Long closeAt = now + 30000L
+@if course == ""
+@player &7&o[Note] The parkour course's coordinates haven't been set yet.
+@return
+@fi
 @var parkour_close_at = closeAt
-@bypass /clone {{shown}} {{target}}
+@for String c in course.split(";")
+@bypass /setblock {{c}} {{material}}
+@done
 @delay 30s
 @if parkour_close_at <= closeAt
-@bypass /clone {{hidden}} {{target}}
+@for String c in course.split(";")
+@bypass /setblock {{c}} air
+@done
 @fi

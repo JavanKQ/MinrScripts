@@ -10,7 +10,10 @@
 #   Opens the Room 3 door (fills it with air) for 5 seconds,
 #   then seals it again. Opens for anyone, so nobody gets stuck inside.
 #   If someone clicks while it is already open, it stays open
-#   until 5 seconds after the LAST click.
+#   until 5 seconds after the LAST click. Each player can click
+#   a door head (any of them) only once every 5 seconds,
+#   whether or not the door opens for them; extra clicks do
+#   nothing.
 #
 # Settings: the 4 door scripts are identical except for the
 #   lines under "Settings for this copy" below. Each door has an
@@ -20,6 +23,7 @@
 # Requires: puzzle1 namespace (see Submit script header),
 #   including:
 #   /variable define puzzle1 relative Boolean solved3 = false
+#   /variable define puzzle1 relative Long door_ready_at = 0L
 #   /variable define puzzle1 Long door3_close_at = 0L
 #   /variable define puzzle1 Long door4_close_at = 0L
 #   (the door variables are NOT relative: shared by all)
@@ -45,6 +49,12 @@
 @player &7&o[Note] This door's coordinates haven't been set yet.
 @return
 @fi
+# --- Per-player cooldown on all door heads (stops spam, allowed or not) ---
+@define Long now = system::currentTimeMillis()
+@if door_ready_at > now
+@return
+@fi
+@var door_ready_at = now + 5000L
 @if need >= 1 && !solved
 @player &3Oracle: &bThe seal does not yet know your song...
 @return
@@ -53,7 +63,7 @@
 @player &3Oracle: &bThe seal waits for the signs to be set in their true order...
 @return
 @fi
-@define Long closeAt = system::currentTimeMillis() + 5000L
+@define Long closeAt = now + 5000L
 @if door == 3
 @var door3_close_at = closeAt
 @else

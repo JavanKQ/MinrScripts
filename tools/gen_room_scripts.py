@@ -179,13 +179,18 @@ ALTAR = """# ==============================================================
 INST_SECONDS = 15
 # Seconds the parkour course stays up after a correct melody.
 PARKOUR_SECONDS = 30
-# Parkour course, shown and hidden with /clone (fill in once built):
-#   PARKOUR_SHOWN  = "x1 y1 z1 x2 y2 z2" of a hidden copy of the finished course
-#   PARKOUR_HIDDEN = "x1 y1 z1 x2 y2 z2" of a same-size copy of the area WITHOUT the course
-#   PARKOUR_TARGET = "x y z" where the course appears (the lowest-x/y/z corner)
-PARKOUR_SHOWN = ""
-PARKOUR_HIDDEN = ""
-PARKOUR_TARGET = ""
+# Parkour course: single blocks set to PARKOUR_MATERIAL to show, air to hide.
+# Test server course (13 sea lanterns inside Room 4). The real course may be
+# more detailed; if so, switch to /clone from a hidden copy.
+PARKOUR_BLOCKS = [
+    "-1824 75 1571", "-1826 76 1571", "-1829 77 1571", "-1832 78 1571",
+    "-1835 79 1571", "-1838 80 1571", "-1838 81 1568", "-1838 82 1565",
+    "-1838 83 1562", "-1838 84 1559", "-1836 85 1558", "-1833 86 1558",
+    "-1830 87 1558",
+]
+PARKOUR_MATERIAL = "minecraft:sea_lantern"
+# Seconds a player must wait between clicks on any door head.
+DOOR_COOLDOWN = 5
 # Doors: corners "x1 y1 z1 x2 y2 z2" and block, per door (3 = Room 3, 4 = Room 4).
 # Test server values; the real, more detailed doors will replace these.
 DOOR_CORNERS = {"3": "-1846 77 1553 -1841 75 1553", "4": "-1839 76 1558 -1839 74 1560"}
@@ -204,7 +209,10 @@ DOOR = """# ==============================================================
 #   Opens the Room @D@ door (fills it with air) for 5 seconds,
 #   then seals it again. @WHO@
 #   If someone clicks while it is already open, it stays open
-#   until 5 seconds after the LAST click.
+#   until 5 seconds after the LAST click. Each player can click
+#   a door head (any of them) only once every @DC@ seconds,
+#   whether or not the door opens for them; extra clicks do
+#   nothing.
 #
 # Settings: the 4 door scripts are identical except for the
 #   lines under "Settings for this copy" below. Each door has an
@@ -214,6 +222,7 @@ DOOR = """# ==============================================================
 # Requires: puzzle1 namespace (see Submit script header),
 #   including:
 #   /variable define puzzle1 relative Boolean solved3 = false
+#   /variable define puzzle1 relative Long door_ready_at = 0L
 #   /variable define puzzle1 Long door3_close_at = 0L
 #   /variable define puzzle1 Long door4_close_at = 0L
 #   (the door variables are NOT relative: shared by all)
@@ -239,6 +248,12 @@ DOOR = """# ==============================================================
 @player &7&o[Note] This door's coordinates haven't been set yet.
 @return
 @fi
+# --- Per-player cooldown on all door heads (stops spam, allowed or not) ---
+@define Long now = system::currentTimeMillis()
+@if door_ready_at > now
+@return
+@fi
+@var door_ready_at = now + @DCMS@L
 @if need >= 1 && !solved
 @player &3Oracle: &bThe seal does not yet know your song...
 @return
@@ -247,7 +262,7 @@ DOOR = """# ==============================================================
 @player &3Oracle: &bThe seal waits for the signs to be set in their true order...
 @return
 @fi
-@define Long closeAt = system::currentTimeMillis() + 5000L
+@define Long closeAt = now + 5000L
 @if door == 3
 @var door3_close_at = closeAt
 @else
@@ -352,26 +367,28 @@ INSTRUMENT = """# ==============================================================
 #   - All 10 in order and in time, but some blocks mistuned: the
 #     Oracle says how many (never which). No hearts are lost.
 #   - All 10 in order, in time and in tune: the parkour course
-#     appears for @PSECS@ seconds (cloned in), and online teammates
-#     are told. Then it disappears again (cloned back out).
+#     appears for @PSECS@ seconds, and the player and online
+#     teammates are marked as having played it (solved4, which
+#     Finish checks). Then the course disappears again.
 #     Failing the parkour means playing the melody again.
 #     Completing it leads to the Finish script (11), which
 #     clears all progress and the team.
 #   Only players who solved Rooms 1 and 3 can perform.
 #
-# Settings: parkour coordinates are the 3 lines under
-#   "Settings" below (identical in all 10 files).
+# Settings: the parkour blocks are the lines under "Settings"
+#   below (identical in all 10 files).
 #
 # Requires: puzzle1 namespace (see Submit script header),
 #   including:
 #   /variable define puzzle1 relative String inst_seq = ""
 #   /variable define puzzle1 relative Long inst_started_at = 0L
 #   /variable define puzzle1 relative Int inst_wrong = 0
+#   /variable define puzzle1 relative Boolean solved4 = false
 #   /variable define puzzle1 Long parkour_close_at = 0L
 #   (parkour_close_at is NOT relative: shared by all)
 #
 # Map coordinates used inside this script:
-#   Parkour course: [FILL IN] (the "Settings" lines below)
+#   Parkour course: the "course" setting below (test server)
 #
 # Related scripts: Instrument voices 1-10 (identical except for
 #   the symbol number below), Instrument Start (10), Finish (11),
@@ -381,12 +398,10 @@ INSTRUMENT = """# ==============================================================
 @define Int symbol = @N@
 @define String order = "7,9,4,6,10,5,1,2,8,3"
 # --- Settings ---
-# shown: "x1 y1 z1 x2 y2 z2" of a hidden copy of the finished course
-@define String shown = "@SHOWN@"
-# hidden: "x1 y1 z1 x2 y2 z2" of a same-size copy of the area without it
-@define String hidden = "@HIDDEN@"
-# target: "x y z" where the course appears (its lowest corner)
-@define String target = "@TARGET@"
+# course: "x y z" of each parkour block, separated by ;
+@define String course = "@COURSE@"
+# material: the block the parkour is made of
+@define String material = "@PMAT@"
 # --- End settings ---
 @define String before = block.getBlockDataValue("note")
 @delay 1
@@ -447,12 +462,9 @@ INSTRUMENT = """# ==============================================================
 @return
 @fi
 @player &3Oracle: &bThe ancient instrument sings, and the deep sings with it...
-@if shown == "" || hidden == "" || target == ""
-@player &7&o[Note] The parkour course's coordinates haven't been set yet.
-@return
-@fi
 @player &3Oracle: &bA path falls into being, like raindrops upon still water... Make haste, before it fades.
-# --- Tell online teammates (no variables are changed) ---
+# --- Mark the melody as played (Finish checks this), for online teammates too ---
+@var solved4 = true
 @if team != ""
 @define String me = player.getUniqueId()
 @define Player p = player
@@ -461,6 +473,7 @@ INSTRUMENT = """# ==============================================================
 @var p = Player(id)
 @if p != null
 @if team[p] == team && p.isOnline()
+@var solved4[p] = true
 @var p.sendMessage("§3Oracle: §b{{player.getName()}} has awakened the ancient instrument... a path falls into being like raindrops. Make haste!")
 @fi
 @fi
@@ -469,11 +482,19 @@ INSTRUMENT = """# ==============================================================
 @fi
 # --- Raise the course; sink it @PSECS@s after the LAST correct melody ---
 @define Long closeAt = now + @PMS@L
+@if course == ""
+@player &7&o[Note] The parkour course's coordinates haven't been set yet.
+@return
+@fi
 @var parkour_close_at = closeAt
-@bypass /clone {{shown}} {{target}}
+@for String c in course.split(";")
+@bypass /setblock {{c}} {{material}}
+@done
 @delay @PSECS@s
 @if parkour_close_at <= closeAt
-@bypass /clone {{hidden}} {{target}}
+@for String c in course.split(";")
+@bypass /setblock {{c}} air
+@done
 @fi
 """
 
@@ -485,8 +506,8 @@ def write(folder, name, text):
 def fill_inst(t):
     return (t.replace("@ORDINALS@", ORDINALS).replace("@SECS@", str(INST_SECONDS))
             .replace("@MS@", str(INST_SECONDS * 1000)).replace("@PSECS@", str(PARKOUR_SECONDS))
-            .replace("@PMS@", str(PARKOUR_SECONDS * 1000)).replace("@SHOWN@", PARKOUR_SHOWN)
-            .replace("@HIDDEN@", PARKOUR_HIDDEN).replace("@TARGET@", PARKOUR_TARGET))
+            .replace("@PMS@", str(PARKOUR_SECONDS * 1000)).replace("@COURSE@", ";".join(PARKOUR_BLOCKS))
+            .replace("@PMAT@", PARKOUR_MATERIAL))
 
 for n in range(1, 11):
     t = ALTAR.replace("@TEAM@", TEAM_CHECK).replace("@N@", str(n)).replace("@L@", LETTERS[n - 1])
@@ -497,6 +518,7 @@ write("Room4_Instrument", "Ocean_Puzzle_Instrument_Start.msc", fill_inst(START))
 for name, d, need, where, who in DOORS:
     t = (DOOR.replace("@TITLE@", name.replace("_", " ").upper()).replace("@D@", d)
          .replace("@NEED@", need).replace("@WHERE@", where).replace("@WHO@", who)
-         .replace("@CORNERS@", DOOR_CORNERS[d]).replace("@MATERIAL@", DOOR_MATERIAL[d]))
+         .replace("@CORNERS@", DOOR_CORNERS[d]).replace("@MATERIAL@", DOOR_MATERIAL[d])
+         .replace("@DCMS@", str(DOOR_COOLDOWN * 1000)).replace("@DC@", str(DOOR_COOLDOWN)))
     write("Doors", f"Ocean_Puzzle_Door_{name}.msc", t)
 print("done")
