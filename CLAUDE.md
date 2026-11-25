@@ -123,6 +123,8 @@ Everything was re-imported on 2026-11-24. Keep this list up to date: add every s
 
 - **Instrument (2026-11-23):** packed ice under the Room 1 and Room 4 note blocks, which gives the chime sound (`minecraft:block.note_block.chime`, F#5-F#7), chosen for its watery, magical feel. The symbols play the same sound at pitch 2^((note-12)/12).
 
+- **Forgotten notes (2026-11-25):** a player who didn't write down their Room 1 notes recovers them in Room 2. The symbols always replay that player's own `answer`, which nothing clears before Finish and other players can't change. They tune Room 4 by ear to match (same chime sound, no hearts lost, a count of mistuned voices). Room 1's note blocks are NOT a reliable source, because other players retune them. So Room 2 must stay reachable from Room 4 (via the inside door heads); never clear `answer` between Room 1 and Finish.
+
 ## Open questions
 
 - The stairway is shared blocks, so while it's open, other players could slip through. This is currently accepted.
