@@ -214,12 +214,14 @@ MAIN = {
         "11445 170 10990 minecraft:cyan_stained_glass_pane",
     ],
     "PARKOUR_MATERIAL": "minecraft:sea_lantern",
-    # Room 3 door (2026-11-25): two prismarine wall regions, separated by ;
-    "DOOR_CORNERS": {"3": "11429 161 10990 11429 160 10991;11431 161 10991 11431 160 10990", "4": ""},
+    # Room 3 and 4 doors (2026-11-25): two regions each, separated by ;
+    # Room 4's block type hasn't been confirmed yet.
+    "DOOR_CORNERS": {"3": "11429 161 10990 11429 160 10991;11431 161 10991 11431 160 10990",
+                     "4": "11457 162 10990 11457 160 10991;11454 162 10990 11454 160 10991"},
     "DOOR_MATERIAL": {"3": "minecraft:prismarine_wall", "4": "minecraft:prismarine_bricks"},
     # Door head coordinates, by script name ("" = not known yet).
     "DOOR_HEADS": {"Room3_Outside": "11432 161 10989", "Room3_Inside": "",
-                   "Room4_Outside": "", "Room4_Inside": ""},
+                   "Room4_Outside": "11453 161 10992", "Room4_Inside": ""},
     "DOOR_COOLDOWN": 5,
 }
 # Doors: corners "x1 y1 z1 x2 y2 z2" and block, per door (3 = Room 3, 4 = Room 4).

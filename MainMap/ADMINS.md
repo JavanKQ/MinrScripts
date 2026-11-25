@@ -88,11 +88,11 @@ Room 3 door (set in the door scripts): prismarine wall, two regions: `11429 160-
 | `Room4_Instrument/Ocean_Puzzle_Instrument_01.msc` ... `_10.msc` | interact | Symbol N's note block in Room 4: see the symbol table below. **Do NOT also bind NoteTune here** |
 | `Room4_Instrument/Ocean_Puzzle_Instrument_Start.msc` | interact | Start object: [FILL IN] |
 | `Instructions/Ocean_Puzzle_Instructions_Room4.msc` | interact | Room 4 instructions head: [FILL IN] |
-| `Doors/Ocean_Puzzle_Door_Room4_Outside.msc` | interact | Head outside the Room 4 door: [FILL IN] |
+| `Doors/Ocean_Puzzle_Door_Room4_Outside.msc` | interact | Head outside the Room 4 door: `11453 161 10992` |
 | `Doors/Ocean_Puzzle_Door_Room4_Inside.msc` | interact | Head inside the Room 4 door: [FILL IN] |
 | `Ocean_Puzzle_Finish.msc` | walk | `11443 167 10964` and `11444 167 10964` (one bind each) |
 
-Room 4 door: [FILL IN: same as Room 3]
+Room 4 door (set in the door scripts): two regions: `11457 160-162 10990-10991` and `11454 160-162 10990-10991`.
 Parkour course (set in the Instrument scripts; players should find it hidden, i.e. air, before playtesting): 11 single glass panes, from `11443 161 10994` up to `11445 170 10990`. The Instrument scripts place them with `/setblock` and clear them back to air 30 s later.
 
 ### Symbol table (one row per symbol)

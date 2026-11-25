@@ -42,7 +42,7 @@
 @define Int door = 4
 # corners: "x1 y1 z1 x2 y2 z2" of the door blocks (several
 #   regions are separated by ;)
-@define String corners = ""
+@define String corners = "11457 162 10990 11457 160 10991;11454 162 10990 11454 160 10991"
 # material: the block the door is made of
 @define String material = "minecraft:prismarine_bricks"
 # --- End settings ---
