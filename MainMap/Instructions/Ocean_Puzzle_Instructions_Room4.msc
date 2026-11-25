@@ -1,0 +1,47 @@
+# ==============================================================
+# OCEAN PUZZLE - INSTRUCTIONS: ROOM 4 (The Ancient Instrument)
+# ==============================================================
+# Script type : interact
+# Bind to     : [FILL IN: x y z of the clickable head block]
+# Map/area    : [FILL IN: map name / room]
+# Import      : /s i i <paste URL>, then click the head block
+#
+# What it does:
+#   The Oracle explains the instrument in metaphor:
+#   - tune each note block ("voice") to the note its symbol
+#     ("sign") played in Room 2,
+#   - click the Start object to wake the instrument (it only
+#     listens for 15 seconds),
+#   - play the blocks in order of the Room 3 values, lowest
+#     first; straying or retuning mid-song breaks it,
+#   - a correct melody raises the parkour path, briefly.
+#   Speech lasts about 20 seconds. Can be replayed once every
+#   45 seconds per player.
+#
+# Requires: puzzle1 namespace (see Submit script header)
+#
+# Related scripts: Instructions Rooms 1-2 and 3 (share the same
+#   cooldown), Instrument (10), Finish (11)
+# ==============================================================
+@using puzzle1
+@define Long now = system::currentTimeMillis()
+
+@if oracle_ready_at > now
+    @define Long seconds = (oracle_ready_at - now + 999L) / 1000L
+    @player &cOracle: You must wait {{seconds}} seconds to hear the instructions again.
+    @return
+@fi
+
+@var oracle_ready_at = now + 45000L
+
+@player &3Oracle: &bTen voices wait here, each bound to a sign you have already met.
+@delay 4s
+@player &3Oracle: &bGive each voice the song its sign once sang to you.
+@delay 4s
+@player &3Oracle: &bThe instrument sleeps. Wake it, and it will listen... but not for long.
+@delay 4s
+@player &3Oracle: &bThen let the signs speak by their worth: the lightest first, the heaviest last.
+@delay 4s
+@player &3Oracle: &bHesitate, stray, or shift a voice mid-song, and the melody is lost to the tide.
+@delay 4s
+@player &3Oracle: &bSing it true, and the deep will open a way onward... though it will not wait for you.

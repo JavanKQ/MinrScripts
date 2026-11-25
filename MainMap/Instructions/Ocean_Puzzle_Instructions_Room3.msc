@@ -1,0 +1,38 @@
+# ==============================================================
+# OCEAN PUZZLE - INSTRUCTIONS: ROOM 3 (Symbol Values)
+# ==============================================================
+# Script type : interact
+# Bind to     : [FILL IN: x y z of the clickable head block]
+# Map/area    : [FILL IN: map name / room]
+# Import      : /s i i <paste URL>, then click the head block
+#
+# What it does:
+#   The Oracle explains the symbol value grid puzzle in metaphor
+#   (see Ocean_Puzzle_Room3_Grids.md for the real rules).
+#   Speech lasts about 16 seconds. Can be replayed once every
+#   45 seconds per player.
+#
+# Requires: puzzle1 namespace (see Submit script header)
+#
+# Related scripts: Instructions Rooms 1-2 and 4 (share the same cooldown)
+# ==============================================================
+@using puzzle1
+@define Long now = system::currentTimeMillis()
+
+@if oracle_ready_at > now
+    @define Long seconds = (oracle_ready_at - now + 999L) / 1000L
+    @player &cOracle: You must wait {{seconds}} seconds to hear the instructions again.
+    @return
+@fi
+
+@var oracle_ready_at = now + 45000L
+
+@player &3Oracle: &bYou have learned the voice of every sign. Now learn its worth.
+@delay 4s
+@player &3Oracle: &bWithin each sign sleeps a number. Five walls guard the secret.
+@delay 4s
+@player &3Oracle: &bWhere a row ends and a column settles, the waters gather into one.
+@delay 4s
+@player &3Oracle: &bThe currents never change from wall to wall. What binds one binds all.
+@delay 4s
+@player &3Oracle: &bDo not mistake a pattern for a law until every wall agrees.

@@ -1,0 +1,77 @@
+# ==============================================================
+# OCEAN PUZZLE - PROGRESS RESET (4 of 12)
+# ==============================================================
+# Script type : walk (interact is fine for testing)
+# Bind to     : [FILL IN: x y z]
+# Map/area    : [FILL IN: map name / room]
+# Import      : /script import walk <paste URL>, then click the block
+#
+# What it does:
+#   Clears the player's Ocean Puzzle progress (answer, Room 1
+#   and Room 3 solved status, Room 4 melody and "finished"
+#   status, any unfinished altar offering or
+#   melody, and team). Players who leave and re-join the map must
+#   come through here again, so their puzzle restarts.
+#   If the player was on a team, their online teammates are told
+#   right away and regrouped without them (or made solo if only
+#   one is left).
+#
+# Placement note:
+#   Partway down the one-way drop at the end of the maze, into
+#   the puzzle area. It must be somewhere players pass only
+#   once, NOT at the checkpoint, since dying and returning
+#   there should keep progress. Bind to the air block below the
+#   drop space the same way as the Entrance script.
+#
+# Requires: puzzle1 namespace (see Submit script header)
+# Related scripts: Submit (1), Entrance (2), Exit (3), Note Tune (5), Team Conduit (6), Symbols (7)
+# ==============================================================
+@using puzzle1
+# --- Tell the rest of the team right away, and regroup them without this player ---
+@if team != ""
+@define String me = player.getUniqueId()
+@define String rest = ""
+@define Player q = player
+@for String id in team_members.split(",")
+@if id != me
+@var q = Player(id)
+@if q != null
+@if team[q] == team && q.isOnline()
+@if rest != ""
+@var rest = rest + ","
+@fi
+@var rest = rest + id
+@fi
+@fi
+@fi
+@done
+@if rest != ""
+@define String restId = team + "~" + "{{system::currentTimeMillis() / 1000L}}"
+@define Boolean alone = !rest.contains(",")
+@for String id in rest.split(",")
+@var q = Player(id)
+@if q != null
+@if alone
+@var team[q] = ""
+@var team_members[q] = ""
+@var q.sendMessage("§7§o[Note] {{player.getName()}} has left your team. You are now playing solo.")
+@else
+@var team[q] = restId
+@var team_members[q] = rest
+@var q.sendMessage("§7§o[Note] {{player.getName()}} has left your team.")
+@fi
+@fi
+@done
+@fi
+@fi
+# --- End team notice ---
+@var solved = false
+@var solved3 = false
+@var solved4 = false
+@var finished = false
+@var altar_seq = ""
+@var inst_started_at = 0L
+@var inst_seq = ""
+@var answer = ""
+@var team = ""
+@var team_members = ""

@@ -51,7 +51,7 @@ Room 3 altar and doors (designed 2026-11-24):
   - **Success:** a mini parkour course appears for **30s** (`PARKOUR_SECONDS`), shown by `/setblock`-ing each block in `PARKOUR_BLOCKS` to `PARKOUR_MATERIAL` and hidden by setting them back to air (generator settings). The test course is 13 single sea lanterns inside Room 4, from `-1824 75 1571` up to `-1830 87 1558`. If the real course is more detailed, switch to `/clone` from a hidden copy. A new correct melody while it's up extends it. The player and online teammates get `solved4` and a message. Failing the parkour means playing the melody again. The parkour start is only reachable from inside Room 4, so anyone who sneaks onto it is knowingly cheating (accepted).
   - **Finish:** a walk script at the end of the parkour (`Ocean_Puzzle_Finish.msc`). **Anti-cheat (2026-11-25):** anyone without `solved`, `solved3` and `solved4` is killed (`setHealth(0)`), which sends them back to the puzzle area checkpoint. The next checkpoint must be past Finish. Otherwise it sets `finished` and clears all of the player's puzzle progress and disbands their team (online same-ID teammates are told). The next checkpoint saves map progress, so nothing needs to be kept. Teammates who haven't finished keep all their progress (nothing of theirs is reset) and continue solo; the user may also move Finish farther down the line.
 
-**Folders (2026-11-24):** the core scripts stay at the top level. Groups go in folders: `Room2_Symbols/`, `Room3_Altar/`, `Room4_Instrument/`, `Doors/` and `Instructions/`. `Testing/` holds test-server-only helpers (`Test_Complete_Room1/3/4/All.msc` set the solved flags for the clicking player and print the song as tuning positions). They are never handed to admins. Put new script groups in a folder of their own. **The altar, instrument and door scripts are generated** by `tools/gen_room_scripts.py` (`py tools/gen_room_scripts.py`). Edit the templates and settings there and regenerate, rather than editing the 25 files by hand. Regenerating overwrites hand edits such as door `corners`, so put those settings into the generator once they're known.
+**Folders (2026-11-24):** the core scripts stay at the top level. `MainMap/` mirrors everything for the main map (see "Main map" below). Groups go in folders: `Room2_Symbols/`, `Room3_Altar/`, `Room4_Instrument/`, `Doors/` and `Instructions/`. `Testing/` holds test-server-only helpers (`Test_Complete_Room1/3/4/All.msc` set the solved flags for the clicking player and print the song as tuning positions). They are never handed to admins. Put new script groups in a folder of their own. **The altar, instrument and door scripts are generated** by `tools/gen_room_scripts.py` (`py tools/gen_room_scripts.py`). Edit the templates and settings there and regenerate, rather than editing the 25 files by hand. Regenerating overwrites hand edits such as door `corners`, so put those settings into the generator once they're known.
 
 | File | Type | Purpose |
 |---|---|---|
@@ -88,13 +88,24 @@ The user works on more than one machine. This file is the full record: Claude's 
 
 ## Pending re-import
 
-Everything else was imported, and all variables defined, by 2026-11-25. Keep this list up to date: add every script changed since then, and clear the list only when the user confirms they've re-imported. When they ask what needs importing, give this whole list, plus any one-time setup commands.
+Everything on the test server was imported, and all variables defined, by 2026-11-25 (including the conduit cooldown). Keep this list up to date: add every script changed since then, and clear the list only when the user confirms they've re-imported. When they ask what needs importing, give this whole list, plus any one-time setup commands.
 
 | Script | Bind to | What changed |
 |---|---|---|
-| `Ocean_Puzzle_TeamConduit.msc` | conduit | 5s per-player click cooldown, no stacked prompts. **Run first:** `/variable define puzzle1 relative Long conduit_ready_at = 0L` (unconfirmed whether this was already done) |
+| (none) | | |
 
-All one-time setup commands are listed in the Submit script header. If a script says a variable isn't defined, run that one again from there.
+All one-time setup commands are listed in the Submit script header.
+
+## Main map (2026-11-25)
+
+The puzzle is ready for Minr's playtesting phase. Submitted maps are played by Green+ players before release, and admins must import every script *before* playtesting. `MainMap/` holds the main-map copy of every script (46 files, no `Testing/`). Generated ones come from `py tools/gen_room_scripts.py main` (the `MAIN` settings in the generator); the rest are hand copies.
+- **Submit:** `debug = false`.
+- **Coordinates:** the copies still hold test coordinates or blanks. `MainMap/COORDINATES_NEEDED.md` is the checklist of everything the user must supply. Some items come from other builders on the map team, so it may arrive in pieces.
+- **Changes once coordinates arrive:**
+  - Generalize the Submit particles, which assume the test line at x = -1852.
+  - Switch doors (and the parkour, if detailed) to `/clone` copy-in/copy-out.
+  - Fill every header.
+- **Keep the copies in step:** changes to the test copies must also be made in `MainMap/` (or regenerated with `main`), and the reverse.
 
 ## Next up
 
@@ -111,7 +122,7 @@ All one-time setup commands are listed in the Submit script header. If a script 
    - That Finish disbands the team.
 3. Room 4 instructions rewritten and imported 2026-11-25 (6 lines, ~20s, 45s cooldown). Line 3 ("Wake it") may need to point at the Start object once its look is decided.
 4. Later: co-op edge-case tests (see "NOT yet tested" above).
-5. **Before admin handoff, once every script is done:** the user prepares the main map and gives the real coordinates. Put them in every header (`Bind to`, `Map/area`, coordinates used inside the script) and in the scripts themselves: the Submit note blocks, stairway and particles; the Entrance blocks; the door `corners`; the parkour clone coordinates; and the binding notes for the altar heads, instrument blocks, Start object and Finish. Set `debug = false` in Submit.
+5. **Before admin handoff:** fill in everything in `MainMap/COORDINATES_NEEDED.md` (see "Main map" above).
 
 ## Decisions
 

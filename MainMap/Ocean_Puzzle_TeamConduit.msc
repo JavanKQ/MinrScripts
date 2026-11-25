@@ -1,0 +1,199 @@
+# ==============================================================
+# OCEAN PUZZLE - TEAM CONDUIT (6 of 12)
+# ==============================================================
+# Script type : interact
+# Bind to     : [FILL IN: x y z of the conduit]
+# Map/area    : [FILL IN: map name / room]
+# Import      : /s i i <paste URL>, then click the conduit
+#
+# What it does:
+#   Lets co-op players share one song (answer). Each player
+#   right-clicks the conduit and types the same team word.
+#   The first player creates the word; teammates have 2
+#   minutes to join with it, after which it stops accepting
+#   members. Every time someone joins, the whole team gets a
+#   new shared song and is set back to unsolved (Rooms 1 and 3), so joining
+#   can't be used to skip the puzzle.
+#   When the 2 minutes are up, every member is told the word
+#   has expired and who is on the team. If nobody joined, the
+#   team is deleted and the creator is told.
+#   Players who have already solved Room 1 can't create or join
+#   a team (the conduit refuses before asking for a word).
+#   A player who joins or creates a team while on another one
+#   leaves the old team; its online members are told right away
+#   and regrouped without them.
+#   Cooldown: each player can click the conduit once every 5
+#   seconds (whatever the outcome), and not at all while their
+#   word prompt is open. Extra clicks do nothing.
+#
+# Requires: puzzle1 namespace (see Submit script header),
+#   including:
+#   /variable define puzzle1 relative Long conduit_ready_at = 0L
+# Related scripts: Submit (1), Entrance (2), Exit (3), Reset (4),
+#                  Note Tune (5)
+# ==============================================================
+@using puzzle1
+# --- Per-player cooldown: 5s between clicks, and no second prompt
+# --- while one is open (clicks during it do nothing) ---
+@define Long clickedAt = system::currentTimeMillis()
+@if conduit_ready_at > clickedAt
+@return
+@fi
+@var conduit_ready_at = clickedAt + 5000L
+# --- Players who already solved Room 1 can't create or join a team ---
+@if solved
+@if team != ""
+@player &3Oracle: &bYour song is already bound and sung... The conduit has nothing more to give you.
+@else
+@player &3Oracle: &bYour song has already been sung... It cannot be bound anew.
+@fi
+@return
+@fi
+@define String word = ""
+@player &3Oracle: &bSpeak the word that shall bind your song to your companions'...
+@var conduit_ready_at = clickedAt + 30000L
+@prompt 30s word §3Oracle: §bThe conduit's glow fades. Return when you are ready.
+@var conduit_ready_at = system::currentTimeMillis() + 5000L
+@var word = word.trim().toLowerCase()
+@if !word.matches("[a-z0-9_]{1,16}")
+@player &7&o[Note] Team words must be 1-16 letters, numbers or underscores, with no spaces.
+@return
+@fi
+@define String me = player.getUniqueId()
+@define String nowText = "{{system::currentTimeMillis() / 1000L}}"
+@define Int now = Int(nowText)
+@define String kept = ""
+@define String found = ""
+@define String[] parts = String[]
+@for String e in team_registry.split(";")
+@if e != ""
+@var parts = e.split(":")
+@if now - Int(parts[1]) < 120
+@if parts[0] == word
+@var found = e
+@else
+@var kept = kept + e + ";"
+@fi
+@fi
+@fi
+@done
+# --- If leaving an old team, tell its other members and regroup them ---
+@define Boolean already = false
+@if found != ""
+@var already = found.contains(me)
+@fi
+@if team != "" && !already
+@define String rest = ""
+@define Player q = player
+@for String id in team_members.split(",")
+@if id != me
+@var q = Player(id)
+@if q != null
+@if team[q] == team && q.isOnline()
+@if rest != ""
+@var rest = rest + ","
+@fi
+@var rest = rest + id
+@fi
+@fi
+@fi
+@done
+@if rest != ""
+@define String restId = team + "~" + nowText
+@define Boolean alone = !rest.contains(",")
+@for String id in rest.split(",")
+@var q = Player(id)
+@if q != null
+@if alone
+@var team[q] = ""
+@var team_members[q] = ""
+@var q.sendMessage("§7§o[Note] {{player.getName()}} has left your team. You are now playing solo.")
+@else
+@var team[q] = restId
+@var team_members[q] = rest
+@var q.sendMessage("§7§o[Note] {{player.getName()}} has left your team.")
+@fi
+@fi
+@done
+@fi
+@fi
+# --- End old team notice ---
+@if found == ""
+@define String myId = word + "@" + now
+@var team_registry = kept + word + ":" + now + ":" + me + ";"
+@var team = myId
+@var team_members = me
+@player &3Oracle: &bThe conduit awakens to the word "{{word}}"...
+@player &7&o[Note] Your teammates have 2 minutes to right-click the conduit and speak the same word.
+@delay 121s
+@define String left = ""
+@for String e in team_registry.split(";")
+@if e != ""
+@if !e.startsWith(word + ":" + now + ":")
+@var left = left + e + ";"
+@fi
+@fi
+@done
+@var team_registry = left
+@if !team.startsWith(myId)
+@return
+@fi
+@if team_members == me
+@var team = ""
+@var team_members = ""
+@if player.isOnline()
+@player &3Oracle: &bNo companion answered the word "{{word}}"... the bond dissolves, and your song remains your own.
+@fi
+@return
+@fi
+@define String names = ""
+@define Player m = player
+@for String id in team_members.split(",")
+@var m = Player(id)
+@if m != null
+@if names != ""
+@var names = names + ", "
+@fi
+@var names = names + m.getName()
+@fi
+@done
+@for String id in team_members.split(",")
+@var m = Player(id)
+@if m != null
+@if m.isOnline()
+@var m.sendMessage("§3Oracle: §bThe word '{{word}}' fades into the deep. Your song is bound among: {{names}}")
+@fi
+@fi
+@done
+@return
+@fi
+@var parts = found.split(":")
+@if parts[2].contains(me)
+@var team_registry = kept + found + ";"
+@player &3Oracle: &bYour voice is already bound to this song.
+@return
+@fi
+@define String members = parts[2] + "," + me
+@var team_registry = kept + parts[0] + ":" + parts[1] + ":" + members + ";"
+@define String teamId = parts[0] + "@" + parts[1]
+@define Int[] pool = list::range(0, 25)
+@var pool.shuffle()
+@define String[] notes = String[]
+@for Int i in list::range(0, 10)
+@var notes.append(String(pool[i]))
+@done
+@define String song = notes.join(",")
+@define Player p = player
+@for String id in members.split(",")
+@var p = Player(id)
+@if p != null
+@var team[p] = teamId
+@var team_members[p] = members
+@var answer[p] = song
+@var solved[p] = false
+@var solved3[p] = false
+@if p.isOnline()
+@var p.sendMessage("§3Oracle: §b{{player.getName()}}'s voice joins your song... the elders compose anew.")
+@fi
+@fi
+@done

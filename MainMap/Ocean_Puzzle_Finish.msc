@@ -1,0 +1,77 @@
+# ==============================================================
+# OCEAN PUZZLE - FINISH (11 of 12)
+# ==============================================================
+# Script type : walk
+# Bind to     : [FILL IN: x y z] at the end of the Room 4 parkour
+#               course, on the way to the next checkpoint. Bind to
+#               every block of the path's width (one bind each), the
+#               same way as the Entrance script, so nobody can step
+#               around it.
+# Map/area    : [FILL IN: map name / room]
+# Import      : /script import walk <paste URL>, then click the block
+#
+# What it does:
+#   The player has finished the whole Ocean Puzzle. Clears all of
+#   their puzzle progress (answer, Room 1 and Room 3 solved
+#   status, any unfinished altar offering or melody) and
+#   disbands their team: every online teammate still on the same
+#   team is told and removed from it. Teammates who haven't
+#   finished keep ALL their own progress (nothing of theirs is
+#   reset) and can still play the melody and run the parkour
+#   on their own. Finish can also be placed farther down the
+#   line, e.g. right at the next checkpoint.
+#   The checkpoint beyond saves the player's map progress, so
+#   nothing here needs to be kept. Once a player has finished,
+#   walking over it again does nothing (until Reset).
+#
+#   ANTI-CHEAT: anyone who reaches this without having solved
+#   Room 1, Room 3 AND played the Room 4 melody (solved,
+#   solved3, solved4) is killed, which sends them back to the
+#   puzzle area checkpoint. The next checkpoint must be past
+#   this line so nobody can reach it without passing here.
+#
+# Requires: puzzle1 namespace (see Submit script header),
+#   including:
+#   /variable define puzzle1 relative Boolean solved4 = false
+#   /variable define puzzle1 relative Boolean finished = false
+# Related scripts: Instrument (10), Reset (4), Team Conduit (6)
+# ==============================================================
+@using puzzle1
+@if finished
+@return
+@fi
+# --- Anti-cheat: must have completed every room ---
+@if !solved || !solved3 || !solved4
+@player &3Oracle: &bThe deep does not know your song... and it will not let you pass.
+@var player.setHealth(0.0D)
+@return
+@fi
+@var finished = true
+# --- Disband the team for everyone still on it ---
+@if team != ""
+@define String me = player.getUniqueId()
+@define Player q = player
+@for String id in team_members.split(",")
+@if id != me
+@var q = Player(id)
+@if q != null
+@if team[q] == team && q.isOnline()
+@var team[q] = ""
+@var team_members[q] = ""
+@var q.sendMessage("§7§o[Note] {{player.getName()}} has completed the Ocean Puzzle, so your team has disbanded. Your own progress is kept: the instrument still awaits you.")
+@fi
+@fi
+@fi
+@done
+@player &7&o[Note] You have completed the Ocean Puzzle, so your team has disbanded.
+@fi
+@var solved = false
+@var solved3 = false
+@var solved4 = false
+@var altar_seq = ""
+@var inst_started_at = 0L
+@var inst_seq = ""
+@var answer = ""
+@var team = ""
+@var team_members = ""
+@player &3Oracle: &bThe deep releases you, seeker... Your song will echo in these halls long after you have gone.

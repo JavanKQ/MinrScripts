@@ -1,0 +1,53 @@
+# ==============================================================
+# OCEAN PUZZLE - INSTRUCTIONS: ROOMS 1 & 2
+# ==============================================================
+# Script type : interact
+# Bind to     : [FILL IN: x y z of the clickable head block]
+# Map/area    : [FILL IN: map name / room]
+# Import      : /s i i <paste URL>, then click the head block
+#
+# What it does:
+#   The Oracle explains the note block / symbol matching puzzle,
+#   the heart cost of wrong answers, and that dying resets the
+#   song. Ends with a grey out-of-character note for co-op
+#   players that each player's answer is different.
+#   Can be replayed once every 60 seconds per player.
+#
+# Requires: puzzle1 namespace (see Submit script header)
+#
+# Related scripts: Instructions Rooms 3 and 4 (share the same cooldown)
+# ==============================================================
+@using puzzle1
+@define Long now = system::currentTimeMillis()
+
+@if oracle_ready_at > now
+    @define Long seconds = (oracle_ready_at - now + 999L) / 1000L
+    @player &cOracle: You must wait {{seconds}} seconds to hear the instructions again.
+    @return
+@fi
+
+@var oracle_ready_at = now + 60000L
+
+@player &3Oracle: &bMark my words well, seeker. Not one of them is spoken idly.
+@delay 4s
+@player &3Oracle: &bLong ago, the elders sealed their song within these walls. Only one who hears it may pass.
+@delay 4s
+@player &3Oracle: &bTen voices lie silent in this chamber. Ten signs keep watch among the drowned stones.
+@delay 4s
+@player &3Oracle: &bWake a sign, and it will remember its note for you.
+@delay 4s
+@player &3Oracle: &bTeach each silent voice the note its sign remembers.
+@delay 4s
+@player &3Oracle: &bWhen the ten sing as one, offer the song to the monument.
+@delay 4s
+@player &3Oracle: &bIt will count the voices that stray. Watch closely: the true will glimmer, the false will smoulder.
+@delay 4s
+@player &3Oracle: &bThe elders forgive four false offerings. Never a fifth.
+@delay 4s
+@player &3Oracle: &bIf the deep takes you, the song is rewritten, and all you learned sinks with you.
+@delay 4s
+@player &3Oracle: &bNor does the song end when the monument wakes. What each sign remembers, so too must you.
+@delay 4s
+@player &3Oracle: &bListen, seeker. The deep keeps its counsel.
+@delay 4s
+@player &7&o[Note] Playing co-op? Each player is given their own song. To share one, every teammate must right-click the conduit and type the same team word within 2 minutes. Joining a team starts the puzzle over for the whole team.

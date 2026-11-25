@@ -1,0 +1,200 @@
+# ==============================================================
+# OCEAN PUZZLE - SUBMIT (1 of 12)
+# ==============================================================
+# Script type : interact
+# Bind to     : [FILL IN: x y z of the submit block]
+# Map/area    : [FILL IN: map name / room]
+# Import      : /s i i <paste URL>, then click the submit block
+#
+# What it does:
+#   Checks the 10 note blocks in Room 1 against this player's
+#   answer. Wrong = player loses 2 hearts (5 wrong submits is
+#   death). The Oracle says how many notes are wrong (but not
+#   which), and green sparkles appear over the right note blocks
+#   and smoke over the wrong ones, shown only to the player and
+#   their teammates. Correct = player is marked solved and the
+#   stairway is opened. On a team, a wrong answer costs every
+#   online teammate 2 hearts (they get the same count message
+#   plus the particles), and a correct answer marks every
+#   teammate solved. Teammates who are offline or have joined
+#   another team are dropped from the team first (no hearts,
+#   no credit), and the rest are told who left.
+#   10 second cooldown between submissions.
+#
+# Requires (run once, before importing any Ocean Puzzle script):
+#   /namespace define puzzle1
+#   /variable define puzzle1 relative String answer = ""
+#   /variable define puzzle1 relative Boolean solved = false
+#   /variable define puzzle1 relative Long submit_ready_at = 0L
+#   /variable define puzzle1 relative Long oracle_ready_at = 0L
+#   /variable define puzzle1 relative Long chime_ready_at = 0L
+#   /variable define puzzle1 relative String team = ""
+#   /variable define puzzle1 relative String team_members = ""
+#   /variable define puzzle1 relative Boolean solved3 = false
+#   /variable define puzzle1 relative String altar_seq = ""
+#   /variable define puzzle1 relative Long altar_last_at = 0L
+#   /variable define puzzle1 relative Long altar_ready_at = 0L
+#   /variable define puzzle1 relative String inst_seq = ""
+#   /variable define puzzle1 relative Long inst_started_at = 0L
+#   /variable define puzzle1 relative Int inst_wrong = 0
+#   /variable define puzzle1 relative Boolean solved4 = false
+#   /variable define puzzle1 relative Boolean finished = false
+#   /variable define puzzle1 relative Long door_ready_at = 0L
+#   /variable define puzzle1 relative Long conduit_ready_at = 0L
+#   /variable define puzzle1 String team_registry = ""
+#   /variable define puzzle1 Long door3_close_at = 0L
+#   /variable define puzzle1 Long door4_close_at = 0L
+#   /variable define puzzle1 Long parkour_close_at = 0L
+#   (team_registry, the door variables and parkour_close_at are NOT relative: they
+#   are shared by all players)
+#
+# Map coordinates used inside this script:
+#   Note blocks   : -1852 68 1573 through -1852 68 1564
+#   Stair ceiling : -1846 70 1562 to -1841 70 1565
+#   Stair wall    : -1846 69 1565 to -1841 67 1565
+#   (both /fill lines appear in 2 places below)
+#   Particles     : -1851.5 69.5 <1573.5 down to 1564.5>, i.e.
+#                   centered above each note block (2 places below)
+#
+# Related scripts: Entrance (2), Exit (3), Reset (4), Note Tune (5), Team Conduit (6), Symbols (7)
+# ==============================================================
+@using puzzle1
+@define Boolean debug = false
+@if solved
+@player &3Oracle: &bThe elders' song has already been sung... The way above lies open to you.
+@bypass /fill -1846 70 1562 -1841 70 1565 air
+@bypass /fill -1846 69 1565 -1841 67 1565 air
+@return
+@fi
+@if answer == ""
+@player &3Oracle: &bThe elders are silent... Return to the temple's threshold.
+@return
+@fi
+@define Long now = system::currentTimeMillis()
+@if submit_ready_at > now
+@define Long seconds = (submit_ready_at - now + 999L) / 1000L
+@player &3Oracle: &bThe monument still echoes with your last offering... Wait {{seconds}} seconds.
+@return
+@fi
+@var submit_ready_at = now + 10000L
+@define String[] expected = answer.split(",")
+@define String w = block.getWorld()
+@define Block[] blocks = Block[Block(-1852, 68, 1573, w), Block(-1852, 68, 1572, w), Block(-1852, 68, 1571, w), Block(-1852, 68, 1570, w), Block(-1852, 68, 1569, w), Block(-1852, 68, 1568, w), Block(-1852, 68, 1567, w), Block(-1852, 68, 1566, w), Block(-1852, 68, 1565, w), Block(-1852, 68, 1564, w)]
+@define Int correct = 0
+@define String n = ""
+@define String flags = ""
+@for Int i in list::range(0, blocks.length())
+@var n = blocks[i].getBlockDataValue("note")
+@if debug
+@player &7[Debug] Block {{i + 1}}: note={{n}}, expected={{expected[i]}}
+@fi
+@if n == expected[i]
+@var correct = correct + 1
+@var flags = flags + "1,"
+@else
+@var flags = flags + "0,"
+@fi
+@done
+@define Int wrong = blocks.length() - correct
+@define String[] marks = flags.split(",")
+# --- Team check: drop teammates who are offline or on another team ---
+@define String me = player.getUniqueId()
+@define String stay = me
+@define String leftNames = ""
+@define Boolean dropped = false
+@define Player p = player
+@if team != ""
+@for String id in team_members.split(",")
+@if id != me
+@var p = Player(id)
+@if p == null
+@var dropped = true
+@if leftNames != ""
+@var leftNames = leftNames + ", "
+@fi
+@var leftNames = leftNames + "a teammate"
+@elseif team[p] != team || !p.isOnline()
+@var dropped = true
+@if leftNames != ""
+@var leftNames = leftNames + ", "
+@fi
+@var leftNames = leftNames + p.getName()
+@else
+@var stay = stay + "," + id
+@fi
+@fi
+@done
+@if dropped
+@if stay == me
+@var team = ""
+@var team_members = ""
+@player &7&o[Note] You and {{leftNames}} are no longer on the same team. You are now playing solo.
+@else
+@define String newId = team + "~" + "{{system::currentTimeMillis() / 1000L}}"
+@for String id in stay.split(",")
+@var p = Player(id)
+@if p != null
+@var team[p] = newId
+@var team_members[p] = stay
+@var p.sendMessage("§7§o[Note] {{leftNames}} is no longer on your team (went offline or joined another team).")
+@fi
+@done
+@fi
+@fi
+@fi
+# --- End team check ---
+@if wrong == 0
+@var solved = true
+@if team != ""
+@for String id in stay.split(",")
+@if id != me
+@var p = Player(id)
+@if p != null
+@var solved[p] = true
+@var p.sendMessage("§3Oracle: §b{{player.getName()}} has sung the elders' song true... the way above is revealed to you all.")
+@fi
+@fi
+@done
+@fi
+@player &3Oracle: &bThe temple stirs... every note rings true, as the elders composed it.
+@player &3Oracle: &bThe way above is revealed to you.
+@bypass /fill -1846 70 1562 -1841 70 1565 air
+@bypass /fill -1846 69 1565 -1841 67 1565 air
+@return
+@fi
+@if player.getHealth() <= 4.0D
+@player &3Oracle: &bThe elders' patience is spent... The sea reclaims you.
+@else
+@if wrong == 1
+@player &3Oracle: &bOne note still strays from the song of the elders... Listen closely, and try again.
+@else
+@player &3Oracle: &b{{wrong}} of these notes are not of the pitch the elders composed... Try again.
+@fi
+@for Int i in list::range(0, blocks.length())
+@if marks[i] == "1"
+@bypass /particle minecraft:happy_villager -1851.5 69.5 {{1573 - i}}.5 0.25 0.2 0.25 0 12 force {{player.getName()}}
+@else
+@bypass /particle minecraft:smoke -1851.5 69.5 {{1573 - i}}.5 0.2 0.2 0.2 0.01 15 force {{player.getName()}}
+@fi
+@done
+@fi
+@var player.setHealth(math::maxDouble(player.getHealth() - 4.0D, 0.0D))
+@if team == ""
+@return
+@fi
+@for String id in stay.split(",")
+@if id != me
+@var p = Player(id)
+@if p != null
+@var p.sendMessage("§3Oracle: §b{{player.getName()}}'s offering was false... {{wrong}} of the notes stray, and the elders' displeasure falls upon you all.")
+@for Int j in list::range(0, blocks.length())
+@if marks[j] == "1"
+@bypass /particle minecraft:happy_villager -1851.5 69.5 {{1573 - j}}.5 0.25 0.2 0.25 0 12 force {{p.getName()}}
+@else
+@bypass /particle minecraft:smoke -1851.5 69.5 {{1573 - j}}.5 0.2 0.2 0.2 0.01 15 force {{p.getName()}}
+@fi
+@done
+@var p.setHealth(math::maxDouble(p.getHealth() - 4.0D, 0.0D))
+@fi
+@fi
+@done

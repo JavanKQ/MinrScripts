@@ -1,0 +1,157 @@
+# ==============================================================
+# OCEAN PUZZLE - ROOM 4 INSTRUMENT VOICE 6 of 10 (script 10 of 12)
+# ==============================================================
+# Script type : interact
+# Bind to     : [FILL IN: x y z of the Room 4 note block for Symbol 6]
+#               This note block must be marked with the SAME skin
+#               as Symbol 6 (design letter F) in Rooms 2 and 3,
+#               and sit on PACKED ICE (chime) like Room 1's blocks.
+#               Do NOT also bind Note Tune (5) to Room 4's blocks:
+#               this script already shows the same tuning message.
+# Map/area    : [FILL IN: map name / room]
+# Import      : /s i i <paste URL>, then click the note block
+#
+# What it does:
+#   The ancient instrument. Players tune each Room 4 note block
+#   to its symbol's note (the note that symbol plays in Room 2),
+#   click the Start object, then hit (left-click) the blocks in
+#   order of the symbols' Room 3 values, lowest first:
+#   Symbols 7, 9, 4, 6, 10, 5, 1, 2, 8, 3,
+#   within 15 seconds of clicking Start.
+#   - Before Start is clicked, the blocks are free to play.
+#   - Right-click (tuning) shows the new pitch, like Note Tune,
+#     and breaks a performance in progress.
+#   - A block hit out of order breaks the performance.
+#   - Too slow: the Start script says the melody faded.
+#   - All 10 in order and in time, but some blocks mistuned: the
+#     Oracle says how many (never which). No hearts are lost.
+#   - All 10 in order, in time and in tune: the parkour course
+#     appears for 30 seconds, and the player and online
+#     teammates are marked as having played it (solved4, which
+#     Finish checks). Then the course disappears again.
+#     Failing the parkour means playing the melody again.
+#     Completing it leads to the Finish script (11), which
+#     clears all progress and the team.
+#   Only players who solved Rooms 1 and 3 can perform.
+#
+# Settings: the parkour blocks are the lines under "Settings"
+#   below (identical in all 10 files).
+#
+# Requires: puzzle1 namespace (see Submit script header),
+#   including:
+#   /variable define puzzle1 relative String inst_seq = ""
+#   /variable define puzzle1 relative Long inst_started_at = 0L
+#   /variable define puzzle1 relative Int inst_wrong = 0
+#   /variable define puzzle1 relative Boolean solved4 = false
+#   /variable define puzzle1 Long parkour_close_at = 0L
+#   (parkour_close_at is NOT relative: shared by all)
+#
+# Map coordinates used inside this script:
+#   Parkour course: the "course" setting below (test server)
+#
+# Related scripts: Instrument voices 1-10 (identical except for
+#   the symbol number below), Instrument Start (10), Finish (11),
+#   Reset (4), Symbols (7), Altar signs (9)
+# ==============================================================
+@using puzzle1
+@define Int symbol = 6
+@define String order = "7,9,4,6,10,5,1,2,8,3"
+# --- Settings ---
+# course: "x y z" of each parkour block, separated by ;
+@define String course = ""
+# material: the block the parkour is made of
+@define String material = "minecraft:sea_lantern"
+# --- End settings ---
+@define String before = block.getBlockDataValue("note")
+@delay 1
+@define String after = block.getBlockDataValue("note")
+# --- Right-click (tuning): show the pitch; breaks a performance ---
+@if after != before
+@define String[] ordinals = String["1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th", "10th", "11th", "12th", "13th", "14th", "15th", "16th", "17th", "18th", "19th", "20th", "21st", "22nd", "23rd", "24th", "25th"]
+@player &f&oThe note shifts to its {{ordinals[Int(after)]}} position.
+@if inst_started_at != 0L
+@var inst_started_at = 0L
+@var inst_seq = ""
+@player &3Oracle: &bA voice shifts mid-song, and the melody breaks...
+@fi
+@return
+@fi
+# --- A hit: only counts during a performance ---
+@if inst_started_at == 0L || !solved || !solved3 || answer == ""
+@return
+@fi
+@define Long now = system::currentTimeMillis()
+@if now - inst_started_at > 15000L
+@var inst_started_at = 0L
+@var inst_seq = ""
+@return
+@fi
+@define Int played = 0
+@if inst_seq != ""
+@var played = inst_seq.split(",").length()
+@fi
+@define String[] steps = order.split(",")
+@if steps[played] != String(symbol)
+@var inst_started_at = 0L
+@var inst_seq = ""
+@player &3Oracle: &bThe melody breaks... the voices strayed from their procession.
+@return
+@fi
+@define String[] notes = answer.split(",")
+@if after != notes[symbol - 1]
+@var inst_wrong = inst_wrong + 1
+@fi
+@if played == 0
+@var inst_seq = String(symbol)
+@else
+@var inst_seq = inst_seq + "," + String(symbol)
+@fi
+@if played + 1 < 10
+@return
+@fi
+# --- 10th note, in order and in time: check the tuning ---
+@var inst_started_at = 0L
+@var inst_seq = ""
+@if inst_wrong > 0
+@if inst_wrong == 1
+@player &3Oracle: &bThe procession was true... yet one voice sang false.
+@else
+@player &3Oracle: &bThe procession was true... yet {{inst_wrong}} voices sang false.
+@fi
+@return
+@fi
+@player &3Oracle: &bThe ancient instrument sings, and the deep sings with it...
+@player &3Oracle: &bA path falls into being, like raindrops upon still water... Make haste, before it fades.
+# --- Mark the melody as played (Finish checks this), for online teammates too ---
+@var solved4 = true
+@if team != ""
+@define String me = player.getUniqueId()
+@define Player p = player
+@for String id in team_members.split(",")
+@if id != me
+@var p = Player(id)
+@if p != null
+@if team[p] == team && p.isOnline()
+@var solved4[p] = true
+@var p.sendMessage("§3Oracle: §b{{player.getName()}} has awakened the ancient instrument... a path falls into being like raindrops. Make haste!")
+@fi
+@fi
+@fi
+@done
+@fi
+# --- Raise the course; sink it 30s after the LAST correct melody ---
+@define Long closeAt = now + 30000L
+@if course == ""
+@player &7&o[Note] The parkour course's coordinates haven't been set yet.
+@return
+@fi
+@var parkour_close_at = closeAt
+@for String c in course.split(";")
+@bypass /setblock {{c}} {{material}}
+@done
+@delay 30s
+@if parkour_close_at <= closeAt
+@for String c in course.split(";")
+@bypass /setblock {{c}} air
+@done
+@fi

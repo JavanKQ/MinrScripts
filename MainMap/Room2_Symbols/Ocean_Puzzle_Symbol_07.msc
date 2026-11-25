@@ -1,0 +1,50 @@
+# ==============================================================
+# OCEAN PUZZLE - ROOM 2 SYMBOL 7 of 10 (script 7 of 12)
+# ==============================================================
+# Script type : interact
+# Bind to     : [FILL IN: x y z of symbol 7 in Room 2]
+#               Symbol 7 must be the symbol paired with Room 1
+#               note block 7 (test server: -1852 68 1567), because
+#               Submit checks that block against this same note.
+# Map/area    : [FILL IN: map name / room]
+# Import      : /s i i <paste URL>, then click symbol 7
+#
+# What it does:
+#   Plays this player's note number 7 (slot 6 of their answer)
+#   as a note block chime, heard only by the clicking player.
+#   It's the same note that Room 1 note block 7 must be tuned to,
+#   so it matches what a Room 1 note block on packed ice sounds
+#   like at that pitch. Teammates share an answer, so they hear
+#   the same note. Hitting (left-clicking) also plays it.
+#   After each chime the player gets a short ethereal line in
+#   white italics. There is a 2 second cooldown per player,
+#   shared by all 10 symbols, so the chimes can't be spammed;
+#   clicks during the cooldown do nothing.
+#
+# Setup: Room 1 and Room 4 note blocks must sit on PACKED ICE
+#   (chime) so the symbols and note blocks sound alike.
+#
+# Requires: puzzle1 namespace (see Submit script header),
+#   including: /variable define puzzle1 relative Long chime_ready_at = 0L
+#
+# Map coordinates used inside this script: none
+#
+# Related scripts: Symbols 1-10 (identical except for the slot
+#   number on the line below), Submit (1), Entrance (2)
+# ==============================================================
+@using puzzle1
+@define Int slot = 6
+@if answer == ""
+@player &3Oracle: &bThe symbol is silent... Return to the temple's threshold.
+@return
+@fi
+@define Long now = system::currentTimeMillis()
+@if chime_ready_at > now
+@return
+@fi
+@var chime_ready_at = now + 2000L
+@define String[] pitches = String["0.5", "0.529732", "0.561231", "0.594604", "0.629961", "0.667420", "0.707107", "0.749154", "0.793701", "0.840896", "0.890899", "0.943874", "1.0", "1.059463", "1.122462", "1.189207", "1.259921", "1.334840", "1.414214", "1.498307", "1.587401", "1.681793", "1.781797", "1.887749", "2.0"]
+@define String[] notes = answer.split(",")
+@define String pitch = pitches[Int(notes[slot])]
+@bypass /playsound minecraft:block.note_block.chime record {{player.getName()}} ~ ~ ~ 1 {{pitch}}
+@player &f&oThe chime washes over your soul like a tide.

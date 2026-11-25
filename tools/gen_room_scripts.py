@@ -1,5 +1,7 @@
 """Generates the repetitive Ocean Puzzle scripts: Room3_Altar/ (10), Room4_Instrument/ (10 + Start)
 and Doors/ (4). Edit the templates here, then run: py tools/gen_room_scripts.py
+(test server copies, in the repo root folders) and py tools/gen_room_scripts.py main
+(main map copies, in MainMap/, using the MAIN settings near the end of the settings block).
 WARNING: overwrites those files. Any hand edits (e.g. door corners) must be copied into
 the templates/settings here first, or redone after regenerating."""
 import os
@@ -191,6 +193,17 @@ PARKOUR_BLOCKS = [
 PARKOUR_MATERIAL = "minecraft:sea_lantern"
 # Seconds a player must wait between clicks on any door head.
 DOOR_COOLDOWN = 5
+# ---- MAIN MAP settings (py tools/gen_room_scripts.py main -> MainMap/) ----
+# Empty values make the scripts say "coordinates haven't been set yet".
+MAIN = {
+    "INST_SECONDS": 15,
+    "PARKOUR_SECONDS": 30,
+    "PARKOUR_BLOCKS": [],
+    "PARKOUR_MATERIAL": "minecraft:sea_lantern",
+    "DOOR_CORNERS": {"3": "", "4": ""},
+    "DOOR_MATERIAL": {"3": "minecraft:prismarine_bricks", "4": "minecraft:prismarine_bricks"},
+    "DOOR_COOLDOWN": 5,
+}
 # Doors: corners "x1 y1 z1 x2 y2 z2" and block, per door (3 = Room 3, 4 = Room 4).
 # Test server values; the real, more detailed doors will replace these.
 DOOR_CORNERS = {"3": "-1846 77 1553 -1841 75 1553", "4": "-1839 76 1558 -1839 74 1560"}
@@ -498,9 +511,21 @@ INSTRUMENT = """# ==============================================================
 @fi
 """
 
+import sys
+OUT = ROOT
+if len(sys.argv) > 1 and sys.argv[1] == "main":
+    OUT = os.path.join(ROOT, "MainMap")
+    INST_SECONDS = MAIN["INST_SECONDS"]
+    PARKOUR_SECONDS = MAIN["PARKOUR_SECONDS"]
+    PARKOUR_BLOCKS = MAIN["PARKOUR_BLOCKS"]
+    PARKOUR_MATERIAL = MAIN["PARKOUR_MATERIAL"]
+    DOOR_CORNERS = MAIN["DOOR_CORNERS"]
+    DOOR_MATERIAL = MAIN["DOOR_MATERIAL"]
+    DOOR_COOLDOWN = MAIN["DOOR_COOLDOWN"]
+
 def write(folder, name, text):
-    os.makedirs(os.path.join(ROOT, folder), exist_ok=True)
-    with open(os.path.join(ROOT, folder, name), "w", encoding="utf-8", newline="\n") as f:
+    os.makedirs(os.path.join(OUT, folder), exist_ok=True)
+    with open(os.path.join(OUT, folder, name), "w", encoding="utf-8", newline="\n") as f:
         f.write(text)
 
 def fill_inst(t):
