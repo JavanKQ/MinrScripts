@@ -52,12 +52,6 @@ All scripts are MSC 2.0 in the namespace `puzzle1`. **Only use the files in this
 /variable define puzzle1 Long parkour_close_at = 0L
 ```
 
-## 3. Imports
-
-- **Interact scripts:** `/s i i <paste URL>`, then click the block.
-- **Walk scripts:** `/script import walk <paste URL>`, then click the block. A walk script fires when a player's feet enter the space *above* the bound block. To bind one in mid-air, place a temporary block, import, click it, then break it.
-- **"One bind per block":** import the same paste once for each listed block.
-
 ### Entry and maze
 
 | Script | Type | Bind to |
@@ -125,14 +119,6 @@ Parkour course: [FILL IN: the single blocks and their block type, or a hidden co
 | 10 (J) | [FILL IN] | [FILL IN] | [FILL IN] | [FILL IN] |
 
 Room 1 note block N is the block whose note Symbol N plays (Submit checks them in this order). The Room 1 block does not need to sit next to its symbol; only the order matters.
-
-## 4. Quick check after importing
-
-1. Drop into the puzzle area. The Oracle says *"The tides shift..."*.
-2. Click a Room 2 symbol. You hear a chime.
-3. Submit Room 1 with the blocks untuned. You lose 2 hearts, and particles appear over the note blocks.
-4. Click the Room 3 outside door head before solving Room 1. It refuses: *"The seal does not yet know your song..."*.
-5. Walk over Finish without having solved the puzzle. You die and respawn at the puzzle checkpoint. **This is intended** (anti-cheat).
 
 ## 5. Timings (for reference)
 
