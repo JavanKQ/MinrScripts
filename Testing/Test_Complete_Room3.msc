@@ -1,0 +1,38 @@
+# ==============================================================
+# OCEAN PUZZLE - TEST ONLY: COMPLETE ROOM 3
+# ==============================================================
+# Script type : interact (test server only; NOT for admins/main map)
+# Bind to     : any block on the test server
+# Import      : /s i i <paste URL>, then click the block
+#
+# What it does:
+#   Marks Room 3 (the altar) as solved (solved3).
+#   Only affects the clicking player (not teammates).
+#   If the player has no song yet, one is made (same way as
+#   the Entrance), and the song is printed in chat (as the
+#   1st-25th positions the tuning message uses, e.g. S7=12) so
+#   Room 4's blocks can be tuned without playing Room 1.
+#   Doesn't open the Room 1 stairway or show the parkour;
+#   it only sets the progress flags.
+#
+# Requires: puzzle1 namespace (see Submit script header)
+# ==============================================================
+@using puzzle1
+@if answer == ""
+@define Int[] pool = list::range(0, 25)
+@var pool.shuffle()
+@define String[] notes = String[]
+@for Int i in list::range(0, 10)
+@var notes.append(String(pool[i]))
+@done
+@var answer = notes.join(",")
+@fi
+@var solved3 = true
+@player &7[Test] Room 3 marked complete.
+@define String tuned = ""
+@define Int k = 1
+@for String n in answer.split(",")
+@var tuned = tuned + "  S" + String(k) + "=" + String(Int(n) + 1)
+@var k = k + 1
+@done
+@player &7[Test] Tune each Room 4 block to its "Nth position":{{tuned}}
