@@ -69,13 +69,24 @@ Room 3 altar and doors (designed 2026-11-24):
 | Room2_Symbols/Ocean_Puzzle_Symbol_01..10.msc | interact | Room 2 symbols (7 of 12). Each plays its slot of `answer` as a chime, heard only by the clicking player. The 10 files are identical except `slot` (0-9). Symbol N pairs with Room 1 note block N. |
 | Instructions/Ocean_Puzzle_Instructions_Room1/3/4.msc | interact | Oracle instructions |
 
-## Where we left off (2026-11-25)
+## Where we left off (2026-11-25, before a machine change)
 
 - **Puzzle:** all 4 rooms are scripted, imported on the test server, and a full solo run works. Co-op works for Rooms 1-2. Co-op for Rooms 3-4, failure paths and edge cases are untested.
-- **Current phase:** preparing the main map for Minr's playtesting phase. The user fills `[FILL IN]` coordinates in `MainMap/ADMINS.md` piece by piece and tells Claude. Claude then copies them into the `MainMap/` scripts (hand copies, plus `MAIN` in the generator, regenerated with `py tools/gen_room_scripts.py main`). The user talks to the admins directly.
-- **Filled so far:** Room 1 note blocks, Room 2 symbol heads, the Room 4 parkour course, the Finish line (`11443 167 10964`, `11444 167 10964`), Room 1 instructions head (`11459 161 10971`), Team Conduit (`11460 161 10979`), Room 3 door and outside head, Room 4 door and outside head, both inside door buttons (Room 3 `11428 161 10992`, Room 4 `11458 161 10989`), Forget head (`11448 161 10979`), Submit block (`11474 163 10978`), post-puzzle checkpoint (`11443 168 10955`) and the maze teleport plates (see "Main map").
+- **Current phase:** preparing the main map for Minr's playtesting phase. The user gives coordinates piece by piece; Claude copies them into the `MainMap/` script headers and code (hand copies, plus `MAIN` in the generator, regenerated with `py tools/gen_room_scripts.py main`), into `MainMap/ADMINS.md`, and into the list below, then commits and pushes each batch. The user talks to the admins directly.
+- **Filled so far (main map):**
+  - Room 1: note blocks `11476 162 10968`-`10977`, Submit `11474 163 10978`, instructions head `11459 161 10971`, Team Conduit `11460 161 10979`, Forget head `11448 161 10979`.
+  - Entrance: 6 binds `11441 162 10975` to `11446 162 10975` (players drop through y163).
+  - Room 2: all 10 symbol heads (see "Main map").
+  - Room 3: instructions head `11423 161 10990`, door (prismarine wall, 2 regions), outside head `11432 161 10989`, inside button `11428 161 10992`.
+  - Room 4: door (prismarine wall, 2 regions), outside head `11453 161 10992`, inside button `11458 161 10989`, parkour course (11 glass panes), Finish `11443 167 10964` and `11444 167 10964` (players swim over them in a 1-high gap).
+  - Post-puzzle checkpoint `11443 168 10955`. Maze teleport plates.
+- **Still blank in ADMINS.md:** map name, puzzle area checkpoint, Reset and Exit walk triggers, Room 1 stairway region, Room 4 instructions head, Room 4 Start object, the 10 Room 3 altar heads and 10 Room 4 note blocks (symbol table). Run `grep -o "FILL IN" MainMap/ADMINS.md | wc -l` for the count.
+- **Open questions for the user:**
+  - Doors: `/fill` places prismarine walls in their unconnected default shape, so a door may look different after its first open/close. The user should test `/fill 11429 160 10990 11429 161 10991 minecraft:prismarine_wall` on the main map. If it looks wrong, switch the doors to `/clone` from a hidden copy of each closed door (or explicit block states).
+  - Doors: the gaps between each door's two regions (Room 3 x=11430, Room 4 x=11455-11456) are assumed to be permanent build.
+  - Finish: whether a walk trigger fires for a swimming player is unconfirmed; suggest testing it on the test server.
 - **Still to write:** the dialogue scripts listed under "Still to write".
-- **Test server:** nothing is pending import.
+- **Test server:** the 4 door scripts and 10 instrument scripts are pending re-import (see "Pending re-import"), each with new, untested loop syntax.
 
 ## Switching machines
 

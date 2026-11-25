@@ -2,7 +2,7 @@
 # OCEAN PUZZLE - INSTRUCTIONS: ROOM 3 (Symbol Values)
 # ==============================================================
 # Script type : interact
-# Bind to     : [FILL IN: x y z of the clickable head block]
+# Bind to     : 11423 161 10990 (the Room 3 instructions head)
 # Map/area    : [FILL IN: map name / room]
 # Import      : /s i i <paste URL>, then click the head block
 #

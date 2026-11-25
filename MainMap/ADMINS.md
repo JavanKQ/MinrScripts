@@ -49,7 +49,7 @@ All scripts are MSC 2.0 in the namespace `puzzle1`. **Only use the files in this
 |---|---|---|
 | `Maze/Maze_Teleport.msc` | walk | The block UNDER each pressure plate (2 binds): `11407 162 10964` and `11405 162 11002` |
 | `Ocean_Puzzle_Reset.msc` | walk | Partway down the one-way drop out of the maze, every block across its width: [FILL IN] |
-| `Ocean_Puzzle_Entrance.msc` | walk | The one-way drop into the puzzle area (checkpoint side), every block across its width: [FILL IN] |
+| `Ocean_Puzzle_Entrance.msc` | walk | The one-way drop into the puzzle area: 6 binds, `11441 162 10975` to `11446 162 10975` (fires as players drop through y163; bind to air with a temporary block) |
 
 ### Room 1
 
@@ -75,7 +75,7 @@ Room 1 stairway (opened by Submit, closed by Exit): [FILL IN: region(s) and bloc
 | Script | Type | Bind to |
 |---|---|---|
 | `Room3_Altar/Ocean_Puzzle_Altar_01.msc` ... `_10.msc` | interact | Symbol N's head on the altar: see the symbol table below |
-| `Instructions/Ocean_Puzzle_Instructions_Room3.msc` | interact | Room 3 instructions head: [FILL IN] |
+| `Instructions/Ocean_Puzzle_Instructions_Room3.msc` | interact | Room 3 instructions head: `11423 161 10990` |
 | `Doors/Ocean_Puzzle_Door_Room3_Outside.msc` | interact | Head outside the Room 3 door: `11432 161 10989` |
 | `Doors/Ocean_Puzzle_Door_Room3_Inside.msc` | interact | Button inside the Room 3 door: `11428 161 10992` |
 

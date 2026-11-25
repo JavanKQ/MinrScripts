@@ -2,11 +2,12 @@
 # OCEAN PUZZLE - ENTRANCE (2 of 12)
 # ==============================================================
 # Script type : walk
-# Bind to     : 6 blocks, one bind each (test server coords):
-#               -1846 68 1566, -1845 68 1566, -1844 68 1566,
-#               -1843 68 1566, -1842 68 1566, -1841 68 1566
+# Bind to     : 6 blocks, one bind each:
+#               11441 162 10975, 11442 162 10975, 11443 162 10975,
+#               11444 162 10975, 11445 162 10975, 11446 162 10975
 #               (triggers as the player drops through the air
-#               space above, y69)
+#               space above, y163; if a block is air, place a
+#               temporary block, import, click it, then break it)
 # Map/area    : [FILL IN: map name / room]
 # Import      : /script import walk <paste URL>, then click the block
 #
