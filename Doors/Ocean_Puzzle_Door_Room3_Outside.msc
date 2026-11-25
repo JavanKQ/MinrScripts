@@ -25,7 +25,7 @@
 #   (the door variables are NOT relative: shared by all)
 #
 # Map coordinates used inside this script:
-#   Room 3 door: [FILL IN] (the "corners" setting below)
+#   Room 3 door: the "corners" setting below ([FILL IN] if empty)
 #
 # Related scripts: the other Doors (8), Altar signs (9),
 #   Instrument (10), Submit (1)
@@ -37,9 +37,9 @@
 # door: 3 = Room 3 door, 4 = Room 4 door
 @define Int door = 3
 # corners: "x1 y1 z1 x2 y2 z2" of the door blocks
-@define String corners = ""
+@define String corners = "-1846 77 1553 -1841 75 1553"
 # material: the block the door is made of
-@define String material = "minecraft:prismarine_bricks"
+@define String material = "minecraft:sea_lantern"
 # --- End settings ---
 @if corners == ""
 @player &7&o[Note] This door's coordinates haven't been set yet.

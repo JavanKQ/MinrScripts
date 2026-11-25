@@ -26,7 +26,7 @@
 #   (the door variables are NOT relative: shared by all)
 #
 # Map coordinates used inside this script:
-#   Room 4 door: [FILL IN] (the "corners" setting below)
+#   Room 4 door: the "corners" setting below ([FILL IN] if empty)
 #
 # Related scripts: the other Doors (8), Altar signs (9),
 #   Instrument (10), Submit (1)

@@ -186,6 +186,10 @@ PARKOUR_SECONDS = 30
 PARKOUR_SHOWN = ""
 PARKOUR_HIDDEN = ""
 PARKOUR_TARGET = ""
+# Doors: corners "x1 y1 z1 x2 y2 z2" and block, per door (3 = Room 3, 4 = Room 4).
+# Test server values; the real, more detailed doors will replace these.
+DOOR_CORNERS = {"3": "-1846 77 1553 -1841 75 1553", "4": ""}
+DOOR_MATERIAL = {"3": "minecraft:sea_lantern", "4": "minecraft:prismarine_bricks"}
 # -------------------------------------------
 
 DOOR = """# ==============================================================
@@ -215,7 +219,7 @@ DOOR = """# ==============================================================
 #   (the door variables are NOT relative: shared by all)
 #
 # Map coordinates used inside this script:
-#   Room @D@ door: [FILL IN] (the "corners" setting below)
+#   Room @D@ door: the "corners" setting below ([FILL IN] if empty)
 #
 # Related scripts: the other Doors (8), Altar signs (9),
 #   Instrument (10), Submit (1)
@@ -227,9 +231,9 @@ DOOR = """# ==============================================================
 # door: 3 = Room 3 door, 4 = Room 4 door
 @define Int door = @D@
 # corners: "x1 y1 z1 x2 y2 z2" of the door blocks
-@define String corners = ""
+@define String corners = "@CORNERS@"
 # material: the block the door is made of
-@define String material = "minecraft:prismarine_bricks"
+@define String material = "@MATERIAL@"
 # --- End settings ---
 @if corners == ""
 @player &7&o[Note] This door's coordinates haven't been set yet.
@@ -492,6 +496,7 @@ for n in range(1, 11):
 write("Room4_Instrument", "Ocean_Puzzle_Instrument_Start.msc", fill_inst(START))
 for name, d, need, where, who in DOORS:
     t = (DOOR.replace("@TITLE@", name.replace("_", " ").upper()).replace("@D@", d)
-         .replace("@NEED@", need).replace("@WHERE@", where).replace("@WHO@", who))
+         .replace("@NEED@", need).replace("@WHERE@", where).replace("@WHO@", who)
+         .replace("@CORNERS@", DOOR_CORNERS[d]).replace("@MATERIAL@", DOOR_MATERIAL[d]))
     write("Doors", f"Ocean_Puzzle_Door_{name}.msc", t)
 print("done")

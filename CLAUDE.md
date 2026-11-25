@@ -93,32 +93,20 @@ Everything was re-imported on 2026-11-24. Keep this list up to date: add every s
 | `Room2_Symbols/Ocean_Puzzle_Symbol_01..10.msc` (all 10) | each Room 2 symbol head | 2s chime cooldown shared by all symbols; white-italic line "The chime washes over your soul like a tide." after each chime |
 | `Ocean_Puzzle_Reset.msc` | Reset block | Also clears `solved3`, `altar_seq`, `inst_started_at` and `inst_seq` |
 | `Ocean_Puzzle_TeamConduit.msc` | conduit | Joining a team also resets `solved3` for the whole team; players who already solved Room 1 are refused (no team creating or joining) |
-| `Doors/Ocean_Puzzle_Door_*.msc` (4, NEW) | door heads (Room 3 in/out, Room 4 in/out) | New. Needs the door `corners` (and `material`) filled in before importing |
-| `Room3_Altar/Ocean_Puzzle_Altar_01..10.msc` (10, NEW) | Room 3 altar heads | New. Altar head N must wear Symbol N's skin |
+| `Doors/Ocean_Puzzle_Door_Room3_Outside.msc` + `_Room3_Inside.msc` (NEW) | Room 3 door heads (outside / inside) | Ready: test door is sea lantern at `-1846 77 1553` to `-1841 75 1553` |
+| `Doors/Ocean_Puzzle_Door_Room4_*.msc` (2, NEW) | Room 4 door heads | Not ready: Room 4 door corners not given yet |
 | `Room4_Instrument/Ocean_Puzzle_Instrument_01..10.msc` (10, NEW) | Room 4 note blocks (on packed ice) | New. Block N must be marked with Symbol N's skin. Don't bind NoteTune to these. Needs the parkour clone coordinates set in the generator |
 | `Room4_Instrument/Ocean_Puzzle_Instrument_Start.msc` (NEW) | Room 4 Start object (head/button) | New. Starts a 15s performance |
 | `Ocean_Puzzle_Finish.msc` (NEW, walk) | end of the parkour, full path width | New. Clears all progress and disbands the team |
 
-**One-time setup commands (run before importing the above):**
-```
-/variable define puzzle1 relative Long chime_ready_at = 0L
-/variable define puzzle1 relative Boolean solved3 = false
-/variable define puzzle1 relative String altar_seq = ""
-/variable define puzzle1 relative Long altar_last_at = 0L
-/variable define puzzle1 relative Long altar_ready_at = 0L
-/variable define puzzle1 Long door3_close_at = 0L
-/variable define puzzle1 Long door4_close_at = 0L
-/variable define puzzle1 Long parkour_close_at = 0L
-/variable define puzzle1 relative String inst_seq = ""
-/variable define puzzle1 relative Long inst_started_at = 0L
-/variable define puzzle1 relative Int inst_wrong = 0
-```
+**One-time setup commands:** the user ran all of them on 2026-11-25 (`chime_ready_at`, `solved3`, `altar_seq`, `altar_last_at`, `altar_ready_at`, `door3_close_at`, `door4_close_at`, `parkour_close_at`, `inst_seq`, `inst_started_at`, `inst_wrong`). The full list is in the Submit script header. If a script says a variable isn't defined, run that one again from there.
+**Imported 2026-11-25:** the 10 Room 3 altar heads.
 
 ## Next up
 
 1. **Test coordinates (waiting on the user):**
-   - The corners and block type for the Room 3 and Room 4 doors.
-   - The 4 door heads, the 10 altar heads, the 10 Room 4 note blocks and the Start object.
+   - The Room 4 door corners and block type. Room 3's test door is done (sea lantern, `-1846 77 1553 -1841 75 1553`, in `DOOR_CORNERS`/`DOOR_MATERIAL` in the generator). The real doors will be larger and more detailed, so switch the door scripts to the same `/clone` show/hide approach as the parkour (one command however detailed the door is) instead of many `/fill`s.
+   - The 4 door heads, the 10 Room 4 note blocks and the Start object.
    - The parkour course: its hidden "shown" copy, the same-size "empty" copy, and the target corner.
    - The Finish walk blocks.
 
