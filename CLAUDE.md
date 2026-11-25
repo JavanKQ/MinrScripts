@@ -80,6 +80,7 @@ The user works on more than one machine. This file is the full record: Claude's 
 - **`@prompt` timeout message:** it showed in yellow, ignoring `&` codes. It now uses `§` codes instead; whether that works is untested. If it doesn't, drop the colors from that one line.
 - **Co-op tested 2026-11-24 (2 players), after re-importing everything:** a standard 2-player playthrough of Rooms 1-2 works. The team solved together and both were marked solved, and teammate messages now show in color (`§` codes in `sendMessage` confirmed).
 - **NOT yet tested (edge cases, needs a second player):** the team check when someone goes offline or switches teams before a team event (new team ID, "no longer on your team" note), e.g. a teammate logging off and the rest completing the puzzle. The user considers this low priority.
+- **Full solo run tested and working (2026-11-25):** Rooms 1-4 end to end: doors (Room 3 opens after Room 1, Room 4 stays shut until the altar), altar, instrument with Start, parkour shows and hides via `/setblock`, Finish passes a qualified player. Finish's anti-cheat kill also works: an old instrument script that didn't set `solved4` got the player killed there. Failure paths and co-op for Rooms 3-4 are still untested.
 - **Room 3 playtest (2026-11-24):** a second player tried the grids for about 10 minutes without getting A. That is the intended difficulty; keep it.
 - **Room 2 symbols and per-block particle feedback: tested solo and working (2026-11-23),** so `@bypass /playsound` and `/particle ... force <player>` work, as does `{{1573 - i}}.5` inside a command.
 - **Debug:** the Submit script has `debug = true`, which prints the answer in chat. Turn it off before handing off to admins.
@@ -94,12 +95,9 @@ Everything was re-imported on 2026-11-24. Keep this list up to date: add every s
 | `Ocean_Puzzle_Reset.msc` | Reset block | Also clears `solved3`, `solved4`, `finished`, `altar_seq`, `inst_started_at` and `inst_seq` |
 | `Ocean_Puzzle_TeamConduit.msc` | conduit | Joining a team also resets `solved3` for the whole team; players who already solved Room 1 are refused (no team creating or joining) |
 | `Doors/Ocean_Puzzle_Door_*.msc` (all 4, RE-IMPORT) | Room 3 and Room 4 door heads | Imported and working 2026-11-25; re-import for the 5s per-player click cooldown (needs `door_ready_at` defined first) |
-| `Room4_Instrument/Ocean_Puzzle_Instrument_01..10.msc` (10, NEW) | Room 4 note blocks (on packed ice) | New. Block N must be marked with Symbol N's skin. Don't bind NoteTune to these. Test parkour blocks are set; sets `solved4` (define it first) |
-| `Room4_Instrument/Ocean_Puzzle_Instrument_Start.msc` (NEW) | Room 4 Start object (head/button) | New. Starts a 15s performance |
-| `Ocean_Puzzle_Finish.msc` (NEW, walk) | end of the parkour, full path width | New. Kills anyone without Rooms 1, 3 and the melody; otherwise clears all progress and disbands the team (define `solved4` and `finished` first) |
 
 **One-time setup commands:** the user ran all of them on 2026-11-25 (`chime_ready_at`, `solved3`, `altar_seq`, `altar_last_at`, `altar_ready_at`, `door3_close_at`, `door4_close_at`, `parkour_close_at`, `inst_seq`, `inst_started_at`, `inst_wrong`). **New since then, still to run:** `/variable define puzzle1 relative Boolean solved4 = false`, `/variable define puzzle1 relative Boolean finished = false`, `/variable define puzzle1 relative Long door_ready_at = 0L`. The full list is in the Submit script header. If a script says a variable isn't defined, run that one again from there.
-**Imported 2026-11-25:** the 10 Room 3 altar heads and all 4 door heads. The doors must be re-imported for the 5s cooldown.
+**Imported 2026-11-25:** the 10 Room 3 altar heads, all 4 door heads, the 10 instrument blocks (current version), the Start object, Finish, and the `solved4`/`finished` variables. Whether the doors were re-imported with the 5s cooldown (and `door_ready_at` defined) is unconfirmed.
 
 ## Next up
 
