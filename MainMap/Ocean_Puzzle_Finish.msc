@@ -2,11 +2,10 @@
 # OCEAN PUZZLE - FINISH (11 of 12)
 # ==============================================================
 # Script type : walk
-# Bind to     : [FILL IN: x y z] at the end of the Room 4 parkour
-#               course, on the way to the next checkpoint. Bind to
-#               every block of the path's width (one bind each), the
-#               same way as the Entrance script, so nobody can step
-#               around it.
+# Bind to     : 11443 167 10964 and 11444 167 10964 (one bind
+#               each), the full width of the path after the Room 4
+#               parkour, on the way to the next checkpoint. It fires
+#               when a player steps onto either block.
 # Map/area    : [FILL IN: map name / room]
 # Import      : /script import walk <paste URL>, then click the block
 #
