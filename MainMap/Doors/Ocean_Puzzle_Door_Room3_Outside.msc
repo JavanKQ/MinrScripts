@@ -2,7 +2,7 @@
 # OCEAN PUZZLE - DOOR: ROOM3 OUTSIDE (script 8 of 12)
 # ==============================================================
 # Script type : interact
-# Bind to     : [FILL IN: x y z of the head outside the Room 3 entrance]
+# Bind to     : 11432 161 10989 (the head outside the Room 3 entrance)
 # Map/area    : [FILL IN: map name / room]
 # Import      : /s i i <paste URL>, then click the head
 #
@@ -40,10 +40,11 @@
 @define Int need = 1
 # door: 3 = Room 3 door, 4 = Room 4 door
 @define Int door = 3
-# corners: "x1 y1 z1 x2 y2 z2" of the door blocks
-@define String corners = ""
+# corners: "x1 y1 z1 x2 y2 z2" of the door blocks (several
+#   regions are separated by ;)
+@define String corners = "11429 161 10990 11429 160 10991;11431 161 10991 11431 160 10990"
 # material: the block the door is made of
-@define String material = "minecraft:prismarine_bricks"
+@define String material = "minecraft:prismarine_wall"
 # --- End settings ---
 @if corners == ""
 @player &7&o[Note] This door's coordinates haven't been set yet.
@@ -69,7 +70,9 @@
 @else
 @var door4_close_at = closeAt
 @fi
-@bypass /fill {{corners}} air
+@for String c in corners.split(";")
+@bypass /fill {{c}} air
+@done
 @bypass /playsound minecraft:block.conduit.activate record {{player.getName()}} ~ ~ ~ 1 1
 @player &f&oThe seal parts before you... but not for long.
 @delay 5s
@@ -78,5 +81,7 @@
 @var last = door4_close_at
 @fi
 @if last <= closeAt
-@bypass /fill {{corners}} {{material}}
+@for String c in corners.split(";")
+@bypass /fill {{c}} {{material}}
+@done
 @fi

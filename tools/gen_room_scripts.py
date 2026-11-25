@@ -214,21 +214,27 @@ MAIN = {
         "11445 170 10990 minecraft:cyan_stained_glass_pane",
     ],
     "PARKOUR_MATERIAL": "minecraft:sea_lantern",
-    "DOOR_CORNERS": {"3": "", "4": ""},
-    "DOOR_MATERIAL": {"3": "minecraft:prismarine_bricks", "4": "minecraft:prismarine_bricks"},
+    # Room 3 door (2026-11-25): two prismarine wall regions, separated by ;
+    "DOOR_CORNERS": {"3": "11429 161 10990 11429 160 10991;11431 161 10991 11431 160 10990", "4": ""},
+    "DOOR_MATERIAL": {"3": "minecraft:prismarine_wall", "4": "minecraft:prismarine_bricks"},
+    # Door head coordinates, by script name ("" = not known yet).
+    "DOOR_HEADS": {"Room3_Outside": "11432 161 10989", "Room3_Inside": "",
+                   "Room4_Outside": "", "Room4_Inside": ""},
     "DOOR_COOLDOWN": 5,
 }
 # Doors: corners "x1 y1 z1 x2 y2 z2" and block, per door (3 = Room 3, 4 = Room 4).
+# A door made of several regions lists each one, separated by ;
 # Test server values; the real, more detailed doors will replace these.
 DOOR_CORNERS = {"3": "-1846 77 1553 -1841 75 1553", "4": "-1839 76 1558 -1839 74 1560"}
 DOOR_MATERIAL = {"3": "minecraft:sea_lantern", "4": "minecraft:sea_lantern"}
+DOOR_HEADS = {}
 # -------------------------------------------
 
 DOOR = """# ==============================================================
 # OCEAN PUZZLE - DOOR: @TITLE@ (script 8 of 12)
 # ==============================================================
 # Script type : interact
-# Bind to     : [FILL IN: x y z of the head @WHERE@]
+# Bind to     : @HEAD@
 # Map/area    : [FILL IN: map name / room]
 # Import      : /s i i <paste URL>, then click the head
 #
@@ -266,7 +272,8 @@ DOOR = """# ==============================================================
 @define Int need = @NEED@
 # door: 3 = Room 3 door, 4 = Room 4 door
 @define Int door = @D@
-# corners: "x1 y1 z1 x2 y2 z2" of the door blocks
+# corners: "x1 y1 z1 x2 y2 z2" of the door blocks (several
+#   regions are separated by ;)
 @define String corners = "@CORNERS@"
 # material: the block the door is made of
 @define String material = "@MATERIAL@"
@@ -295,7 +302,9 @@ DOOR = """# ==============================================================
 @else
 @var door4_close_at = closeAt
 @fi
-@bypass /fill {{corners}} air
+@for String c in corners.split(";")
+@bypass /fill {{c}} air
+@done
 @bypass /playsound minecraft:block.conduit.activate record {{player.getName()}} ~ ~ ~ 1 1
 @player &f&oThe seal parts before you... but not for long.
 @delay 5s
@@ -304,7 +313,9 @@ DOOR = """# ==============================================================
 @var last = door4_close_at
 @fi
 @if last <= closeAt
-@bypass /fill {{corners}} {{material}}
+@for String c in corners.split(";")
+@bypass /fill {{c}} {{material}}
+@done
 @fi
 """
 
@@ -536,6 +547,7 @@ if len(sys.argv) > 1 and sys.argv[1] == "main":
     DOOR_CORNERS = MAIN["DOOR_CORNERS"]
     DOOR_MATERIAL = MAIN["DOOR_MATERIAL"]
     DOOR_COOLDOWN = MAIN["DOOR_COOLDOWN"]
+    DOOR_HEADS = MAIN["DOOR_HEADS"]
 
 def write(folder, name, text):
     os.makedirs(os.path.join(OUT, folder), exist_ok=True)
@@ -556,6 +568,8 @@ for n in range(1, 11):
 write("Room4_Instrument", "Ocean_Puzzle_Instrument_Start.msc", fill_inst(START))
 for name, d, need, where, who in DOORS:
     t = (DOOR.replace("@TITLE@", name.replace("_", " ").upper()).replace("@D@", d)
+         .replace("@HEAD@", f"{DOOR_HEADS[name]} (the head {where})" if DOOR_HEADS.get(name)
+                  else f"[FILL IN: x y z of the head {where}]")
          .replace("@NEED@", need).replace("@WHERE@", where).replace("@WHO@", who)
          .replace("@CORNERS@", DOOR_CORNERS[d]).replace("@MATERIAL@", DOOR_MATERIAL[d])
          .replace("@DCMS@", str(DOOR_COOLDOWN * 1000)).replace("@DC@", str(DOOR_COOLDOWN)))

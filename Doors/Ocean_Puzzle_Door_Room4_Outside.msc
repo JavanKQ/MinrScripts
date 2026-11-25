@@ -41,7 +41,8 @@
 @define Int need = 2
 # door: 3 = Room 3 door, 4 = Room 4 door
 @define Int door = 4
-# corners: "x1 y1 z1 x2 y2 z2" of the door blocks
+# corners: "x1 y1 z1 x2 y2 z2" of the door blocks (several
+#   regions are separated by ;)
 @define String corners = "-1839 76 1558 -1839 74 1560"
 # material: the block the door is made of
 @define String material = "minecraft:sea_lantern"
@@ -70,7 +71,9 @@
 @else
 @var door4_close_at = closeAt
 @fi
-@bypass /fill {{corners}} air
+@for String c in corners.split(";")
+@bypass /fill {{c}} air
+@done
 @bypass /playsound minecraft:block.conduit.activate record {{player.getName()}} ~ ~ ~ 1 1
 @player &f&oThe seal parts before you... but not for long.
 @delay 5s
@@ -79,5 +82,7 @@
 @var last = door4_close_at
 @fi
 @if last <= closeAt
-@bypass /fill {{corners}} {{material}}
+@for String c in corners.split(";")
+@bypass /fill {{c}} {{material}}
+@done
 @fi

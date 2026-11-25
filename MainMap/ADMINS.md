@@ -76,10 +76,10 @@ Room 1 stairway (opened by Submit, closed by Exit): [FILL IN: region(s) and bloc
 |---|---|---|
 | `Room3_Altar/Ocean_Puzzle_Altar_01.msc` ... `_10.msc` | interact | Symbol N's head on the altar: see the symbol table below |
 | `Instructions/Ocean_Puzzle_Instructions_Room3.msc` | interact | Room 3 instructions head: [FILL IN] |
-| `Doors/Ocean_Puzzle_Door_Room3_Outside.msc` | interact | Head outside the Room 3 door: [FILL IN] |
+| `Doors/Ocean_Puzzle_Door_Room3_Outside.msc` | interact | Head outside the Room 3 door: `11432 161 10989` |
 | `Doors/Ocean_Puzzle_Door_Room3_Inside.msc` | interact | Head inside the Room 3 door: [FILL IN] |
 
-Room 3 door: [FILL IN: region and block type, or the location of a hidden copy of the closed door for a detailed door]
+Room 3 door (set in the door scripts): prismarine wall, two regions: `11429 160-161 10990-10991` and `11431 160-161 10990-10991`.
 
 ### Room 4
 
