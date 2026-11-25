@@ -100,7 +100,7 @@ All one-time setup commands are listed in the Submit script header.
 
 The puzzle is ready for Minr's playtesting phase. Submitted maps are played by Green+ players before release, and admins must import every script *before* playtesting. `MainMap/` holds the main-map copy of every script (46 files, no `Testing/`). Generated ones come from `py tools/gen_room_scripts.py main` (the `MAIN` settings in the generator); the rest are hand copies.
 - **Submit:** `debug = false`.
-- **Coordinates:** the copies still hold test coordinates or blanks. `MainMap/COORDINATES_NEEDED.md` is the checklist of everything the user must supply. Some items come from other builders on the map team, so it may arrive in pieces.
+- **Coordinates:** the copies still hold test coordinates or blanks. `MainMap/ADMINS.md` is the admins' one-page setup sheet (requirements, every setup command, an import table, a symbol table, quick checks). **The user fills the `[FILL IN]` coordinates in ADMINS.md directly and says when; then copy them into the MainMap scripts** (hand copies, plus the `MAIN` settings in the generator and regenerate with `main`). Some items come from other builders on the map team, so they may arrive in pieces. Keep ADMINS.md's command list and import table in sync with the scripts whenever a script or variable is added. Script headers keep their own binding details too (they travel with each paste).
 - **Changes once coordinates arrive:**
   - Generalize the Submit particles, which assume the test line at x = -1852.
   - Switch doors (and the parkour, if detailed) to `/clone` copy-in/copy-out.
@@ -122,7 +122,7 @@ The puzzle is ready for Minr's playtesting phase. Submitted maps are played by G
    - That Finish disbands the team.
 3. Room 4 instructions rewritten and imported 2026-11-25 (6 lines, ~20s, 45s cooldown). Line 3 ("Wake it") may need to point at the Start object once its look is decided.
 4. Later: co-op edge-case tests (see "NOT yet tested" above).
-5. **Before admin handoff:** fill in everything in `MainMap/COORDINATES_NEEDED.md` (see "Main map" above).
+5. **Before admin handoff:** every `[FILL IN]` in `MainMap/ADMINS.md` filled by the user, then copied into the MainMap scripts (see "Main map" above).
 
 ## Still to write (added 2026-11-25)
 
