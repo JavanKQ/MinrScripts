@@ -47,7 +47,7 @@
 #   (parkour_close_at is NOT relative: shared by all)
 #
 # Map coordinates used inside this script:
-#   Parkour course: the "course" setting below (test server)
+#   Parkour course: the "course" setting below
 #
 # Related scripts: Instrument voices 1-10 (identical except for
 #   the symbol number below), Instrument Start (10), Finish (11),
@@ -57,10 +57,8 @@
 @define Int symbol = 2
 @define String order = "7,9,4,6,10,5,1,2,8,3"
 # --- Settings ---
-# course: "x y z" of each parkour block, separated by ;
-@define String course = "-1824 75 1571;-1826 76 1571;-1829 77 1571;-1832 78 1571;-1835 79 1571;-1838 80 1571;-1838 81 1568;-1838 82 1565;-1838 83 1562;-1838 84 1559;-1836 85 1558;-1833 86 1558;-1830 87 1558"
-# material: the block the parkour is made of
-@define String material = "minecraft:sea_lantern"
+# course: "x y z block" of each parkour block, separated by ;
+@define String course = "-1824 75 1571 minecraft:sea_lantern;-1826 76 1571 minecraft:sea_lantern;-1829 77 1571 minecraft:sea_lantern;-1832 78 1571 minecraft:sea_lantern;-1835 79 1571 minecraft:sea_lantern;-1838 80 1571 minecraft:sea_lantern;-1838 81 1568 minecraft:sea_lantern;-1838 82 1565 minecraft:sea_lantern;-1838 83 1562 minecraft:sea_lantern;-1838 84 1559 minecraft:sea_lantern;-1836 85 1558 minecraft:sea_lantern;-1833 86 1558 minecraft:sea_lantern;-1830 87 1558 minecraft:sea_lantern"
 # --- End settings ---
 @define String before = block.getBlockDataValue("note")
 @delay 1
@@ -147,11 +145,13 @@
 @fi
 @var parkour_close_at = closeAt
 @for String c in course.split(";")
-@bypass /setblock {{c}} {{material}}
+@bypass /setblock {{c}}
 @done
 @delay 30s
 @if parkour_close_at <= closeAt
+@define String[] xyz = course.split(";")
 @for String c in course.split(";")
-@bypass /setblock {{c}} air
+@var xyz = c.split(" ")
+@bypass /setblock {{xyz[0]}} {{xyz[1]}} {{xyz[2]}} air
 @done
 @fi

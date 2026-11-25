@@ -181,7 +181,8 @@ ALTAR = """# ==============================================================
 INST_SECONDS = 15
 # Seconds the parkour course stays up after a correct melody.
 PARKOUR_SECONDS = 30
-# Parkour course: single blocks set to PARKOUR_MATERIAL to show, air to hide.
+# Parkour course: single blocks, set to their block to show and air to hide.
+# Each entry is "x y z" (uses PARKOUR_MATERIAL) or "x y z block" (its own block).
 # Test server course (13 sea lanterns inside Room 4). The real course may be
 # more detailed; if so, switch to /clone from a hidden copy.
 PARKOUR_BLOCKS = [
@@ -198,7 +199,20 @@ DOOR_COOLDOWN = 5
 MAIN = {
     "INST_SECONDS": 15,
     "PARKOUR_SECONDS": 30,
-    "PARKOUR_BLOCKS": [],
+    # Room 4 post-puzzle parkour, in jump order (2026-11-25).
+    "PARKOUR_BLOCKS": [
+        "11443 161 10994 minecraft:light_blue_stained_glass_pane",
+        "11445 162 10994 minecraft:cyan_stained_glass_pane",
+        "11446 163 10992 minecraft:blue_stained_glass_pane",
+        "11447 164 10990 minecraft:cyan_stained_glass_pane",
+        "11445 165 10988 minecraft:light_blue_stained_glass_pane",
+        "11442 165 10988 minecraft:blue_stained_glass_pane",
+        "11441 166 10990 minecraft:light_blue_stained_glass_pane",
+        "11441 167 10992 minecraft:cyan_stained_glass_pane",
+        "11443 168 10993 minecraft:blue_stained_glass_pane",
+        "11445 169 10992 minecraft:light_blue_stained_glass_pane",
+        "11445 170 10990 minecraft:cyan_stained_glass_pane",
+    ],
     "PARKOUR_MATERIAL": "minecraft:sea_lantern",
     "DOOR_CORNERS": {"3": "", "4": ""},
     "DOOR_MATERIAL": {"3": "minecraft:prismarine_bricks", "4": "minecraft:prismarine_bricks"},
@@ -401,7 +415,7 @@ INSTRUMENT = """# ==============================================================
 #   (parkour_close_at is NOT relative: shared by all)
 #
 # Map coordinates used inside this script:
-#   Parkour course: the "course" setting below (test server)
+#   Parkour course: the "course" setting below
 #
 # Related scripts: Instrument voices 1-10 (identical except for
 #   the symbol number below), Instrument Start (10), Finish (11),
@@ -411,10 +425,8 @@ INSTRUMENT = """# ==============================================================
 @define Int symbol = @N@
 @define String order = "7,9,4,6,10,5,1,2,8,3"
 # --- Settings ---
-# course: "x y z" of each parkour block, separated by ;
+# course: "x y z block" of each parkour block, separated by ;
 @define String course = "@COURSE@"
-# material: the block the parkour is made of
-@define String material = "@PMAT@"
 # --- End settings ---
 @define String before = block.getBlockDataValue("note")
 @delay 1
@@ -501,12 +513,14 @@ INSTRUMENT = """# ==============================================================
 @fi
 @var parkour_close_at = closeAt
 @for String c in course.split(";")
-@bypass /setblock {{c}} {{material}}
+@bypass /setblock {{c}}
 @done
 @delay @PSECS@s
 @if parkour_close_at <= closeAt
+@define String[] xyz = course.split(";")
 @for String c in course.split(";")
-@bypass /setblock {{c}} air
+@var xyz = c.split(" ")
+@bypass /setblock {{xyz[0]}} {{xyz[1]}} {{xyz[2]}} air
 @done
 @fi
 """
@@ -531,8 +545,8 @@ def write(folder, name, text):
 def fill_inst(t):
     return (t.replace("@ORDINALS@", ORDINALS).replace("@SECS@", str(INST_SECONDS))
             .replace("@MS@", str(INST_SECONDS * 1000)).replace("@PSECS@", str(PARKOUR_SECONDS))
-            .replace("@PMS@", str(PARKOUR_SECONDS * 1000)).replace("@COURSE@", ";".join(PARKOUR_BLOCKS))
-            .replace("@PMAT@", PARKOUR_MATERIAL))
+            .replace("@PMS@", str(PARKOUR_SECONDS * 1000)).replace("@COURSE@", ";".join(
+                b if len(b.split()) == 4 else b + " " + PARKOUR_MATERIAL for b in PARKOUR_BLOCKS)))
 
 for n in range(1, 11):
     t = ALTAR.replace("@TEAM@", TEAM_CHECK).replace("@N@", str(n)).replace("@L@", LETTERS[n - 1])

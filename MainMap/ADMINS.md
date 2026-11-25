@@ -93,7 +93,7 @@ Room 3 door: [FILL IN: region and block type, or the location of a hidden copy o
 | `Ocean_Puzzle_Finish.msc` | walk | End of the parkour, every block across the path's width: [FILL IN] |
 
 Room 4 door: [FILL IN: same as Room 3]
-Parkour course: [FILL IN: the single blocks and their block type, or a hidden copy of the course and where it appears]
+Parkour course (set in the Instrument scripts; players should find it hidden, i.e. air, before playtesting): 11 single glass panes, from `11443 161 10994` up to `11445 170 10990`. The Instrument scripts place them with `/setblock` and clear them back to air 30 s later.
 
 ### Symbol table (one row per symbol)
 
