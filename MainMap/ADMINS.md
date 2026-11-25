@@ -99,16 +99,16 @@ Parkour course: [FILL IN: the single blocks and their block type, or a hidden co
 
 | Symbol | Room 1 note block | Room 2 symbol head | Room 3 altar head | Room 4 note block |
 |---|---|---|---|---|
-| 1 (A) | `11476 162 10968` | [FILL IN] | [FILL IN] | [FILL IN] |
-| 2 (B) | `11476 162 10969` | [FILL IN] | [FILL IN] | [FILL IN] |
-| 3 (C) | `11476 162 10970` | [FILL IN] | [FILL IN] | [FILL IN] |
-| 4 (D) | `11476 162 10971` | [FILL IN] | [FILL IN] | [FILL IN] |
-| 5 (E) | `11476 162 10972` | [FILL IN] | [FILL IN] | [FILL IN] |
-| 6 (F) | `11476 162 10973` | [FILL IN] | [FILL IN] | [FILL IN] |
-| 7 (G) | `11476 162 10974` | [FILL IN] | [FILL IN] | [FILL IN] |
-| 8 (H) | `11476 162 10975` | [FILL IN] | [FILL IN] | [FILL IN] |
-| 9 (I) | `11476 162 10976` | [FILL IN] | [FILL IN] | [FILL IN] |
-| 10 (J) | `11476 162 10977` | [FILL IN] | [FILL IN] | [FILL IN] |
+| 1 (A) | `11476 162 10968` | `11424 161 10977` | [FILL IN] | [FILL IN] |
+| 2 (B) | `11476 162 10969` | `11420 168 10972` | [FILL IN] | [FILL IN] |
+| 3 (C) | `11476 162 10970` | `11417 161 10976` | [FILL IN] | [FILL IN] |
+| 4 (D) | `11476 162 10971` | `11428 166 10967` | [FILL IN] | [FILL IN] |
+| 5 (E) | `11476 162 10972` | `11411 161 10972` | [FILL IN] | [FILL IN] |
+| 6 (F) | `11476 162 10973` | `11411 168 10972` | [FILL IN] | [FILL IN] |
+| 7 (G) | `11476 162 10974` | `11411 161 10970` | [FILL IN] | [FILL IN] |
+| 8 (H) | `11476 162 10975` | `11423 168 10967` | [FILL IN] | [FILL IN] |
+| 9 (I) | `11476 162 10976` | `11426 161 10970` | [FILL IN] | [FILL IN] |
+| 10 (J) | `11476 162 10977` | `11427 161 10976` | [FILL IN] | [FILL IN] |
 
 Room 1 note block N is the block whose note Symbol N plays (Submit checks them in this order). The Room 1 block does not need to sit next to its symbol; only the order matters.
 

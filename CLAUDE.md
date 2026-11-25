@@ -73,7 +73,7 @@ Room 3 altar and doors (designed 2026-11-24):
 
 - **Puzzle:** all 4 rooms are scripted, imported on the test server, and a full solo run works. Co-op works for Rooms 1-2. Co-op for Rooms 3-4, failure paths and edge cases are untested.
 - **Current phase:** preparing the main map for Minr's playtesting phase. The user fills `[FILL IN]` coordinates in `MainMap/ADMINS.md` piece by piece and tells Claude. Claude then copies them into the `MainMap/` scripts (hand copies, plus `MAIN` in the generator, regenerated with `py tools/gen_room_scripts.py main`). The user talks to the admins directly.
-- **Filled so far:** Room 1 note blocks and the maze teleport plates (see "Main map").
+- **Filled so far:** Room 1 note blocks, Room 2 symbol heads and the maze teleport plates (see "Main map").
 - **Still to write:** the dialogue scripts listed under "Still to write".
 - **Test server:** nothing is pending import.
 
@@ -86,7 +86,7 @@ The user works on more than one machine. This file is the full record: Claude's 
 - **Tested and working** under the old `oceanpuzzle` namespace: submit check, hearts, entrance re-roll, stairway open/close.
 - **Working under `puzzle1`:** Submit and Entrance, after re-importing the Entrance (an old `oceanpuzzle` copy was still bound). NoteTune works; `@delay 1t` was rejected, so it uses `@delay 1`. Interact scripts also fire on left-click (hit), so NoteTune compares the note before and after the delay and stays silent if it didn't change.
 - **Tested solo and working:** all of Rooms 1-2's flow (instructions, NoteTune, entrance, submit, cooldown, hearts, death and new song, solve, stairway, exit, reset) and the Team Conduit with a team of one: word validation, prompt timeout, creating a word, "already bound", team-of-one submits and deaths, and the "bond dissolves" expiry. So `@prompt`, `String.matches`, `Player(uuid)` and the "{{...}}" Long-to-Int trick work.
-- **`@prompt` timeout message:** it showed in yellow, ignoring `&` codes. It now uses `§` codes instead; whether that works is untested. If it doesn't, drop the colors from that one line.
+- **`@prompt` timeout message:** it showed in yellow, ignoring `&` codes. It now uses `§` codes, confirmed working 2026-11-25.
 - **Co-op tested 2026-11-24 (2 players), after re-importing everything:** a standard 2-player playthrough of Rooms 1-2 works. The team solved together and both were marked solved, and teammate messages now show in color (`§` codes in `sendMessage` confirmed).
 - **NOT yet tested (edge cases, needs a second player):** the team check when someone goes offline or switches teams before a team event (new team ID, "no longer on your team" note), e.g. a teammate logging off and the rest completing the puzzle. The user considers this low priority.
 - **Full solo run tested and working (2026-11-25):** Rooms 1-4 end to end: doors (Room 3 opens after Room 1, Room 4 stays shut until the altar), altar, instrument with Start, parkour shows and hides via `/setblock`, Finish passes a qualified player. Finish's anti-cheat kill also works: an old instrument script that didn't set `solved4` got the player killed there. Failure paths and co-op for Rooms 3-4 are still untested.
@@ -110,6 +110,7 @@ The puzzle is ready for Minr's playtesting phase. Submitted maps are played by G
 - **Submit:** `debug = false`.
 - **Coordinates:** the copies still hold test coordinates or blanks. `MainMap/ADMINS.md` is the admins' setup sheet: map name, checkpoints, every setup command, import tables and a symbol table. The user handles skins, packed ice, region flags and post-import checks, and talks to the admins directly, so leave those out (2026-11-25). **The user fills the `[FILL IN]` coordinates in ADMINS.md directly and says when; then copy them into the MainMap scripts** (hand copies, plus the `MAIN` settings in the generator and regenerate with `main`). Some items come from other builders on the map team, so they may arrive in pieces. Keep ADMINS.md's command list and import table in sync with the scripts whenever a script or variable is added. Script headers keep their own binding details too (they travel with each paste).
 - **Coordinates filled so far (2026-11-25):** Room 1 note blocks `11476 162 10968` (Symbol 1) to `11476 162 10977` (Symbol 10), in MainMap Submit (blocks and particles at `11476.5 163.5 <z>.5`), the NoteTune and Symbol headers, and ADMINS.md. The main map's Room 1 is also a straight line, so the particle formula still works.
+- **Room 2 symbol heads (2026-11-25):** 1 `11424 161 10977`, 2 `11420 168 10972`, 3 `11417 161 10976`, 4 `11428 166 10967`, 5 `11411 161 10972`, 6 `11411 168 10972`, 7 `11411 161 10970`, 8 `11423 168 10967`, 9 `11426 161 10970`, 10 `11427 161 10976`. Only the Symbol headers and ADMINS.md hold them; the scripts themselves don't use their own location.
 - **Changes once coordinates arrive:**
   - Switch doors (and the parkour, if detailed) to `/clone` copy-in/copy-out.
   - Fill every header.

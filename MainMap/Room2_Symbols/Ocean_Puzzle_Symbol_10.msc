@@ -2,7 +2,7 @@
 # OCEAN PUZZLE - ROOM 2 SYMBOL 10 of 10 (script 7 of 12)
 # ==============================================================
 # Script type : interact
-# Bind to     : [FILL IN: x y z of symbol 10 in Room 2]
+# Bind to     : 11427 161 10976 (the symbol 10 head in Room 2)
 #               Symbol 10 must be the symbol paired with Room 1
 #               note block 10 (11476 162 10977), because
 #               Submit checks that block against this same note.
