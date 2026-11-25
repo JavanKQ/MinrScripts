@@ -2,9 +2,9 @@
 # OCEAN PUZZLE - DOOR: ROOM4 INSIDE (script 8 of 12)
 # ==============================================================
 # Script type : interact
-# Bind to     : [FILL IN: x y z of the head inside Room 4, next to its entrance]
+# Bind to     : 11458 161 10989 (inside Room 4, next to its entrance; a head or button)
 # Map/area    : [FILL IN: map name / room]
-# Import      : /s i i <paste URL>, then click the head
+# Import      : /s i i <paste URL>, then click the head or button
 #
 # What it does:
 #   Opens the Room 4 door (fills it with air) for 5 seconds,

@@ -73,7 +73,7 @@ Room 3 altar and doors (designed 2026-11-24):
 
 - **Puzzle:** all 4 rooms are scripted, imported on the test server, and a full solo run works. Co-op works for Rooms 1-2. Co-op for Rooms 3-4, failure paths and edge cases are untested.
 - **Current phase:** preparing the main map for Minr's playtesting phase. The user fills `[FILL IN]` coordinates in `MainMap/ADMINS.md` piece by piece and tells Claude. Claude then copies them into the `MainMap/` scripts (hand copies, plus `MAIN` in the generator, regenerated with `py tools/gen_room_scripts.py main`). The user talks to the admins directly.
-- **Filled so far:** Room 1 note blocks, Room 2 symbol heads, the Room 4 parkour course, the Finish line (`11443 167 10964`, `11444 167 10964`), Room 1 instructions head (`11459 161 10971`), Team Conduit (`11460 161 10979`), Room 3 door and outside head, Room 4 door and outside head, Submit block (`11474 163 10978`), post-puzzle checkpoint (`11443 168 10955`) and the maze teleport plates (see "Main map").
+- **Filled so far:** Room 1 note blocks, Room 2 symbol heads, the Room 4 parkour course, the Finish line (`11443 167 10964`, `11444 167 10964`), Room 1 instructions head (`11459 161 10971`), Team Conduit (`11460 161 10979`), Room 3 door and outside head, Room 4 door and outside head, both inside door buttons (Room 3 `11428 161 10992`, Room 4 `11458 161 10989`), Forget head (`11448 161 10979`), Submit block (`11474 163 10978`), post-puzzle checkpoint (`11443 168 10955`) and the maze teleport plates (see "Main map").
 - **Still to write:** the dialogue scripts listed under "Still to write".
 - **Test server:** nothing is pending import.
 

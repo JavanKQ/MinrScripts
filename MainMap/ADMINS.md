@@ -60,7 +60,7 @@ All scripts are MSC 2.0 in the namespace `puzzle1`. **Only use the files in this
 | `Ocean_Puzzle_Exit.msc` | walk | Past the stairway, every block across the path's width: [FILL IN] |
 | `Instructions/Ocean_Puzzle_Instructions_Room1.msc` | interact | Room 1 instructions head: `11459 161 10971` |
 | `Ocean_Puzzle_TeamConduit.msc` | interact | Team Conduit: `11460 161 10979` |
-| `Ocean_Puzzle_Forget.msc` | interact | Forget head: [FILL IN] |
+| `Ocean_Puzzle_Forget.msc` | interact | Forget head: `11448 161 10979` |
 
 Room 1 stairway (opened by Submit, closed by Exit): [FILL IN: region(s) and block type]
 
@@ -77,7 +77,7 @@ Room 1 stairway (opened by Submit, closed by Exit): [FILL IN: region(s) and bloc
 | `Room3_Altar/Ocean_Puzzle_Altar_01.msc` ... `_10.msc` | interact | Symbol N's head on the altar: see the symbol table below |
 | `Instructions/Ocean_Puzzle_Instructions_Room3.msc` | interact | Room 3 instructions head: [FILL IN] |
 | `Doors/Ocean_Puzzle_Door_Room3_Outside.msc` | interact | Head outside the Room 3 door: `11432 161 10989` |
-| `Doors/Ocean_Puzzle_Door_Room3_Inside.msc` | interact | Head inside the Room 3 door: [FILL IN] |
+| `Doors/Ocean_Puzzle_Door_Room3_Inside.msc` | interact | Button inside the Room 3 door: `11428 161 10992` |
 
 Room 3 door (set in the door scripts): prismarine wall, two regions: `11429 160-161 10990-10991` and `11431 160-161 10990-10991`.
 
@@ -89,7 +89,7 @@ Room 3 door (set in the door scripts): prismarine wall, two regions: `11429 160-
 | `Room4_Instrument/Ocean_Puzzle_Instrument_Start.msc` | interact | Start object: [FILL IN] |
 | `Instructions/Ocean_Puzzle_Instructions_Room4.msc` | interact | Room 4 instructions head: [FILL IN] |
 | `Doors/Ocean_Puzzle_Door_Room4_Outside.msc` | interact | Head outside the Room 4 door: `11453 161 10992` |
-| `Doors/Ocean_Puzzle_Door_Room4_Inside.msc` | interact | Head inside the Room 4 door: [FILL IN] |
+| `Doors/Ocean_Puzzle_Door_Room4_Inside.msc` | interact | Button inside the Room 4 door: `11458 161 10989` |
 | `Ocean_Puzzle_Finish.msc` | walk | `11443 167 10964` and `11444 167 10964` (one bind each) |
 
 Room 4 door (set in the door scripts): prismarine wall, two regions: `11457 160-162 10990-10991` and `11454 160-162 10990-10991`.

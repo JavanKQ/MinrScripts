@@ -219,8 +219,8 @@ MAIN = {
                      "4": "11457 162 10990 11457 160 10991;11454 162 10990 11454 160 10991"},
     "DOOR_MATERIAL": {"3": "minecraft:prismarine_wall", "4": "minecraft:prismarine_wall"},
     # Door head coordinates, by script name ("" = not known yet).
-    "DOOR_HEADS": {"Room3_Outside": "11432 161 10989", "Room3_Inside": "",
-                   "Room4_Outside": "11453 161 10992", "Room4_Inside": ""},
+    "DOOR_HEADS": {"Room3_Outside": "11432 161 10989", "Room3_Inside": "11428 161 10992",
+                   "Room4_Outside": "11453 161 10992", "Room4_Inside": "11458 161 10989"},
     "DOOR_COOLDOWN": 5,
 }
 # Doors: corners "x1 y1 z1 x2 y2 z2" and block, per door (3 = Room 3, 4 = Room 4).
@@ -237,7 +237,7 @@ DOOR = """# ==============================================================
 # Script type : interact
 # Bind to     : @HEAD@
 # Map/area    : [FILL IN: map name / room]
-# Import      : /s i i <paste URL>, then click the head
+# Import      : /s i i <paste URL>, then click the head or button
 #
 # What it does:
 #   Opens the Room @D@ door (fills it with air) for 5 seconds,
@@ -569,7 +569,7 @@ for n in range(1, 11):
 write("Room4_Instrument", "Ocean_Puzzle_Instrument_Start.msc", fill_inst(START))
 for name, d, need, where, who in DOORS:
     t = (DOOR.replace("@TITLE@", name.replace("_", " ").upper()).replace("@D@", d)
-         .replace("@HEAD@", f"{DOOR_HEADS[name]} (the head {where})" if DOOR_HEADS.get(name)
+         .replace("@HEAD@", f"{DOOR_HEADS[name]} ({where}; a head or button)" if DOOR_HEADS.get(name)
                   else f"[FILL IN: x y z of the head {where}]")
          .replace("@NEED@", need).replace("@WHERE@", where).replace("@WHO@", who)
          .replace("@CORNERS@", DOOR_CORNERS[d]).replace("@MATERIAL@", DOOR_MATERIAL[d])

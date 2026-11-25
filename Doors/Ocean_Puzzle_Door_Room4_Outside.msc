@@ -4,7 +4,7 @@
 # Script type : interact
 # Bind to     : [FILL IN: x y z of the head outside the Room 4 entrance]
 # Map/area    : [FILL IN: map name / room]
-# Import      : /s i i <paste URL>, then click the head
+# Import      : /s i i <paste URL>, then click the head or button
 #
 # What it does:
 #   Opens the Room 4 door (fills it with air) for 5 seconds,
