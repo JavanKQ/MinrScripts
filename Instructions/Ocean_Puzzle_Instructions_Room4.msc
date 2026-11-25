@@ -7,11 +7,21 @@
 # Import      : /s i i <paste URL>, then click the head block
 #
 # What it does:
-#   The Oracle explains the final instrument puzzle.
-#   Can be replayed once every 45 seconds per player.
+#   The Oracle explains the instrument in metaphor:
+#   - tune each note block ("voice") to the note its symbol
+#     ("sign") played in Room 2,
+#   - click the Start object to wake the instrument (it only
+#     listens for 15 seconds),
+#   - play the blocks in order of the Room 3 values, lowest
+#     first; straying or retuning mid-song breaks it,
+#   - a correct melody raises the parkour path, briefly.
+#   Speech lasts about 20 seconds. Can be replayed once every
+#   45 seconds per player.
 #
 # Requires: puzzle1 namespace (see Submit script header)
-# Related scripts: Instructions Rooms 1-2 and 3 (share the same cooldown)
+#
+# Related scripts: Instructions Rooms 1-2 and 3 (share the same
+#   cooldown), Instrument (10), Finish (11)
 # ==============================================================
 @using puzzle1
 @define Long now = system::currentTimeMillis()
@@ -24,16 +34,14 @@
 
 @var oracle_ready_at = now + 45000L
 
-@player &3Oracle: &bTen signs return to you, each bearing a voice heard in a chamber before.
+@player &3Oracle: &bTen voices wait here, each bound to a sign you have already met.
 @delay 4s
-@player &3Oracle: &bSet each note to the voice its sign first revealed.
+@player &3Oracle: &bGive each voice the song its sign once sang to you.
 @delay 4s
-@player &3Oracle: &bYet pitch alone will not shape the song. Each sign carries a hidden worth.
+@player &3Oracle: &bThe instrument sleeps. Wake it, and it will listen... but not for long.
 @delay 4s
-@player &3Oracle: &bLet that worth guide their procession: the lightest claim speaks first, the heaviest last.
+@player &3Oracle: &bThen let the signs speak by their worth: the lightest first, the heaviest last.
 @delay 4s
-@player &3Oracle: &bCarry the song you uncover to the waiting instrument in this chamber.
+@player &3Oracle: &bHesitate, stray, or shift a voice mid-song, and the melody is lost to the tide.
 @delay 4s
-@player &3Oracle: &bTune its ten voices, then sound the melody swiftly, before the moment slips beneath the tide.
-@delay 4s
-@player &3Oracle: &bRemember what you heard. Remember what each sign is worth. The sea remembers both.
+@player &3Oracle: &bSing it true, and the deep will open a way onward... though it will not wait for you.
