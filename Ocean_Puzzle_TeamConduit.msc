@@ -22,12 +22,24 @@
 #   A player who joins or creates a team while on another one
 #   leaves the old team; its online members are told right away
 #   and regrouped without them.
+#   Cooldown: each player can click the conduit once every 5
+#   seconds (whatever the outcome), and not at all while their
+#   word prompt is open. Extra clicks do nothing.
 #
-# Requires: puzzle1 namespace (see Submit script header)
+# Requires: puzzle1 namespace (see Submit script header),
+#   including:
+#   /variable define puzzle1 relative Long conduit_ready_at = 0L
 # Related scripts: Submit (1), Entrance (2), Exit (3), Reset (4),
 #                  Note Tune (5)
 # ==============================================================
 @using puzzle1
+# --- Per-player cooldown: 5s between clicks, and no second prompt
+# --- while one is open (clicks during it do nothing) ---
+@define Long clickedAt = system::currentTimeMillis()
+@if conduit_ready_at > clickedAt
+@return
+@fi
+@var conduit_ready_at = clickedAt + 5000L
 # --- Players who already solved Room 1 can't create or join a team ---
 @if solved
 @if team != ""
@@ -39,7 +51,9 @@
 @fi
 @define String word = ""
 @player &3Oracle: &bSpeak the word that shall bind your song to your companions'...
+@var conduit_ready_at = clickedAt + 30000L
 @prompt 30s word §3Oracle: §bThe conduit's glow fades. Return when you are ready.
+@var conduit_ready_at = system::currentTimeMillis() + 5000L
 @var word = word.trim().toLowerCase()
 @if !word.matches("[a-z0-9_]{1,16}")
 @player &7&o[Note] Team words must be 1-16 letters, numbers or underscores, with no spaces.
