@@ -2,12 +2,12 @@
 # OCEAN PUZZLE - EXIT (3 of 12)
 # ==============================================================
 # Script type : walk
-# Bind to     : 4 blocks, one bind each:
-#               11442 162 10981, 11443 162 10981,
-#               11444 162 10981, 11445 162 10981
+# Bind to     : 4 blocks, one bind each (the floor of the Room 3
+#               doorway):
+#               11429 159 10990, 11429 159 10991,
+#               11430 159 10990, 11430 159 10991
 #               It fires when a player's feet enter the space above
-#               them (y163). If a block is air, place a temporary
-#               block, import, click it, then break it.
+#               them (y160).
 # Map/area    : [FILL IN: map name / room]
 # Import      : /script import walk <paste URL>, then click the block
 #

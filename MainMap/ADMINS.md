@@ -57,7 +57,7 @@ All scripts are MSC 2.0 in the namespace `puzzle1`. **Only use the files in this
 |---|---|---|
 | `Ocean_Puzzle_NoteTune.msc` | interact | Each of the 10 Room 1 note blocks (10 binds, same paste): see the note block table below |
 | `Ocean_Puzzle_Noteblocks.msc` (Submit) | interact | Submit block: `11474 163 10978` |
-| `Ocean_Puzzle_Exit.msc` | walk | 4 binds: `11442 162 10981` to `11445 162 10981` |
+| `Ocean_Puzzle_Exit.msc` | walk | 4 binds (the floor of the Room 3 doorway): `11429 159 10990`, `11429 159 10991`, `11430 159 10990`, `11430 159 10991` |
 | `Instructions/Ocean_Puzzle_Instructions_Room1.msc` | interact | Room 1 instructions head: `11459 161 10971` |
 | `Ocean_Puzzle_TeamConduit.msc` | interact | Team Conduit: `11460 161 10979` |
 | `Ocean_Puzzle_Forget.msc` | interact | Forget block: `11444 161 10999` |

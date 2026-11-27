@@ -78,7 +78,7 @@ Room 3 altar and doors (designed 2026-11-24):
   - Entrance: 6 binds `11441 162 10975` to `11446 162 10975` (players drop through y163).
   - Reset: 2 binds `11443 147 10988` and `11443 147 10989` on the way up from the maze (changed 2026-11-27).
   - Room 1 stairway (Submit opens, Exit fills): `11438 163 10979 11449 163 10981`, `11442 162 10978 11445 162 10978`, `11442 162 10977 11445 161 10977`. All prismarine bricks, plus prismarine stairs (facing north, `[facing=north]` in Exit) at `11442 163 10980 11445 163 10980` (opened together; Exit refills the stairs last). Players drop into Room 1 and the stairway leads back up, so Submit's "The way above" is right.
-  - Exit: 4 binds `11442 162 10981` to `11445 162 10981` (fires at feet y163; user's choice 2026-11-27). That spot is inside the refilled ceiling region, so the refill lands at the player's feet; damage is off in the puzzle area, so they're only nudged out.
+  - Exit: 4 binds on the floor of the Room 3 doorway, `11429`/`11430` x `159` x `10990`/`10991` (fires at feet y160; changed 2026-11-27). It fires on every pass through the doorway, either way; that's harmless, since a solved player can reopen the stairway by clicking Submit.
   - Puzzle area checkpoint `11442 161 10989`.
   - Room 2: all 10 symbol heads (see "Main map").
   - Room 3: instructions head `11423 161 10990`, door (prismarine wall, 2 regions), outside head `11432 161 10989`, inside button `11428 161 10992`.
