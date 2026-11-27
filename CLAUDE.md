@@ -85,10 +85,11 @@ Room 3 altar and doors (designed 2026-11-24):
   - Puzzle area checkpoint `11442 161 10989`.
   - Room 2: all 10 symbol heads (see "Main map").
   - Room 3: instructions head `11423 161 10990`, door (prismarine wall, 2 regions), outside head `11432 161 10989`, inside button `11428 161 10992`.
+  - Room 3 altar heads (2026-11-27, by symbol): 1 `11421 168 10996`, 2 `11420 169 10996`, 3 `11420 168 10996`, 4 `11419 168 10996`, 5 `11417 168 10996`, 6 `11419 169 10996`, 7 `11417 169 10996`, 8 `11418 169 10996`, 9 `11418 168 10996`, 10 `11421 169 10996` (a 5x2 wall at z10996, x11417-11421, y168-169). In `MAIN["ALTAR_HEADS"]` in the generator.
   - Room 4: door (prismarine wall, 2 regions), outside head `11453 161 10992`, inside button `11458 161 10989`, parkour course (11 glass panes), Finish `11443 167 10964` and `11444 167 10964` (players swim over them in a 1-high gap).
   - Post-puzzle checkpoint `11443 168 10955`.
   - Maze teleport plates: plates at `11407 163 10964` and `11405 163 11002`, bound to the blocks under them (y162); players land standing on `11481 162 10970`. Confirmed by the user 2026-11-27.
-- **Still blank in ADMINS.md:** map name, plus everything waiting on room designs: the official Room 3 grids/altar and Room 4 instrument designs aren't done yet (2026-11-27), so the 10 Room 3 altar heads, 10 Room 4 note blocks, Room 4 Start object and Room 4 instructions head come once those rooms are built. Run `grep -o "FILL IN" MainMap/ADMINS.md | wc -l` for the count.
+- **Still blank in ADMINS.md:** map name, plus everything waiting on room designs: the official Room 4 instrument design isn't done yet (2026-11-27; the Room 3 altar heads are in), so the 10 Room 4 note blocks, Room 4 Start object and Room 4 instructions head come once those rooms are built. Run `grep -o "FILL IN" MainMap/ADMINS.md | wc -l` for the count.
 - **Open questions for the user:**
   - Doors: `/fill` places prismarine walls in their unconnected default shape, so a door may look different after its first open/close. The user should test `/fill 11429 160 10990 11429 161 10991 minecraft:prismarine_wall` on the main map. If it looks wrong, switch the doors to `/clone` from a hidden copy of each closed door (or explicit block states).
   - Doors: the gaps between each door's two regions (Room 3 x=11430, Room 4 x=11455-11456) are assumed to be permanent build.

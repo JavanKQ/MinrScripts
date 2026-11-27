@@ -222,6 +222,10 @@ MAIN = {
     "DOOR_HEADS": {"Room3_Outside": "11432 161 10989", "Room3_Inside": "11428 161 10992",
                    "Room4_Outside": "11453 161 10992", "Room4_Inside": "11458 161 10989"},
     "DOOR_COOLDOWN": 5,
+    # Room 3 altar heads, by symbol number 1-10 (2026-11-27).
+    "ALTAR_HEADS": ["11421 168 10996", "11420 169 10996", "11420 168 10996", "11419 168 10996",
+                    "11417 168 10996", "11419 169 10996", "11417 169 10996", "11418 169 10996",
+                    "11418 168 10996", "11421 169 10996"],
 }
 # Doors: corners "x1 y1 z1 x2 y2 z2" and block, per door (3 = Room 3, 4 = Room 4).
 # A door made of several regions lists each one, separated by ;
@@ -229,6 +233,7 @@ MAIN = {
 DOOR_CORNERS = {"3": "-1846 77 1553 -1841 75 1553", "4": "-1839 76 1558 -1839 74 1560"}
 DOOR_MATERIAL = {"3": "minecraft:sea_lantern", "4": "minecraft:sea_lantern"}
 DOOR_HEADS = {}
+ALTAR_HEADS = []
 # -------------------------------------------
 
 DOOR = """# ==============================================================
@@ -549,6 +554,7 @@ if len(sys.argv) > 1 and sys.argv[1] == "main":
     DOOR_MATERIAL = MAIN["DOOR_MATERIAL"]
     DOOR_COOLDOWN = MAIN["DOOR_COOLDOWN"]
     DOOR_HEADS = MAIN["DOOR_HEADS"]
+    ALTAR_HEADS = MAIN["ALTAR_HEADS"]
 
 def write(folder, name, text):
     os.makedirs(os.path.join(OUT, folder), exist_ok=True)
@@ -562,7 +568,11 @@ def fill_inst(t):
                 b if len(b.split()) == 4 else b + " " + PARKOUR_MATERIAL for b in PARKOUR_BLOCKS)))
 
 for n in range(1, 11):
-    t = ALTAR.replace("@TEAM@", TEAM_CHECK).replace("@N@", str(n)).replace("@L@", LETTERS[n - 1])
+    t = ALTAR
+    if ALTAR_HEADS:
+        t = t.replace("[FILL IN: x y z of altar head @N@ in Room 3]",
+                      f"{ALTAR_HEADS[n - 1]} (altar head @N@ in Room 3)")
+    t = t.replace("@TEAM@", TEAM_CHECK).replace("@N@", str(n)).replace("@L@", LETTERS[n - 1])
     write("Room3_Altar", f"Ocean_Puzzle_Altar_{n:02d}.msc", t)
     t = fill_inst(INSTRUMENT).replace("@N@", str(n)).replace("@L@", LETTERS[n - 1])
     write("Room4_Instrument", f"Ocean_Puzzle_Instrument_{n:02d}.msc", t)
