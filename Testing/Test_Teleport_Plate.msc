@@ -1,0 +1,17 @@
+# ==============================================================
+# TEST - TELEPORT PLATE (test server only, never for admins)
+# ==============================================================
+# Script type : walk
+# Bind to     : -1841 73 1569 (the block UNDER the pressure plate
+#               at -1841 74 1569)
+# Import      : /script import walk <paste URL>, then click the block
+#
+# What it does:
+#   Stepping on the plate teleports the player to -1844.5 66
+#   1577.5 (feet there, centred on the block), facing north.
+#   Same command form as MainMap/Maze/Maze_Teleport.msc, so if
+#   this works, @bypass /tp works and the maze plates will too.
+#
+# Requires: nothing
+# ==============================================================
+@bypass /tp {{player.getName()}} -1844.5 66 1577.5 180 0

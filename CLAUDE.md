@@ -117,6 +117,7 @@ Everything on the test server was imported, and all variables defined, by 2026-1
 
 | Script | Bind to | What changed |
 |---|---|---|
+| Testing/Test_Teleport_Plate.msc (new) | `-1841 73 1569` (under the plate) | Test of `@bypass /tp {{player.getName()}} x y z yaw pitch`, the maze teleport's exact form. Sends the player to `-1844.5 66 1577.5`. |
 | Ocean_Puzzle_Exit.msc | The 8 Exit floor blocks | Before refilling, moves anyone overlapping the stairway: solved players to `-1843.5 73 1556.5`, others to `-1850.5 68 1568.5` (a guess at a clear spot in front of the note blocks; check it). Untested: `Region(...)`, `getPlayersInside()`, `@for Player p in ...`, `solved[p]` read, `@bypass /tp {{p.getName()}}`, and the fallback `/tp @a[x,y,z,dx,dy,dz]`. Test: stand in the open stairway (solved, then unsolved) while someone else walks over Exit. |
 | Doors/Ocean_Puzzle_Door_*.msc (all 4) | The 4 door heads | A door can now be several regions (`;`-separated, opened and closed in a `@for` loop). Same test doors as before. |
 | Room4_Instrument/Ocean_Puzzle_Instrument_01..10.msc | Room 4 note blocks 1-10 | Per-block parkour material; the hide loop splits `x y z` off each entry (untested syntax: `@var xyz = c.split(" ")` then `{{xyz[0]}}`). Same course as before. |
