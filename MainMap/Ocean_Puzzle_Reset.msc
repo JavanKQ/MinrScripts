@@ -2,11 +2,9 @@
 # OCEAN PUZZLE - PROGRESS RESET (4 of 12)
 # ==============================================================
 # Script type : walk (interact is fine for testing)
-# Bind to     : 4 blocks, one bind each: the bottom layer of the
-#               water elevator up from the maze (the soul sand):
-#               11443 154 10990, 11444 154 10990,
-#               11443 154 10991, 11444 154 10991
-#               (fires as players enter the water just above, y155)
+# Bind to     : 2 blocks, one bind each, on the way up from the
+#               maze: 11443 147 10988 and 11443 147 10989
+#               (fires as players enter the space just above, y148)
 # Map/area    : [FILL IN: map name / room]
 # Import      : /script import walk <paste URL>, then click the block
 #

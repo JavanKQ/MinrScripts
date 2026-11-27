@@ -2,10 +2,14 @@
 # OCEAN PUZZLE - EXIT (3 of 12)
 # ==============================================================
 # Script type : walk
-# Bind to     : 8 floor blocks, one bind each (test server coords):
-#               -1847 72 1556, -1846 72 1556, -1845 72 1556,
-#               -1844 72 1556, -1843 72 1556, -1842 72 1556,
-#               -1841 72 1556, -1840 72 1556
+# Bind to     : 6 blocks, one bind each (the top of the stairway):
+#               11441 163 10980, 11442 163 10980, 11443 163 10980,
+#               11444 163 10980, 11445 163 10980, 11446 163 10980
+#               It fires when a player's feet rise above them
+#               (y164), once they're out of the stairway, so the
+#               refill can't trap them. These blocks are air while
+#               the stairway is open: place a temporary block,
+#               import, click it, then break it.
 # Map/area    : [FILL IN: map name / room]
 # Import      : /script import walk <paste URL>, then click the block
 #
@@ -22,6 +26,8 @@
 #     11438 163 10979 to 11449 163 10981
 #     11442 162 10978 to 11445 162 10978
 #     11442 162 10977 to 11445 161 10977
+#   all prismarine bricks, except the stairs:
+#     11441 163 10980 to 11446 163 10980 (prismarine stairs)
 #   (must match the Submit script)
 #
 # Requires: nothing
@@ -30,3 +36,4 @@
 @bypass /fill 11438 163 10979 11449 163 10981 prismarine_bricks
 @bypass /fill 11442 162 10978 11445 162 10978 prismarine_bricks
 @bypass /fill 11442 162 10977 11445 161 10977 prismarine_bricks
+@bypass /fill 11441 163 10980 11446 163 10980 prismarine_stairs
