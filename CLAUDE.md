@@ -8,6 +8,7 @@ MSC 2.0 scripts for a puzzle map on zero.minr.org (Minecraft). See [References.m
 - **Testing:** the user tests on the Minr **test server**, which has a single world. Don't hardcode world names; use `block.getWorld()` when a world string is required.
 - **Admins import scripts on the main map**, not the user. Every script needs the standard `#` header block (see any `Ocean_Puzzle_*.msc`): title with (n of N), script type, `Bind to: [FILL IN]`, `Map/area`, import command, what it does, placement notes, setup commands, coordinates used inside the script, and related scripts. Hand-off should need as little back-and-forth with admins as possible.
 - **Import:** `/s i i <paste URL>` (interact) or `/script import walk <paste URL>`, then click the block. Pastes go on paste.minr.org.
+- **Teleport destinations:** when the user gives a block to send players to, they mean *stand on* that block: teleport to `x+0.5 y+1 z+0.5` (user correction 2026-11-27; a test teleport to `y` itself put them in the ground).
 - **Walk scripts** fire when the player's feet enter the space *above* the bound block. They can be bound to air: place a temporary block, import, click it, then break it.
 - **Git:** commit work for the current map straight to `main`. Create a branch only when starting work on a different map.
 - **Colors in `sendMessage`:** `p.sendMessage(...)` (messages to *other* players) does NOT convert `&` color codes; teammates saw plain white text. Use `§` codes there (`§3Oracle: §b...`, `§7§o[Note]`). `@player` lines do convert `&` codes, so keep `&` there.
@@ -15,7 +16,7 @@ MSC 2.0 scripts for a puzzle map on zero.minr.org (Minecraft). See [References.m
 
 ## MSC syntax confirmed working on the test server
 
-`Block[...]` list literals, `Block(x, y, z, world)`, `block.getBlockDataValue("note")` (returns the note as a String, 0-24), `list::range(a, b)`, `list[i]`, `String == String`, `@for ... @done`, `@if/@elseif/@else/@fi`, `@using`, relative namespace variables, `player.setHealth(...)` (including `0.0D` to kill), `@bypass /fill ...`, `@bypass /setblock ...`, `@bypass /playsound ...`, `@bypass /particle ... force <player>`, `@prompt`, `String.matches`, `Player(uuid)`, `p.isOnline()`, `p.sendMessage` (with `§` colors), `#` comments. Not yet confirmed: `@bypass /tp` (Maze teleport).
+`Block[...]` list literals, `Block(x, y, z, world)`, `block.getBlockDataValue("note")` (returns the note as a String, 0-24), `list::range(a, b)`, `list[i]`, `String == String`, `@for ... @done`, `@if/@elseif/@else/@fi`, `@using`, relative namespace variables, `player.setHealth(...)` (including `0.0D` to kill), `@bypass /fill ...`, `@bypass /setblock ...`, `@bypass /playsound ...`, `@bypass /particle ... force <player>`, `@prompt`, `String.matches`, `Player(uuid)`, `p.isOnline()`, `p.sendMessage` (with `§` colors), `#` comments. `@bypass /tp {{player.getName()}} x y z yaw pitch` (confirmed 2026-11-27 with the test plate).
 
 ## Ocean Puzzle (namespace `puzzle1`)
 
@@ -117,7 +118,7 @@ Everything on the test server was imported, and all variables defined, by 2026-1
 
 | Script | Bind to | What changed |
 |---|---|---|
-| Testing/Test_Teleport_Plate.msc (new) | `-1841 73 1569` (under the plate) | Test of `@bypass /tp {{player.getName()}} x y z yaw pitch`, the maze teleport's exact form. Sends the player to `-1844.5 66 1577.5`. |
+| Testing/Test_Teleport_Plate.msc (new) | `-1841 73 1569` (under the plate) | Test of `@bypass /tp {{player.getName()}} x y z yaw pitch`, the maze teleport's exact form. Sends the player to stand on `-1845 66 1577` (`-1844.5 67 1577.5`). First run: `@bypass /tp` WORKS (2026-11-27); the landing height was 1 too low, now fixed. |
 | Ocean_Puzzle_Exit.msc | The 8 Exit floor blocks | Before refilling, moves anyone overlapping the stairway: solved players to `-1843.5 73 1556.5`, others to `-1850.5 68 1568.5` (a guess at a clear spot in front of the note blocks; check it). Untested: `Region(...)`, `getPlayersInside()`, `@for Player p in ...`, `solved[p]` read, `@bypass /tp {{p.getName()}}`, and the fallback `/tp @a[x,y,z,dx,dy,dz]`. Test: stand in the open stairway (solved, then unsolved) while someone else walks over Exit. |
 | Doors/Ocean_Puzzle_Door_*.msc (all 4) | The 4 door heads | A door can now be several regions (`;`-separated, opened and closed in a `@for` loop). Same test doors as before. |
 | Room4_Instrument/Ocean_Puzzle_Instrument_01..10.msc | Room 4 note blocks 1-10 | Per-block parkour material; the hide loop splits `x y z` off each entry (untested syntax: `@var xyz = c.split(" ")` then `{{xyz[0]}}`). Same course as before. |

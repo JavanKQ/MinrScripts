@@ -7,11 +7,11 @@
 # Import      : /script import walk <paste URL>, then click the block
 #
 # What it does:
-#   Stepping on the plate teleports the player to -1844.5 66
-#   1577.5 (feet there, centred on the block), facing north.
+#   Stepping on the plate teleports the player to stand on
+#   block -1845 66 1577 (-1844.5 67 1577.5), facing north.
 #   Same command form as MainMap/Maze/Maze_Teleport.msc, so if
 #   this works, @bypass /tp works and the maze plates will too.
 #
 # Requires: nothing
 # ==============================================================
-@bypass /tp {{player.getName()}} -1844.5 66 1577.5 180 0
+@bypass /tp {{player.getName()}} -1844.5 67 1577.5 180 0
