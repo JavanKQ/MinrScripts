@@ -87,16 +87,15 @@ Room 3 altar and doors (designed 2026-11-24):
   - Room 3: instructions head `11423 161 10990`, door (prismarine wall, 2 regions), outside head `11432 161 10989`, inside button `11428 161 10992`.
   - Room 4: door (prismarine wall, 2 regions), outside head `11453 161 10992`, inside button `11458 161 10989`, parkour course (11 glass panes), Finish `11443 167 10964` and `11444 167 10964` (players swim over them in a 1-high gap).
   - Post-puzzle checkpoint `11443 168 10955`.
-  - Maze teleport plates: plates at `11407 163 10964` and `11405 163 11002`, bound to the blocks under them (y162); players land standing on `11481 162 10970`. Asked the user (2026-11-27) to confirm the plates are at y163 and that the landing block is right.
-- **Still blank in ADMINS.md:** map name, Room 4 instructions head, Room 4 Start object, the 10 Room 3 altar heads and 10 Room 4 note blocks (symbol table). Run `grep -o "FILL IN" MainMap/ADMINS.md | wc -l` for the count.
+  - Maze teleport plates: plates at `11407 163 10964` and `11405 163 11002`, bound to the blocks under them (y162); players land standing on `11481 162 10970`. Confirmed by the user 2026-11-27.
+- **Still blank in ADMINS.md:** map name, plus everything waiting on room designs: the official Room 3 grids/altar and Room 4 instrument designs aren't done yet (2026-11-27), so the 10 Room 3 altar heads, 10 Room 4 note blocks, Room 4 Start object and Room 4 instructions head come once those rooms are built. Run `grep -o "FILL IN" MainMap/ADMINS.md | wc -l` for the count.
 - **Open questions for the user:**
   - Doors: `/fill` places prismarine walls in their unconnected default shape, so a door may look different after its first open/close. The user should test `/fill 11429 160 10990 11429 161 10991 minecraft:prismarine_wall` on the main map. If it looks wrong, switch the doors to `/clone` from a hidden copy of each closed door (or explicit block states).
   - Doors: the gaps between each door's two regions (Room 3 x=11430, Room 4 x=11455-11456) are assumed to be permanent build.
   - Finish and Reset: whether a walk trigger fires for a swimming player (Finish) or one in a bubble column (Reset) is unconfirmed; suggest testing on the test server.
   - Stairs: confirmed facing north (climbed walking north).
-  - Test plate: re-bind `Testing/Test_Teleport_Plate.msc` to the block under the plate (`-1841 73 1569`; it was first bound to the plate itself) and confirm it fires on stepping onto the plate.
 - **Still to write:** the dialogue scripts listed under "Still to write".
-- **Test server:** `@bypass /tp` is confirmed working (test plate, 2026-11-27). Pending re-import (see "Pending re-import"): the test plate (re-bind under the plate), Exit (anti-trap teleport, needs 2 players to test properly), the 4 door scripts and 10 instrument scripts (new, untested loop syntax).
+- **Test server:** `@bypass /tp` is confirmed working (test plate, 2026-11-27). The door and instrument scripts are re-imported but their new loops are untested. Exit (anti-trap teleport) still needs re-importing and a 2-player test. None of the open questions above have been tested yet (user, 2026-11-27).
 
 ## Switching machines
 
@@ -121,12 +120,12 @@ Everything on the test server was imported, and all variables defined, by 2026-1
 
 | Script | Bind to | What changed |
 |---|---|---|
-| Testing/Test_Teleport_Plate.msc (new) | `-1841 73 1569` (under the plate) | Test of `@bypass /tp {{player.getName()}} x y z yaw pitch`, the maze teleport's exact form. Sends the player to stand on `-1845 66 1577` (`-1844.5 67 1577.5`). First run: `@bypass /tp` WORKS (2026-11-27); the landing height was 1 too low, now fixed. |
 | Ocean_Puzzle_Exit.msc | The 8 Exit floor blocks | Before refilling, moves anyone overlapping the stairway: solved players to `-1843.5 73 1556.5`, others to `-1850.5 68 1568.5` (a guess at a clear spot in front of the note blocks; check it). Untested: `Region(...)`, `getPlayersInside()`, `@for Player p in ...`, `solved[p]` read, `@bypass /tp {{p.getName()}}`, and the fallback `/tp @a[x,y,z,dx,dy,dz]`. Test: stand in the open stairway (solved, then unsolved) while someone else walks over Exit. |
-| Doors/Ocean_Puzzle_Door_*.msc (all 4) | The 4 door heads | A door can now be several regions (`;`-separated, opened and closed in a `@for` loop). Same test doors as before. |
-| Room4_Instrument/Ocean_Puzzle_Instrument_01..10.msc | Room 4 note blocks 1-10 | Per-block parkour material; the hide loop splits `x y z` off each entry (untested syntax: `@var xyz = c.split(" ")` then `{{xyz[0]}}`). Same course as before. |
 
 All one-time setup commands are listed in the Submit script header.
+
+**Re-imported 2026-11-27 but not yet tested:** the 4 door scripts (multi-region `@for` loop) and the 10 instrument scripts (per-block parkour material; hide loop uses `@var xyz = c.split(" ")` then `{{xyz[0]}}`). Test: open and close each door, and play the melody and check the sea lanterns vanish after 30s.
+**Test plate** (`Testing/Test_Teleport_Plate.msc`, bound under the plate at `-1841 73 1569`): working, 2026-11-27.
 
 ## Main map (2026-11-25)
 
