@@ -12,6 +12,11 @@
 # What it does:
 #   Rebuilds the wall over the stairway after a player leaves
 #   the puzzle area, returning the entrance to normal.
+#   First, anyone standing where a stairway block is about to
+#   reappear is teleported to a safe spot (standing on the Exit floor at -1844 72 1556;
+#   landing there fires Exit once more, which is harmless), so
+#   nobody can be sealed inside. Only players whose body
+#   overlaps a refilled block are moved.
 #
 # Placement note:
 #   Just past the top of the stairway, once the player is back
@@ -21,9 +26,14 @@
 #   Stair ceiling : -1846 70 1562 to -1841 70 1565
 #   Stair wall    : -1846 69 1565 to -1841 67 1565
 #   (must match the Submit script)
+#   Safe spot: -1843.5 73 1556.5 (standing on -1844 72 1556)
 #
 # Requires: nothing
 # Related scripts: Submit (1), Entrance (2), Reset (4), Note Tune (5), Team Conduit (6), Symbols (7)
 # ==============================================================
+# --- Move anyone out of the blocks about to reappear (one line per region) ---
+@bypass /tp @a[x=-1846,y=70,z=1562,dx=5,dy=0,dz=3] -1843.5 73 1556.5
+@bypass /tp @a[x=-1846,y=67,z=1565,dx=5,dy=2,dz=0] -1843.5 73 1556.5
+# --- Refill the stairway ---
 @bypass /fill -1846 70 1562 -1841 70 1565 prismarine_bricks
 @bypass /fill -1846 69 1565 -1841 67 1565 prismarine_bricks
