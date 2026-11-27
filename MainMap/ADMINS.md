@@ -12,7 +12,7 @@ All scripts are MSC 2.0 in the namespace `puzzle1`. **Only use the files in this
 
 ## Checkpoints
 
-- **Puzzle area checkpoint:** [FILL IN: x y z]. Deaths in the puzzle send players here.
+- **Puzzle area checkpoint:** `11442 161 10989`. Deaths in the puzzle send players here.
 - **Checkpoint after the puzzle:** `11443 168 10955`. It **must be past the Finish line** (Finish is at z=10964), so it can't be reached without passing Finish.
 
 ## Setup commands (run once, before importing)
@@ -48,7 +48,7 @@ All scripts are MSC 2.0 in the namespace `puzzle1`. **Only use the files in this
 | Script | Type | Bind to |
 |---|---|---|
 | `Maze/Maze_Teleport.msc` | walk | The block UNDER each pressure plate (2 binds): `11407 162 10964` and `11405 162 11002` |
-| `Ocean_Puzzle_Reset.msc` | walk | Partway down the one-way drop out of the maze, every block across its width: [FILL IN] |
+| `Ocean_Puzzle_Reset.msc` | walk | The bottom (soul sand) layer of the water elevator up from the maze, 4 binds: `11443 154 10990`, `11444 154 10990`, `11443 154 10991`, `11444 154 10991` |
 | `Ocean_Puzzle_Entrance.msc` | walk | The one-way drop into the puzzle area: 6 binds, `11441 162 10975` to `11446 162 10975` (fires as players drop through y163; bind to air with a temporary block) |
 
 ### Room 1
@@ -62,7 +62,7 @@ All scripts are MSC 2.0 in the namespace `puzzle1`. **Only use the files in this
 | `Ocean_Puzzle_TeamConduit.msc` | interact | Team Conduit: `11460 161 10979` |
 | `Ocean_Puzzle_Forget.msc` | interact | Forget head: `11448 161 10979` |
 
-Room 1 stairway (opened by Submit, closed by Exit): [FILL IN: region(s) and block type]
+Room 1 stairway (set in the Submit and Exit scripts; opened by Submit, closed by Exit): `11438 163 10979` to `11449 163 10981`, `11442 162 10978` to `11445 162 10978`, `11442 162 10977` to `11445 161 10977`. Block type: [FILL IN]
 
 ### Room 2
 

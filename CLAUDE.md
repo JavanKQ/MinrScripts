@@ -76,15 +76,19 @@ Room 3 altar and doors (designed 2026-11-24):
 - **Filled so far (main map):**
   - Room 1: note blocks `11476 162 10968`-`10977`, Submit `11474 163 10978`, instructions head `11459 161 10971`, Team Conduit `11460 161 10979`, Forget head `11448 161 10979`.
   - Entrance: 6 binds `11441 162 10975` to `11446 162 10975` (players drop through y163).
+  - Reset: 4 binds on the soul sand at the bottom of the water elevator up from the maze (`11443`/`11444` x `154` x `10990`/`10991`). The bottom is used because nobody can swim down a bubble column, so players respawning at the nearby checkpoint can't trigger it.
+  - Room 1 stairway (Submit opens, Exit fills): `11438 163 10979 11449 163 10981`, `11442 162 10978 11445 162 10978`, `11442 162 10977 11445 161 10977`. Exit still fills with `prismarine_bricks` until the block type is confirmed.
+  - Puzzle area checkpoint `11442 161 10989`.
   - Room 2: all 10 symbol heads (see "Main map").
   - Room 3: instructions head `11423 161 10990`, door (prismarine wall, 2 regions), outside head `11432 161 10989`, inside button `11428 161 10992`.
   - Room 4: door (prismarine wall, 2 regions), outside head `11453 161 10992`, inside button `11458 161 10989`, parkour course (11 glass panes), Finish `11443 167 10964` and `11444 167 10964` (players swim over them in a 1-high gap).
   - Post-puzzle checkpoint `11443 168 10955`. Maze teleport plates.
-- **Still blank in ADMINS.md:** map name, puzzle area checkpoint, Reset and Exit walk triggers, Room 1 stairway region, Room 4 instructions head, Room 4 Start object, the 10 Room 3 altar heads and 10 Room 4 note blocks (symbol table). Run `grep -o "FILL IN" MainMap/ADMINS.md | wc -l` for the count.
+- **Still blank in ADMINS.md:** map name, Exit walk trigger, stairway block type, Room 4 instructions head, Room 4 Start object, the 10 Room 3 altar heads and 10 Room 4 note blocks (symbol table). Run `grep -o "FILL IN" MainMap/ADMINS.md | wc -l` for the count.
 - **Open questions for the user:**
   - Doors: `/fill` places prismarine walls in their unconnected default shape, so a door may look different after its first open/close. The user should test `/fill 11429 160 10990 11429 161 10991 minecraft:prismarine_wall` on the main map. If it looks wrong, switch the doors to `/clone` from a hidden copy of each closed door (or explicit block states).
   - Doors: the gaps between each door's two regions (Room 3 x=11430, Room 4 x=11455-11456) are assumed to be permanent build.
-  - Finish: whether a walk trigger fires for a swimming player is unconfirmed; suggest testing it on the test server.
+  - Finish and Reset: whether a walk trigger fires for a swimming player (Finish) or one in a bubble column (Reset) is unconfirmed; suggest testing on the test server.
+  - Stairway: the user called the 3 regions the "exit trigger (to fill the space of the dropdown)"; read as the stairway Submit opens and Exit fills (2026-11-27). Asked: where the Exit trigger goes, the stairway's block type, and whether players go up or down through it (Submit says "The way above").
 - **Still to write:** the dialogue scripts listed under "Still to write".
 - **Test server:** the 4 door scripts and 10 instrument scripts are pending re-import (see "Pending re-import"), each with new, untested loop syntax.
 

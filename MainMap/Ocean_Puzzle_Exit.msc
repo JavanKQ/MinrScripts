@@ -18,12 +18,15 @@
 #   through the entrance.
 #
 # Map coordinates used inside this script:
-#   Stair ceiling : -1846 70 1562 to -1841 70 1565
-#   Stair wall    : -1846 69 1565 to -1841 67 1565
+#   Stairway (3 regions):
+#     11438 163 10979 to 11449 163 10981
+#     11442 162 10978 to 11445 162 10978
+#     11442 162 10977 to 11445 161 10977
 #   (must match the Submit script)
 #
 # Requires: nothing
 # Related scripts: Submit (1), Entrance (2), Reset (4), Note Tune (5), Team Conduit (6), Symbols (7)
 # ==============================================================
-@bypass /fill -1846 70 1562 -1841 70 1565 prismarine_bricks
-@bypass /fill -1846 69 1565 -1841 67 1565 prismarine_bricks
+@bypass /fill 11438 163 10979 11449 163 10981 prismarine_bricks
+@bypass /fill 11442 162 10978 11445 162 10978 prismarine_bricks
+@bypass /fill 11442 162 10977 11445 161 10977 prismarine_bricks

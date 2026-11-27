@@ -50,9 +50,11 @@
 #
 # Map coordinates used inside this script:
 #   Note blocks   : 11476 162 10968 (Symbol 1) through 11476 162 10977 (Symbol 10)
-#   Stair ceiling : -1846 70 1562 to -1841 70 1565
-#   Stair wall    : -1846 69 1565 to -1841 67 1565
-#   (both /fill lines appear in 2 places below)
+#   Stairway (3 regions):
+#     11438 163 10979 to 11449 163 10981
+#     11442 162 10978 to 11445 162 10978
+#     11442 162 10977 to 11445 161 10977
+#   (the 3 /fill lines appear in 2 places below)
 #   Particles     : 11476.5 163.5 <10968.5 up to 10977.5>, i.e.
 #                   centered above each note block (2 places below)
 #
@@ -62,8 +64,9 @@
 @define Boolean debug = false
 @if solved
 @player &3Oracle: &bThe elders' song has already been sung... The way above lies open to you.
-@bypass /fill -1846 70 1562 -1841 70 1565 air
-@bypass /fill -1846 69 1565 -1841 67 1565 air
+@bypass /fill 11438 163 10979 11449 163 10981 air
+@bypass /fill 11442 162 10978 11445 162 10978 air
+@bypass /fill 11442 162 10977 11445 161 10977 air
 @return
 @fi
 @if answer == ""
@@ -158,8 +161,9 @@
 @fi
 @player &3Oracle: &bThe temple stirs... every note rings true, as the elders composed it.
 @player &3Oracle: &bThe way above is revealed to you.
-@bypass /fill -1846 70 1562 -1841 70 1565 air
-@bypass /fill -1846 69 1565 -1841 67 1565 air
+@bypass /fill 11438 163 10979 11449 163 10981 air
+@bypass /fill 11442 162 10978 11445 162 10978 air
+@bypass /fill 11442 162 10977 11445 161 10977 air
 @return
 @fi
 @if player.getHealth() <= 4.0D
