@@ -79,7 +79,7 @@ Room 3 altar and doors (designed 2026-11-24):
   - Reset: 2 binds `11443 147 10988` and `11443 147 10989` on the way up from the maze (changed 2026-11-27).
   - Room 1 stairway (Submit opens, Exit fills): `11438 163 10979 11449 163 10981`, `11442 162 10978 11445 162 10978`, `11442 162 10977 11445 161 10977`. All prismarine bricks, plus prismarine stairs (facing north, `[facing=north]` in Exit) at `11442 163 10980 11445 163 10980` (opened together; Exit refills the stairs last). Players drop into Room 1 and the stairway leads back up, so Submit's "The way above" is right.
   - Exit: 4 binds on the floor of the Room 3 doorway, `11429`/`11430` x `159` x `10990`/`10991` (fires at feet y160; changed 2026-11-27). It fires on every pass through the doorway, either way; that's harmless, since a solved player can reopen the stairway by clicking Submit.
-  - Exit anti-trap (2026-11-27): before refilling, Exit runs one `@bypass /tp @a[x,y,z,dx,dy,dz]` per stairway region, sending anyone whose hitbox overlaps a refilled block to stand on `11445 160 10992` (test copy: `-1844 72 1556`). The volumes match the fill regions exactly, so Room 1 players standing under the ceiling (head below y163) aren't moved.
+  - Exit anti-trap (2026-11-27): before refilling, Exit lists players in a box 1 block bigger than the stairway (`Region(...).getPlayersInside()`; the docs don't say whether this works on a temporary box), checks each one's body (0.6 wide, 1.8 tall, from `p.getX/Y/Z()`) against the 3 refill regions, and teleports overlapping players: `solved` to stand on `11445 160 10992`, not solved to stand on `11448 159 10972` in Room 1 (read as "standing on", like the first spot). A fallback `/tp @a[x,y,z,dx,dy,dz]` per region then sends anyone still overlapping to the Room 1 spot, so nobody is sealed in even if the Region listing fails. MSC has no documented way to list online or nearby players other than Region.
   - Puzzle area checkpoint `11442 161 10989`.
   - Room 2: all 10 symbol heads (see "Main map").
   - Room 3: instructions head `11423 161 10990`, door (prismarine wall, 2 regions), outside head `11432 161 10989`, inside button `11428 161 10992`.
@@ -117,7 +117,7 @@ Everything on the test server was imported, and all variables defined, by 2026-1
 
 | Script | Bind to | What changed |
 |---|---|---|
-| Ocean_Puzzle_Exit.msc | The 8 Exit floor blocks | Teleports anyone inside the stairway to `-1843.5 73 1556.5` before refilling (first test of `@bypass /tp` with a volume selector). Test: stand in the open stairway while someone else walks over Exit. |
+| Ocean_Puzzle_Exit.msc | The 8 Exit floor blocks | Before refilling, moves anyone overlapping the stairway: solved players to `-1843.5 73 1556.5`, others to `-1850.5 68 1568.5` (a guess at a clear spot in front of the note blocks; check it). Untested: `Region(...)`, `getPlayersInside()`, `@for Player p in ...`, `solved[p]` read, `@bypass /tp {{p.getName()}}`, and the fallback `/tp @a[x,y,z,dx,dy,dz]`. Test: stand in the open stairway (solved, then unsolved) while someone else walks over Exit. |
 | Doors/Ocean_Puzzle_Door_*.msc (all 4) | The 4 door heads | A door can now be several regions (`;`-separated, opened and closed in a `@for` loop). Same test doors as before. |
 | Room4_Instrument/Ocean_Puzzle_Instrument_01..10.msc | Room 4 note blocks 1-10 | Per-block parkour material; the hide loop splits `x y z` off each entry (untested syntax: `@var xyz = c.split(" ")` then `{{xyz[0]}}`). Same course as before. |
 
