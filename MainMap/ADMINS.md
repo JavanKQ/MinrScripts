@@ -57,12 +57,12 @@ All scripts are MSC 2.0 in the namespace `puzzle1`. **Only use the files in this
 |---|---|---|
 | `Ocean_Puzzle_NoteTune.msc` | interact | Each of the 10 Room 1 note blocks (10 binds, same paste): see the note block table below |
 | `Ocean_Puzzle_Noteblocks.msc` (Submit) | interact | Submit block: `11474 163 10978` |
-| `Ocean_Puzzle_Exit.msc` | walk | The top of the stairway, 6 binds: `11441 163 10980` to `11446 163 10980` (air while the stairway is open; bind with a temporary block) |
+| `Ocean_Puzzle_Exit.msc` | walk | 4 binds: `11442 162 10981` to `11445 162 10981` |
 | `Instructions/Ocean_Puzzle_Instructions_Room1.msc` | interact | Room 1 instructions head: `11459 161 10971` |
 | `Ocean_Puzzle_TeamConduit.msc` | interact | Team Conduit: `11460 161 10979` |
 | `Ocean_Puzzle_Forget.msc` | interact | Forget block: `11444 161 10999` |
 
-Room 1 stairway (set in the Submit and Exit scripts; opened by Submit, closed by Exit): `11438 163 10979` to `11449 163 10981`, `11442 162 10978` to `11445 162 10978`, `11442 162 10977` to `11445 161 10977`, all prismarine bricks except prismarine stairs at `11441 163 10980` to `11446 163 10980`.
+Room 1 stairway (set in the Submit and Exit scripts; opened by Submit, closed by Exit): `11438 163 10979` to `11449 163 10981`, `11442 162 10978` to `11445 162 10978`, `11442 162 10977` to `11445 161 10977`, all prismarine bricks except prismarine stairs (facing north) at `11442 163 10980` to `11445 163 10980`.
 
 ### Room 2
 

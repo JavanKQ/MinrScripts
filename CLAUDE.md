@@ -77,8 +77,8 @@ Room 3 altar and doors (designed 2026-11-24):
   - Room 1: note blocks `11476 162 10968`-`10977`, Submit `11474 163 10978`, instructions head `11459 161 10971`, Team Conduit `11460 161 10979`, Forget block `11444 161 10999` (moved 2026-11-27).
   - Entrance: 6 binds `11441 162 10975` to `11446 162 10975` (players drop through y163).
   - Reset: 2 binds `11443 147 10988` and `11443 147 10989` on the way up from the maze (changed 2026-11-27).
-  - Room 1 stairway (Submit opens, Exit fills): `11438 163 10979 11449 163 10981`, `11442 162 10978 11445 162 10978`, `11442 162 10977 11445 161 10977`. All prismarine bricks, plus prismarine stairs at `11441 163 10980 11446 163 10980` (opened together; Exit refills the stairs last). Players drop into Room 1 and the stairway leads back up, so Submit's "The way above" is right.
-  - Exit: 6 binds `11441 163 10980` to `11446 163 10980` (fires at feet y164). The user gave `11441-11446 162-163 10980`; the y162 row was left out because it fires at feet y163, inside the refill, which would trap the player. Asked the user to confirm.
+  - Room 1 stairway (Submit opens, Exit fills): `11438 163 10979 11449 163 10981`, `11442 162 10978 11445 162 10978`, `11442 162 10977 11445 161 10977`. All prismarine bricks, plus prismarine stairs (facing north, `[facing=north]` in Exit) at `11442 163 10980 11445 163 10980` (opened together; Exit refills the stairs last). Players drop into Room 1 and the stairway leads back up, so Submit's "The way above" is right.
+  - Exit: 4 binds `11442 162 10981` to `11445 162 10981` (fires at feet y163; user's choice 2026-11-27). That spot is inside the refilled ceiling region, so the refill lands at the player's feet; damage is off in the puzzle area, so they're only nudged out.
   - Puzzle area checkpoint `11442 161 10989`.
   - Room 2: all 10 symbol heads (see "Main map").
   - Room 3: instructions head `11423 161 10990`, door (prismarine wall, 2 regions), outside head `11432 161 10989`, inside button `11428 161 10992`.
@@ -89,7 +89,7 @@ Room 3 altar and doors (designed 2026-11-24):
   - Doors: `/fill` places prismarine walls in their unconnected default shape, so a door may look different after its first open/close. The user should test `/fill 11429 160 10990 11429 161 10991 minecraft:prismarine_wall` on the main map. If it looks wrong, switch the doors to `/clone` from a hidden copy of each closed door (or explicit block states).
   - Doors: the gaps between each door's two regions (Room 3 x=11430, Room 4 x=11455-11456) are assumed to be permanent build.
   - Finish and Reset: whether a walk trigger fires for a swimming player (Finish) or one in a bubble column (Reset) is unconfirmed; suggest testing on the test server.
-  - Stairs: `/fill` places prismarine stairs in their default shape (facing north, bottom half). Asked the user which way they face.
+  - Stairs: confirmed facing north (climbed walking north).
 - **Still to write:** the dialogue scripts listed under "Still to write".
 - **Test server:** the 4 door scripts and 10 instrument scripts are pending re-import (see "Pending re-import"), each with new, untested loop syntax.
 
